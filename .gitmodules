@@ -1,0 +1,6 @@
+[submodule "external/sphinx"]
+	path = external/sphinx
+	url = https://github.com/UCL-InfoSec/sphinx.git
+[submodule "external/loopix"]
+	path = external/loopix
+	url = https://github.com/UCL-InfoSec/loopix.git
