@@ -3,4 +3,4 @@
 	url = https://github.com/UCL-InfoSec/sphinx.git
 [submodule "external/loopix"]
 	path = external/loopix
-	url = https://github.com/UCL-InfoSec/loopix.git
+	url = https://github.com/cheahjs/loopix.git
