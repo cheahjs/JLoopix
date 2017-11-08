@@ -1,17 +1,6 @@
 # Use the Alpine base image
 FROM alpine:3.6
 
-# ARG port=8000
-# ARG clientname="client_1"
-
-# Add loopix source files
-# Potentially just clone
-ADD external/loopix /loopix
-
-# Add keys and DB
-# ADD build/loopix_keys/${clientname} /loopix
-# ADD build/example.db /loopix/example.db
-
 # Update
 RUN echo @testing http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
 RUN apk add --update \
@@ -45,12 +34,6 @@ RUN pip install "scipy>=0.16.1"
 RUN pip install "scapy>=2.3.3"
 RUN pip install "pybloom>=1.1"
 
-# WORKDIR /loopix
-
-# ARG hostname=127.0.0.1
-# ARG providername="PROVIDER_1"
-# RUN python loopix/setup_client.py ${port} ${hostname} ${clientname} ${providername}
-
-# EXPOSE ${port}
-
-# CMD [ "python" ]
+# Add loopix source files
+# Potentially just clone
+ADD external/loopix /loopix
