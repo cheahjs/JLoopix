@@ -45,7 +45,7 @@ RUN pip install "scipy>=0.16.1"
 RUN pip install "scapy>=2.3.3"
 RUN pip install "pybloom>=1.1"
 
-WORKDIR /loopix
+# WORKDIR /loopix
 
 # ARG hostname=127.0.0.1
 # ARG providername="PROVIDER_1"
@@ -53,4 +53,4 @@ WORKDIR /loopix
 
 # EXPOSE ${port}
 
-CMD [ "python" ]
+# CMD [ "python" ]
