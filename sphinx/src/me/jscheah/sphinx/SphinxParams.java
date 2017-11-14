@@ -13,10 +13,10 @@ import java.security.*;
 
 public class SphinxParams {
 
-    private GroupECC mGroup;
-    private int maxLength;
+    public GroupECC group;
+    public int maxLength;
     private int m;
-    private int k;
+    public int k;
     private Cipher aes;
     private MessageDigest sha256;
 
@@ -29,7 +29,7 @@ public class SphinxParams {
     }
 
     public SphinxParams(int headerLen, int bodyLen) throws CryptoException {
-        mGroup = new GroupECC();
+        group = new GroupECC();
         maxLength = headerLen;
         m = bodyLen;
         k = 16;
@@ -198,6 +198,13 @@ public class SphinxParams {
         return lionessEnc(key, data);
     }
 
+    public byte[] pii(byte[] key, byte[] data) throws CryptoException {
+        assert key.length == this.k;
+        assert data.length == this.m;
+
+        return lionessDec(key, data);
+    }
+
 
     public byte[] hash(byte[] data) {
         return sha256.digest(data);
@@ -206,7 +213,7 @@ public class SphinxParams {
     public byte[] getAesKey(ECPoint s) {
         return Arrays.copyOf(
                 sha256.digest(
-                ("aes_key:" + mGroup.printableString(s)).getBytes(Charset.forName("UTF-8"))),
+                ("aes_key:" + group.printableString(s)).getBytes(Charset.forName("UTF-8"))),
                 this.k);
     }
 
@@ -216,7 +223,7 @@ public class SphinxParams {
 
     public BigInteger hb(byte[] key)
             throws CryptoException {
-        return mGroup.makeExp(
+        return group.makeExp(
           deriveKey(key, "hbhbhbhbhbhbhbhb".getBytes(Charset.forName("UTF-8")))
         );
     }
