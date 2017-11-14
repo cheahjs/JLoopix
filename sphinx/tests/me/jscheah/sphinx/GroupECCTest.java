@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class GroupECCTest {
     @Test
     void testExponCommutative() {
-        SphinxParams.GroupECC G = new SphinxParams.GroupECC();
+        GroupECC G = new GroupECC();
         BigInteger sec1 = G.generateSecret();
         BigInteger sec2 = G.generateSecret();
         ECPoint gen = G.Generator;
@@ -22,7 +22,7 @@ class GroupECCTest {
 
     @Test
     void testExponEqualsMultiExpon() {
-        SphinxParams.GroupECC G = new SphinxParams.GroupECC();
+        GroupECC G = new GroupECC();
         BigInteger sec1 = G.generateSecret();
         BigInteger sec2 = G.generateSecret();
         ECPoint gen = G.Generator;
@@ -32,7 +32,7 @@ class GroupECCTest {
 
     @Test
     void testExponInGroup() {
-        SphinxParams.GroupECC G = new SphinxParams.GroupECC();
+        GroupECC G = new GroupECC();
         BigInteger sec1 = G.generateSecret();
         ECPoint gen = G.Generator;
 
@@ -41,7 +41,7 @@ class GroupECCTest {
 
     @Test
     void testPrintable() {
-        SphinxParams.GroupECC G = new SphinxParams.GroupECC();
+        GroupECC G = new GroupECC();
 
         assertEquals(G.printableString(G.Generator), "04b70e0cbd6bb4bf7f321390b94a03c1d356c21122343280d6115c1d21bd376388b5f723fb4c22dfe6cd4375a05a07476444d5819985007e34");
     }
