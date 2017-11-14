@@ -83,50 +83,61 @@ public class SphinxParams {
     private Cipher aes;
     private MessageDigest sha256;
 
-    public SphinxParams() throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public SphinxParams() throws CryptoException {
         this(192);
     }
 
-    public SphinxParams(int headerLen) throws NoSuchAlgorithmException, NoSuchPaddingException {
+    public SphinxParams(int headerLen) throws CryptoException {
         this(headerLen, 1024);
     }
 
-    public SphinxParams(int headerLen, int bodyLen) throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public SphinxParams(int headerLen, int bodyLen) throws CryptoException {
         mGroup = new GroupECC();
         maxLength = headerLen;
         m = bodyLen;
         k = 16;
-        aes = Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
-        sha256 = MessageDigest.getInstance("SHA-256");
+        try {
+            aes = Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new CryptoException(e);
+        }
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new CryptoException(e);
+        }
     }
 
-    public byte[] aesCtr(String key, String message, byte[] iv)
-            throws InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public byte[] aesCtr(String key, String message, byte[] iv) throws CryptoException {
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
         byte[] messageBytes = message.getBytes(Charset.forName("UTF-8"));
         return aesCtr(keyBytes, messageBytes, iv);
     }
 
-    public byte[] aesCtr(byte[] key, String message, byte[] iv)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] aesCtr(byte[] key, String message, byte[] iv) throws CryptoException {
         byte[] messageBytes = message.getBytes(Charset.forName("UTF-8"));
         return aesCtr(key, messageBytes, iv);
     }
 
-    public byte[] aesCtr(String key, byte[] message, byte[] iv)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] aesCtr(String key, byte[] message, byte[] iv) throws CryptoException {
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
         return aesCtr(keyBytes, message, iv);
     }
 
-    public byte[] aesCtr(byte[] key, byte[] message, byte[] iv)
-            throws InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        aes.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
-        return aes.doFinal(message);
+    public byte[] aesCtr(byte[] key, byte[] message, byte[] iv) throws CryptoException {
+        try {
+            aes.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new CryptoException(e);
+        }
+        try {
+            return aes.doFinal(message);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            throw new CryptoException(e);
+        }
     }
 
-    public byte[] lionessEnc(byte[] key, byte[] message)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] lionessEnc(byte[] key, byte[] message) throws CryptoException {
         assert key.length == this.k;
         assert message.length >= this.k*2;
 
@@ -177,8 +188,7 @@ public class SphinxParams {
         return r4;
     }
 
-    public byte[] lionessDec(byte[] key, byte[] message)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] lionessDec(byte[] key, byte[] message) throws CryptoException {
         assert key.length == this.k;
         assert message.length >= this.k*2;
 
@@ -224,21 +234,27 @@ public class SphinxParams {
         return r0;
     }
 
-    public byte[] xorRho(byte[] key, byte[] plain)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] xorRho(byte[] key, byte[] plain) throws CryptoException {
         assert key.length == this.k;
         return aesCtr(key, plain, new byte[16]);
     }
 
-    public byte[] mu(byte[] key, byte[] data)
-            throws NoSuchAlgorithmException, InvalidKeyException {
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(new SecretKeySpec(key, "HmacSHA256"));
+    public byte[] mu(byte[] key, byte[] data) throws CryptoException {
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance("HmacSHA256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new CryptoException(e);
+        }
+        try {
+            mac.init(new SecretKeySpec(key, "HmacSHA256"));
+        } catch (InvalidKeyException e) {
+            throw new CryptoException(e);
+        }
         return Arrays.copyOf(mac.doFinal(data), this.k);
     }
 
-    public byte[] pi(byte[] key, byte[] data)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+    public byte[] pi(byte[] key, byte[] data) throws CryptoException {
         assert key.length == this.k;
         assert data.length == this.m;
 
@@ -257,35 +273,30 @@ public class SphinxParams {
                 this.k);
     }
 
-    public byte[] deriveKey(byte[] key, byte[] flavor)
-            throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+    public byte[] deriveKey(byte[] key, byte[] flavor) throws CryptoException {
         return aesCtr(key, new byte[this.k], flavor);
     }
 
     public BigInteger hb(byte[] key)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+            throws CryptoException {
         return mGroup.makeExp(
           deriveKey(key, "hbhbhbhbhbhbhbhb".getBytes(Charset.forName("UTF-8")))
         );
     }
 
-    public byte[] hrho(byte[] key)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+    public byte[] hrho(byte[] key) throws CryptoException {
         return deriveKey(key, "hrhohrhohrhohrho".getBytes(Charset.forName("UTF-8")));
     }
 
-    public byte[] hmu(byte[] key)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+    public byte[] hmu(byte[] key) throws CryptoException {
         return deriveKey(key, "hmu:hmu:hmu:hmu:".getBytes(Charset.forName("UTF-8")));
     }
 
-    public byte[] hpi(byte[] key)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+    public byte[] hpi(byte[] key) throws CryptoException {
         return deriveKey(key, "hpi:hpi:hpi:hpi:".getBytes(Charset.forName("UTF-8")));
     }
 
-    public byte[] htau(byte[] key)
-            throws InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException {
+    public byte[] htau(byte[] key) throws CryptoException {
         return deriveKey(key, "htauhtauhtauhtau".getBytes(Charset.forName("UTF-8")));
     }
 }
