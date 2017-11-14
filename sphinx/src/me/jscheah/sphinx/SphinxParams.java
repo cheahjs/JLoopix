@@ -210,7 +210,7 @@ public class SphinxParams {
                         )
                 ), this.k);
         byte[] r2_short = aesCtr(key, r3_short, k2);
-        byte[] r2_long = r3_short;
+        byte[] r2_long = r3_long;
 
         // Round 2
         byte[] r1_long = aesCtr(key, r2_long, r2_short);
