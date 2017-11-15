@@ -58,13 +58,13 @@ public class GroupECC {
 
     public String printableString(ECPoint alpha) {
         byte[] b = printable(alpha);
-        char[] hexArray = "0123456789ABCDEF".toCharArray();
+        char[] hexArray = "0123456789abcef".toCharArray();
         char[] hexChars = new char[b.length * 2];
         for ( int j = 0; j < b.length; j++ ) {
             int v = b[j] & 0xFF;
             hexChars[j * 2] = hexArray[v >>> 4];
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
-        return new String(hexChars).toLowerCase();
+        return new String(hexChars);
     }
 }
