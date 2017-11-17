@@ -27,5 +27,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.msgpack:msgpack-core:0.8.13" level="project" />
   </component>
 </module>
