@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 import java.util.List;
 
 public class GroupECC {
-    private ECParameterSpec EcSpec;
+    public ECParameterSpec EcSpec;
     private ECCurve mEcCurve;
     public ECPoint Generator;
 
