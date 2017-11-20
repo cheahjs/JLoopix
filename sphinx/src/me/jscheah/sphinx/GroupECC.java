@@ -44,7 +44,7 @@ public class GroupECC {
     }
 
     public BigInteger makeExp(byte[] data) {
-        //BigInteger expects a two's-complement array, but petlib's from_binary doesn't
+        //BigInteger expects a two's-complement array, but petlib's from_binary doesn't, so prepend 0x00 to force positive
         return (new BigInteger(Arrays.prepend(data, (byte)0)).mod(mEcCurve.getOrder()));
     }
 
@@ -58,13 +58,6 @@ public class GroupECC {
 
     public String printableString(ECPoint alpha) {
         byte[] b = printable(alpha);
-        char[] hexArray = "0123456789abcef".toCharArray();
-        char[] hexChars = new char[b.length * 2];
-        for ( int j = 0; j < b.length; j++ ) {
-            int v = b[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
+        return Utils.hexlify(b);
     }
 }

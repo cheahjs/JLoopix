@@ -213,8 +213,11 @@ public class SphinxParams {
     public byte[] getAesKey(ECPoint s) {
         return Arrays.copyOf(
                 sha256.digest(
-                ("aes_key:" + group.printableString(s)).getBytes(Charset.forName("UTF-8"))),
-                this.k);
+                        Arrays.concatenate(
+                                "aes_key:".getBytes(Charset.forName("UTF-8")),
+                                group.printable(s)
+                        )
+                ), this.k);
     }
 
     public byte[] deriveKey(byte[] key, byte[] flavor) throws CryptoException {
