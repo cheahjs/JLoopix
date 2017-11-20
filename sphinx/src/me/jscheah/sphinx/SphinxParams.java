@@ -15,7 +15,7 @@ public class SphinxParams {
 
     public GroupECC group;
     public int maxLength;
-    private int m;
+    public int m;
     public int k;
     private Cipher aes;
     private MessageDigest sha256;
