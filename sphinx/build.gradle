@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+
+dependencies {
+    // Library dependencies
+    compile("org.bouncycastle:bcprov-jdk15on:1.58")
+    compile("org.msgpack:msgpack-core:0.8.13")
+
+    // JUnit Jupiter API and TestEngine implementation
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.2")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.2")
+    // To avoid compiler warnings about @API annotations in JUnit code
+    testCompileOnly('org.apiguardian:apiguardian-api:1.0.0')
+}
