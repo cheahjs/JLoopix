@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/sphinx.iml" filepath="$PROJECT_DIR$/sphinx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sphinx_main.iml" filepath="$PROJECT_DIR$/.idea/modules/sphinx_main.iml" group="sphinx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sphinx_test.iml" filepath="$PROJECT_DIR$/.idea/modules/sphinx_test.iml" group="sphinx" />
     </modules>
   </component>
 </project>
