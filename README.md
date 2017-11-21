@@ -1,4 +1,6 @@
 # JLoopix
+[![Build Status](https://travis-ci.org/cheahjs/JLoopix.svg?branch=master)](https://travis-ci.org/cheahjs/JLoopix)
+
 A Java library that implements the [Loopix anonymous communication system](https://arxiv.org/abs/1703.00536).
 
 Based off the original [Python implementation](https://github.com/UCL-InfoSec/loopix).
