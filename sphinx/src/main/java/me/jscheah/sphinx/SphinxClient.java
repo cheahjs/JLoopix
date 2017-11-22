@@ -13,9 +13,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SphinxClient {
-    private static final byte RELAY_FLAG = (byte) 0xF0;
-    private static final byte DEST_FLAG = (byte) 0xF1;
-    private static final byte SURB_FLAG = (byte) 0xF2;
+    public static final byte RELAY_FLAG = (byte) 0xF0;
+    public static final byte DEST_FLAG = (byte) 0xF1;
+    public static final byte SURB_FLAG = (byte) 0xF2;
 
     public static byte[] padBody(int msgtotalsize, byte[] body)
             throws SphinxException {
@@ -56,7 +56,7 @@ public class SphinxClient {
 //
 //    }
 
-    public int[] randomSubset(int[] list, int number) {
+    public static int[] randomSubset(int[] list, int number) {
         assert list.length >= number;
         SecureRandom random = new SecureRandom();
         // Randomly sort list using TreeMap
@@ -336,25 +336,39 @@ public class SphinxClient {
         return msg;
     }
 
-    public static byte[] packMessage(SphinxParams params, byte[] m) throws IOException {
+    public static byte[] packMessage(SphinxParams params, SphinxHeader h, byte[] m) throws IOException {
         Packer packer = Packer.getPacker();
-        packer.packArrayHeader(1)
+        packer.packArrayHeader(2)
                 .packArrayHeader(2)
                 .packInt(params.maxLength)
                 .packInt(params.m)
+                .packArrayHeader(2)
+                .packArrayHeader(3);
+        packer.packEcPoint(h.alpha)
+                .packBinaryHeader(h.beta.length)
+                .addPayload(h.beta)
+                .packBinaryHeader(h.gamma.length)
+                .addPayload(h.gamma)
                 .packBinaryHeader(m.length)
                 .addPayload(m);
         return packer.toByteArray();
     }
 
-    public static Pair<SphinxParams, byte[]> unpackMessage(List<SphinxParams> params, byte[] m) throws IOException {
+    public static Pair<SphinxParams, Pair<SphinxHeader, byte[]>> unpackMessage(List<SphinxParams> params, byte[] m) throws IOException {
         Unpacker unpacker = Unpacker.getUnpacker(m);
         unpacker.unpackArrayHeader();
         unpacker.unpackArrayHeader();
         int paramsMaxLength = unpacker.unpackInt();
         int paramsM = unpacker.unpackInt();
-        int byteLength = unpacker.unpackBinaryHeader();
-        byte[] message = unpacker.readPayload(byteLength);
+        unpacker.unpackArrayHeader();
+        unpacker.unpackArrayHeader();
+        ECPoint alpha = unpacker.unpackEcPoint();
+        byte[] beta = unpacker.readPayload(unpacker.unpackBinaryHeader());
+        byte[] gamma = unpacker.readPayload(unpacker.unpackBinaryHeader());
+
+        SphinxHeader header = new SphinxHeader(alpha, beta, gamma);
+
+        byte[] message = unpacker.readPayload(unpacker.unpackBinaryHeader());
 
         SphinxParams msgParams = null;
         for (SphinxParams param : params) {
@@ -367,6 +381,6 @@ public class SphinxClient {
         if (msgParams == null) {
             throw new RuntimeException("No parameter settings.");
         }
-        return new Pair<>(msgParams, message);
+        return new Pair<>(msgParams, new Pair<>(header, message));
     }
 }
