@@ -1,0 +1,3 @@
+include 'sphinx'
+
+project(':sphinx').projectDir = new File('../sphinx')
