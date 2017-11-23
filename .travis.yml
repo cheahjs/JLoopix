@@ -5,6 +5,7 @@ jdk: oraclejdk8
 
 env:
   - PROJECT=sphinx
+  - PROJECT=jloopix
 
 install:
   - cd $PROJECT
