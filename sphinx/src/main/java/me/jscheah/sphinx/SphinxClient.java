@@ -183,11 +183,8 @@ public class SphinxClient {
     public static Pair<SphinxHeader, byte[]> createForwardMessage(SphinxParams params,
                                                                   List<byte[]> nodeList,
                                                                   List<ECPoint> keys,
-                                                                  byte[] destination,
+                                                                  Value destination,
                                                                   byte[] message) throws CryptoException, IOException, SphinxException {
-        assert destination.length < 128 && destination.length > 0;
-        assert params.k + 1 + destination.length + message.length < params.m;
-
         Packer packer = Packer.getPacker();
         packer.packArrayHeader(1)
                 .packBinaryHeader(1)
@@ -200,14 +197,15 @@ public class SphinxClient {
 
         packer = Packer.getPacker();
         packer.packArrayHeader(2)
-                .packBinaryHeader(destination.length)
-                .addPayload(destination)
+                .packValue(destination)
                 .packBinaryHeader(message.length)
                 .addPayload(message);
+        byte[] packedBytes = packer.toByteArray();
+        assert params.k + 1 + packedBytes.length < params.m;
         byte[] body = padBody(params.m,
                 Arrays.concatenate(
                         new byte[params.k],
-                        packer.toByteArray()
+                        packedBytes
                 ));
         byte[] delta = params.pi(
                 params.hpi(headerSecrets.getValue().get(nodeList.size() - 1)),
@@ -250,7 +248,7 @@ public class SphinxClient {
     public static SphinxSingleUseReplyBlockReturn createSURB(SphinxParams params,
                                   List<byte[]> nodeList,
                                   List<ECPoint> keys,
-                                  byte[] destination) throws IOException, CryptoException {
+                                  Value destination) throws IOException, CryptoException {
         SecureRandom random = new SecureRandom();
         byte[] xid = new byte[params.k];
         random.nextBytes(xid);
@@ -258,8 +256,7 @@ public class SphinxClient {
         packer.packArrayHeader(3)
                 .packBinaryHeader(1)
                 .addPayload(new byte[]{SURB_FLAG})
-                .packBinaryHeader(destination.length)
-                .addPayload(destination)
+                .packValue(destination)
                 .packBinaryHeader(xid.length)
                 .addPayload(xid);
 

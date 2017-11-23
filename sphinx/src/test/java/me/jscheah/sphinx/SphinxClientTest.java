@@ -6,6 +6,7 @@ import org.bouncycastle.math.ec.ECPoint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.msgpack.value.ImmutableArrayValue;
+import org.msgpack.value.impl.ImmutableBinaryValueImpl;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -48,7 +49,7 @@ class SphinxClientTest {
         List<ECPoint> nodeKeys = Arrays.stream(path).mapToObj(a -> pkiPub.get(((byte)(int)a)).y).collect(Collectors.toList());
         byte[] dest = "bob".getBytes(Charset.forName("UTF-8"));
         byte[] message = "this is a test".getBytes(Charset.forName("UTF-8"));
-        Pair<SphinxHeader, byte[]> forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, dest, message);
+        Pair<SphinxHeader, byte[]> forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, new ImmutableBinaryValueImpl(dest), message);
 
         byte[] binaryMessage = SphinxClient.packMessage(params, forward.getKey(), forward.getValue());
         List<SphinxParams> paramList = new LinkedList<>();
@@ -89,7 +90,7 @@ class SphinxClientTest {
             }
         }
 
-        SphinxClient.SphinxSingleUseReplyBlockReturn surb = SphinxClient.createSURB(params, routing, nodeKeys, "myself".getBytes(Charset.forName("UTF-8")));
+        SphinxClient.SphinxSingleUseReplyBlockReturn surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(Charset.forName("UTF-8"))));
         message = "This is a reply".getBytes(Charset.forName("UTF-8"));
         Pair<SphinxHeader, byte[]> surbPackage = SphinxClient.packageSurb(params, surb.nymTuple, message);
 
