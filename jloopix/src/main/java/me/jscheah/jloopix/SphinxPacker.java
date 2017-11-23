@@ -2,16 +2,23 @@ package me.jscheah.jloopix;
 
 import me.jscheah.sphinx.SphinxParams;
 
+import java.security.SecureRandom;
+
 public class SphinxPacker {
     private SphinxParams params;
-    private float expDelay;
+    private double expLambda;
+    private SecureRandom random;
 
-    public SphinxPacker(SphinxParams params, float expDelay) {
+    public SphinxPacker(SphinxParams params, double expLambda) {
         this.params = params;
-        this.expDelay = expDelay;
+        this.expLambda = expLambda;
+        random = new SecureRandom();
     }
 
-    public float generateRandomDelay() {
-        
+    public double generateRandomDelay() {
+        if (expLambda == 0) {
+            return 0;
+        }
+        return Math.log(1 - random.nextDouble())/(-expLambda);
     }
 }
