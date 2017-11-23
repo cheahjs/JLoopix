@@ -5,6 +5,8 @@ import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.msgpack.Unpacker;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.Arrays;
+import org.msgpack.value.Value;
+import org.msgpack.value.impl.ImmutableLongValueImpl;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -44,17 +46,18 @@ public class SphinxClient {
     }
 
     public static byte[] Nenc(int idnum) throws IOException {
+        return Nenc(new ImmutableLongValueImpl(idnum));
+    }
+
+    public static byte[] Nenc(Value value) throws IOException {
         Packer packer = Packer.getPacker();
         packer.packArrayHeader(2)
                 .packBinaryHeader(1)
                 .addPayload(new byte[]{RELAY_FLAG})
-                .packInt(idnum);
+                .packValue(value);
+
         return packer.toByteArray();
     }
-
-//    public static void PFDecode(byte[] packed) {
-//
-//    }
 
     public static int[] randomSubset(int[] list, int number) {
         assert list.length >= number;
