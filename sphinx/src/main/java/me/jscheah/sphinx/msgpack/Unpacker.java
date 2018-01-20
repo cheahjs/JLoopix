@@ -78,6 +78,6 @@ public class Unpacker extends MessageUnpacker {
     }
 
     public static Unpacker getUnpacker(byte[] data) {
-        return new Unpacker((MessageBufferInput)(new ArrayBufferInput(data)), MessagePack.DEFAULT_UNPACKER_CONFIG);
+        return new Unpacker(new ArrayBufferInput(data), MessagePack.DEFAULT_UNPACKER_CONFIG);
     }
 }
