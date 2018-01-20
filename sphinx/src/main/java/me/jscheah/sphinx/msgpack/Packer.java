@@ -6,6 +6,11 @@ import org.msgpack.core.MessageBufferPacker;
 import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessagePacker;
 import org.msgpack.core.buffer.ArrayBufferOutput;
+import org.msgpack.value.ArrayValue;
+import org.msgpack.value.Value;
+import org.msgpack.value.impl.ImmutableArrayValueImpl;
+import org.msgpack.value.impl.ImmutableBinaryValueImpl;
+import org.msgpack.value.impl.ImmutableLongValueImpl;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -52,16 +57,21 @@ public class Packer extends MessageBufferPacker {
      * EcGroup id fixed at 713
      */
     public MessagePacker packEcPoint(ECPoint point) throws IOException {
-        MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
-        packer.packInt(713);
-        byte[] pointData = point.getEncoded(false);
-        packer.packBinaryHeader(pointData.length);
-        packer.addPayload(pointData);
-
-        byte[] data = packer.toByteArray();
+        byte[] data = ecPointToByteArray(point);
         this.packExtensionTypeHeader((byte) 2, data.length);
         this.addPayload(data);
         return this;
+    }
+
+    public static byte[] ecPointToByteArray(ECPoint point) throws IOException {
+        MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
+        byte[] pointData = point.getEncoded(false);
+        ArrayValue values = new ImmutableArrayValueImpl(new Value[]{
+                new ImmutableLongValueImpl(713),
+                new ImmutableBinaryValueImpl(pointData)
+        });
+        packer.packValue(values);
+        return packer.toByteArray();
     }
 
     public static Packer getPacker() {

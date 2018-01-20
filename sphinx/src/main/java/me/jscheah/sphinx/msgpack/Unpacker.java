@@ -7,6 +7,7 @@ import org.msgpack.core.MessagePack;
 import org.msgpack.core.MessageUnpacker;
 import org.msgpack.core.buffer.ArrayBufferInput;
 import org.msgpack.core.buffer.MessageBufferInput;
+import org.msgpack.value.ArrayValue;
 import org.msgpack.value.ExtensionValue;
 import org.msgpack.value.ImmutableValue;
 
@@ -47,7 +48,9 @@ public class Unpacker extends MessageUnpacker {
 
         byte[] data = extValue.getData();
 
-        int id = MessagePack.DEFAULT_UNPACKER_CONFIG.newUnpacker(data).unpackInt();
+        int id = MessagePack.DEFAULT_UNPACKER_CONFIG.newUnpacker(data)
+                .unpackValue()
+                .asIntegerValue().asInt();
         // We only support secp224r1 at the moment.
         assert id == 713;
         return id;
@@ -65,10 +68,11 @@ public class Unpacker extends MessageUnpacker {
         byte[] data = extValue.getData();
 
         MessageUnpacker unpacker = MessagePack.DEFAULT_UNPACKER_CONFIG.newUnpacker(data);
-        int id = unpacker.unpackInt();
+        ArrayValue array = unpacker.unpackValue().asArrayValue();
+        int id = array.get(0).asIntegerValue().asInt();
         // We only support secp224r1 at the moment.
         assert id == 713;
-        byte[] ecData = unpacker.unpackValue().asBinaryValue().asByteArray();
+        byte[] ecData = array.get(1).asStringValue().asByteArray();
         ECPoint point = new GroupECC().EcSpec.getCurve().decodePoint(ecData);
         return point;
     }
