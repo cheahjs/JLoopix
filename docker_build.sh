@@ -25,8 +25,14 @@ fi
 #     -f docker/loopix_mixnode/Dockerfile \
 #     .
 
-# Build single image
+# Build single Loopix image
 $DOCKER_PATH build \
     -t deathmax/loopix \
     -f docker/Dockerfile \
+    .
+
+# Build JLoopix image
+cd jloopix
+$DOCKER_PATH build \
+    -t deathmax/jloopix \
     .

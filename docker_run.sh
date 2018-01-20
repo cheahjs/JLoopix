@@ -45,7 +45,20 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     twistd --nodaemon --python=run_mixnode.py
 done
 
-for ((i=1;i<=CLIENT_COUNT;i++)); do
+echo "Starting Java client 1"
+$DOCKER_PATH rm -f "client_1" > /dev/null 2>&1
+$DOCKER_PATH run \
+--net=host \
+-v "$DIR/build/example.db:/example.db" \
+-v "$DIR/build/loopix_keys/client_1/publicClient.bin:/publicClient.bin" \
+-v "$DIR/build/loopix_keys/client_1/secretClient.prv:/secretClient.prv" \
+-w "/" \
+-dit \
+--name="client_1" \
+deathmax/jloopix \
+config.json publicClient.bin secretClient.prv
+
+for ((i=2;i<=CLIENT_COUNT;i++)); do
     echo "Starting client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
     $DOCKER_PATH run \
