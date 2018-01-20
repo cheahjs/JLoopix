@@ -1,6 +1,6 @@
 package me.jscheah.sphinx;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.sphinx.msgpack.Unpacker;
 import org.bouncycastle.math.ec.ECPoint;
 import org.junit.jupiter.api.Assertions;

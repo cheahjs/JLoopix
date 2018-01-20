@@ -1,8 +1,9 @@
 package me.jscheah.sphinx;
 
-import javafx.util.Pair;
 import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.msgpack.Unpacker;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.Arrays;
 import org.msgpack.value.Value;
@@ -11,7 +12,10 @@ import org.msgpack.value.impl.ImmutableLongValueImpl;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class SphinxClient {
@@ -174,7 +178,7 @@ public class SphinxClient {
             gamma = params.mu(params.hmu(asbTuples.get(i).aes), beta);
         }
 
-        return new Pair<>(
+        return new MutablePair<>(
                 new SphinxHeader(asbTuples.get(0).alpha, beta, gamma),
                 asbTuples.stream().map(x -> x.aes).collect(Collectors.toCollection(LinkedList::new))
         );
@@ -218,7 +222,7 @@ public class SphinxClient {
             );
         }
 
-        return new Pair<>(headerSecrets.getKey(), delta);
+        return new MutablePair<>(headerSecrets.getKey(), delta);
     }
 
     static class SphinxSingleUseReplyBlockReturn {
@@ -301,7 +305,7 @@ public class SphinxClient {
                         )
                 )
         );
-        return new Pair<>(nymTuple.header, body);
+        return new MutablePair<>(nymTuple.header, body);
     }
 
     public static Unpacker receiveForward(SphinxParams params, byte[] delta) {
@@ -381,6 +385,6 @@ public class SphinxClient {
         if (msgParams == null) {
             throw new RuntimeException("No parameter settings.");
         }
-        return new Pair<>(msgParams, new Pair<>(header, message));
+        return new MutablePair<>(msgParams, new MutablePair<>(header, message));
     }
 }

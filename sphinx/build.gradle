@@ -20,6 +20,7 @@ dependencies {
     // Library dependencies
     compile("org.bouncycastle:bcprov-jdk15on:1.58")
     compile("org.msgpack:msgpack-core:0.8.13")
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
     // JUnit Jupiter API and TestEngine implementation
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.2")
