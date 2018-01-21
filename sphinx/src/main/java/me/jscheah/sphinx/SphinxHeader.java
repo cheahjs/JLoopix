@@ -1,7 +1,9 @@
 package me.jscheah.sphinx;
 
 import me.jscheah.sphinx.msgpack.Packer;
+import me.jscheah.sphinx.msgpack.Unpacker;
 import org.bouncycastle.math.ec.ECPoint;
+import org.msgpack.value.ArrayValue;
 import org.msgpack.value.Value;
 import org.msgpack.value.impl.ImmutableArrayValueImpl;
 import org.msgpack.value.impl.ImmutableBinaryValueImpl;
@@ -27,6 +29,17 @@ public class SphinxHeader {
                     new ImmutableBinaryValueImpl(beta),
                     new ImmutableBinaryValueImpl(gamma)
             });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static SphinxHeader fromValue(ArrayValue values) {
+        try {
+            ECPoint alpha = Unpacker.unpackEcPoint(values.get(0));
+            byte[] beta = values.get(1).asBinaryValue().asByteArray();
+            byte[] gamma = values.get(2).asBinaryValue().asByteArray();
+            return new SphinxHeader(alpha, beta, gamma);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
