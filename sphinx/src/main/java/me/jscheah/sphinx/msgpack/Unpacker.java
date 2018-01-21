@@ -10,6 +10,7 @@ import org.msgpack.core.buffer.MessageBufferInput;
 import org.msgpack.value.ArrayValue;
 import org.msgpack.value.ExtensionValue;
 import org.msgpack.value.ImmutableValue;
+import org.msgpack.value.Value;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -57,7 +58,10 @@ public class Unpacker extends MessageUnpacker {
     }
 
     public ECPoint unpackEcPoint() throws IOException {
-        ImmutableValue value = this.unpackValue();
+        return unpackEcPoint(this.unpackValue());
+    }
+
+    public static ECPoint unpackEcPoint(Value value) throws IOException {
         if (!value.isExtensionValue())
             throw new RuntimeException("Expected extension value");
 
