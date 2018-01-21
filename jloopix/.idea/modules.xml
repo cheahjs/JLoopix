@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jloopix.iml" filepath="$PROJECT_DIR$/jloopix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jloopix_main.iml" filepath="$PROJECT_DIR$/.idea/modules/jloopix_main.iml" group="jloopix" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/jloopix_test.iml" filepath="$PROJECT_DIR$/.idea/modules/jloopix_test.iml" group="jloopix" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/791839382/sphinx.iml" filepath="$PROJECT_DIR$/.idea/modules/791839382/sphinx.iml" group="sphinx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/791839382/sphinx_main.iml" filepath="$PROJECT_DIR$/.idea/modules/791839382/sphinx_main.iml" group="sphinx" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/791839382/sphinx_test.iml" filepath="$PROJECT_DIR$/.idea/modules/791839382/sphinx_test.iml" group="sphinx" />
+    </modules>
+  </component>
+</project>

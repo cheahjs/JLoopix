@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="jloopix_main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/</output-path>
+    <root id="root">
+      <element id="archive" name="jloopix.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="jloopix_main" />
+        <element id="module-output" name="sphinx_main" />
+      </element>
+      <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.2" />
+      <element id="library" level="project" name="Gradle: org.msgpack:msgpack-core:0.8.13" />
+      <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
+      <element id="library" level="project" name="Gradle: org.xerial:sqlite-jdbc:3.21.0" />
+      <element id="library" level="project" name="Gradle: org.slf4j:slf4j-simple:1.7.25" />
+      <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
+      <element id="library" level="project" name="Gradle: org.apache.mina:mina-core:2.0.16" />
+      <element id="library" level="project" name="Gradle: org.bouncycastle:bcprov-jdk15on:1.58" />
+      <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.20" />
+      <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.7" />
+      <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.20" />
+      <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.20" />
+    </root>
+  </artifact>
+</component>
