@@ -318,6 +318,7 @@ public class LoopixClient extends IoHandlerAdapter {
         IoBuffer buffer = (IoBuffer) message;
         Unpacker unpacker = Unpacker.getUnpacker(buffer.array());
         ArrayValue values = unpacker.unpackValue().asArrayValue();
+        // TODO: This might have to change to handle tagging of messages
         if (values.get(0).isBinaryValue()) {
             String type = values.get(0).asBinaryValue().asString();
             logger.info("Received {}", type);
