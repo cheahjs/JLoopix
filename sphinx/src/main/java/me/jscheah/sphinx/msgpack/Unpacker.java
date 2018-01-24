@@ -76,7 +76,7 @@ public class Unpacker extends MessageUnpacker {
         int id = array.get(0).asIntegerValue().asInt();
         // We only support secp224r1 at the moment.
         assert id == 713;
-        byte[] ecData = array.get(1).asBinaryValue().asByteArray();
+        byte[] ecData = array.get(1).asRawValue().asByteArray();
         ECPoint point = new GroupECC().EcSpec.getCurve().decodePoint(ecData);
         return point;
     }

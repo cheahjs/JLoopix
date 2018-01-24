@@ -70,7 +70,7 @@ class SphinxClientTest {
             delta = ret.delta;
             Unpacker unpacker = Unpacker.getUnpacker(ret.routing);
             ImmutableArrayValue root = unpacker.unpackValue().asArrayValue();
-            byte flag = root.get(0).asBinaryValue().asByteArray()[0];
+            byte flag = root.get(0).asRawValue().asByteArray()[0];
 
             if (flag == SphinxClient.RELAY_FLAG) {
                 byte addr = root.get(1).asIntegerValue().asByte();
@@ -80,8 +80,8 @@ class SphinxClientTest {
                 Assertions.assertArrayEquals(Arrays.copyOf(ret.delta, 16), new byte[params.k]);
                 Unpacker forwardUnpacker = SphinxClient.receiveForward(params, ret.delta);
                 ImmutableArrayValue forwardRoot = forwardUnpacker.unpackValue().asArrayValue();
-                byte[] decDest = forwardRoot.get(0).asBinaryValue().asByteArray();
-                byte[] decMsg = forwardRoot.get(1).asBinaryValue().asByteArray();
+                byte[] decDest = forwardRoot.get(0).asRawValue().asByteArray();
+                byte[] decMsg = forwardRoot.get(1).asRawValue().asByteArray();
                 Assertions.assertArrayEquals(decDest, dest);
                 Assertions.assertArrayEquals(decMsg, message);
                 break;
@@ -104,7 +104,7 @@ class SphinxClientTest {
             delta = ret.delta;
             Unpacker unpacker = Unpacker.getUnpacker(ret.routing);
             ImmutableArrayValue root = unpacker.unpackValue().asArrayValue();
-            byte flag = root.get(0).asBinaryValue().asByteArray()[0];
+            byte flag = root.get(0).asRawValue().asByteArray()[0];
 
             if (flag == SphinxClient.RELAY_FLAG) {
                 byte addr = root.get(1).asIntegerValue().asByte();

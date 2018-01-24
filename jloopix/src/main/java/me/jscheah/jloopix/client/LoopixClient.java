@@ -110,10 +110,10 @@ public class LoopixClient extends IoHandlerAdapter {
         Unpacker unpacker = Unpacker.getUnpacker(Files.readAllBytes(Paths.get(publicPath)));
         ImmutableArrayValue values = unpacker.unpackValue().asArrayValue();
         return new LoopixClient(
-                values.get(1).asBinaryValue().asString(),
-                values.get(3).asBinaryValue().asString(),
+                values.get(1).asRawValue().asString(),
+                values.get(3).asRawValue().asString(),
                 values.get(2).asIntegerValue().asShort(),
-                values.get(5).asBinaryValue().asString(),
+                values.get(5).asRawValue().asString(),
                 secret,
                 config
         );
@@ -364,7 +364,7 @@ public class LoopixClient extends IoHandlerAdapter {
         ArrayValue values = unpacker.unpackValue().asArrayValue();
         // TODO: This might have to change to handle tagging of messages
         if (values.get(0).isBinaryValue()) {
-            String type = values.get(0).asBinaryValue().asString();
+            String type = values.get(0).asRawValue().asString();
             logger.info("Received {}", type);
             // Ignore dummy values
             // TODO: Wait what, Loopix sends DUMMY messages in plaintext?
@@ -375,7 +375,7 @@ public class LoopixClient extends IoHandlerAdapter {
             }
         } else if (values.get(0).isArrayValue()) {
             SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
-            byte[] body = values.get(1).asBinaryValue().asByteArray();
+            byte[] body = values.get(1).asRawValue().asByteArray();
             byte[] decryptedBody = cryptoClient.processPacket(new ImmutablePair<>(header, body), secret);
             // Assume we are sending/receiving text messages for now
             logger.info("Received: {}", new String(decryptedBody, Charset.forName("UTF-8")));

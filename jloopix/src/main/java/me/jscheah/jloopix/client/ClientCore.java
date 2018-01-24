@@ -55,7 +55,7 @@ public class ClientCore extends LoopixNode {
             Value value = packer.handleReceivedForward(sphinxProcessData.delta);
             ArrayValue outerTuple = value.asArrayValue();
             ArrayValue destination = outerTuple.get(0).asArrayValue();
-            byte[] message = outerTuple.get(1).asBinaryValue().asByteArray();
+            byte[] message = outerTuple.get(1).asRawValue().asByteArray();
             if (isDestinationSelf(destination)) {
                 return message;
             } else {
@@ -66,8 +66,8 @@ public class ClientCore extends LoopixNode {
     }
 
     private boolean isDestinationSelf(ArrayValue dest) {
-        return host.equals(dest.get(0).asStringValue().asString())
+        return host.equals(dest.get(0).asRawValue().asString())
                 && port == dest.get(1).asIntegerValue().asShort()
-                && name.equals(dest.get(2).asStringValue().asString());
+                && name.equals(dest.get(2).asRawValue().asString());
     }
 }

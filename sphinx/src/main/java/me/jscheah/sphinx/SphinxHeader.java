@@ -37,8 +37,8 @@ public class SphinxHeader {
     public static SphinxHeader fromValue(ArrayValue values) {
         try {
             ECPoint alpha = Unpacker.unpackEcPoint(values.get(0));
-            byte[] beta = values.get(1).asBinaryValue().asByteArray();
-            byte[] gamma = values.get(2).asBinaryValue().asByteArray();
+            byte[] beta = values.get(1).asRawValue().asByteArray();
+            byte[] gamma = values.get(2).asRawValue().asByteArray();
             return new SphinxHeader(alpha, beta, gamma);
         } catch (IOException e) {
             throw new RuntimeException(e);
