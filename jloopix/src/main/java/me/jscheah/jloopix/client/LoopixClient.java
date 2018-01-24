@@ -37,8 +37,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -65,6 +67,8 @@ public class LoopixClient extends IoHandlerAdapter {
     private IoConnector connector;
     private IoSession session;
 
+    private Queue<byte[]> messageQueue;
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private final SecureRandom random = new SecureRandom();
@@ -89,6 +93,8 @@ public class LoopixClient extends IoHandlerAdapter {
         cryptoClient = new ClientCore(params, config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, secret, null);
 
         database = new DBManager(config.getDATABASE_NAME());
+
+        messageQueue = new LinkedList<>();
     }
 
     /***
@@ -121,6 +127,7 @@ public class LoopixClient extends IoHandlerAdapter {
         turnOnPacketProcessing();
         makeLoopStream();
         makeDropStream();
+        makeRealStream();
     }
 
     /***
@@ -254,6 +261,39 @@ public class LoopixClient extends IoHandlerAdapter {
     }
 
     /***
+     * Creates a stream of real packets if there are messages to send, or sends drop packets instead, back to ourselves
+     */
+    private void makeRealStream() {
+        try {
+            if (!messageQueue.isEmpty()) {
+                logger.debug("Sending real packet.");
+                sendRealMessage(messageQueue.remove());
+            } else {
+                logger.debug("Sending substituting drop packet.");
+                sendDropMessage();
+            }
+        } catch (CryptoException | IOException | SphinxException e) {
+            e.printStackTrace();
+        }
+        scheduler.schedule(this::makeRealStream, sampleTimeFromExponential(config.getEXP_PARAMS_PAYLOAD()), TimeUnit.MILLISECONDS);
+    }
+
+    /***
+     * Sends a real message back to ourselves.
+     * @throws CryptoException
+     * @throws IOException
+     * @throws SphinxException
+     */
+    private void sendRealMessage(byte[] data) throws CryptoException, IOException, SphinxException {
+        List<LoopixNode> path = constructFullPath(this);
+        Pair<SphinxHeader, byte[]> realMessage = cryptoClient.packRealMessage(this.selfNode, path, data);
+        send(new ImmutableArrayValueImpl(new Value[] {
+                realMessage.getKey().toValue(),
+                new ImmutableBinaryValueImpl(realMessage.getValue())
+        }));
+    }
+
+    /***
      * Sends a msgpack message to the provider.
      * @param val msgpack encoded message
      */
@@ -290,6 +330,10 @@ public class LoopixClient extends IoHandlerAdapter {
         return mixChain;
     }
 
+    /***
+     * Generates a random chain of mix nodes
+     * @return List of mix nodes
+     */
     private List<LoopixNode> takeRandomMixChain() {
         List<LoopixNode> mixChain = new LinkedList<>();
         for (List<MixNode> layer : pubMixes) {
@@ -340,6 +384,22 @@ public class LoopixClient extends IoHandlerAdapter {
         }
     }
 
+    /***
+     * Adds a message to be sent back to ourselves.
+     * @param data Data to send
+     */
+    public void addMessage(byte[] data) {
+        messageQueue.add(data);
+    }
+
+    /***
+     * Sends test real messages every second
+     */
+    public void testRealMessage() {
+        addMessage(String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
+        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 1, TimeUnit.SECONDS);
+    }
+
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
             System.out.println("Usage: jloopix <config.json> <public.bin> <private.bin>");
@@ -347,5 +407,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }
         LoopixClient client = LoopixClient.fromFile(args[0], args[1], args[2]);
         client.run();
+        client.testRealMessage();
     }
 }
