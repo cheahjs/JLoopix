@@ -28,7 +28,8 @@ public class SphinxPacker {
         if (expLambda == 0) {
             return 0;
         }
-        return Math.log(1 - random.nextDouble())/(-expLambda);
+        // sample = -ln(1-u)*lambda
+        return Math.log(1 - random.nextDouble())*(-expLambda);
     }
 
     public Pair<SphinxHeader, byte[]> makePacket(LoopixNode receiver,

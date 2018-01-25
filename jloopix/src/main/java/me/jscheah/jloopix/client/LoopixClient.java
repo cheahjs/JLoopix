@@ -181,6 +181,7 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private void subscribeToProvider() {
         scheduler.scheduleAtFixedRate(() -> {
+            logger.debug("Sending SUBSCRIBE to provider");
             send(new ImmutableArrayValueImpl(new Value[]{
                     new ImmutableStringValueImpl("SUBSCRIBE"),
                     new ImmutableStringValueImpl(this.name),
@@ -219,7 +220,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeDropStream, sampleTimeFromExponential(config.getEXP_PARAMS_DROP()), TimeUnit.MILLISECONDS);
+        scheduler.schedule(this::makeDropStream, sampleTimeFromExponential(config.getEXP_PARAMS_DROP()), TimeUnit.MICROSECONDS);
     }
 
     /***
@@ -231,6 +232,7 @@ public class LoopixClient extends IoHandlerAdapter {
     private void sendDropMessage() throws CryptoException, IOException, SphinxException {
         User randomReceiver = this.befriendedClients.get(random.nextInt(this.befriendedClients.size()));
         List<LoopixNode> path = constructFullPath(randomReceiver);
+        logger.debug("Chain selected: {}", path);
         Pair<SphinxHeader, byte[]> loopMessage = cryptoClient.createDropMessage(randomReceiver, path);
         send(new ImmutableArrayValueImpl(new Value[] {
                 loopMessage.getKey().toValue(),
@@ -248,7 +250,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeLoopStream, sampleTimeFromExponential(config.getEXP_PARAMS_LOOPS()), TimeUnit.MILLISECONDS);
+        scheduler.schedule(this::makeLoopStream, sampleTimeFromExponential(config.getEXP_PARAMS_LOOPS()), TimeUnit.MICROSECONDS);
     }
 
     /***
@@ -259,6 +261,7 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private void sendLoopMessage() throws CryptoException, IOException, SphinxException {
         List<LoopixNode> path = constructFullPath(this);
+        logger.debug("Chain selected: {}", path);
         Pair<SphinxHeader, byte[]> loopMessage = cryptoClient.createLoopMessage(path);
         send(new ImmutableArrayValueImpl(new Value[] {
             loopMessage.getKey().toValue(),
@@ -270,6 +273,9 @@ public class LoopixClient extends IoHandlerAdapter {
      * Creates a stream of real packets if there are messages to send, or sends drop packets instead, back to ourselves
      */
     private void makeRealStream() {
+        if (random.nextBoolean()) {
+            messageQueue.add(String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
+        }
         try {
             if (!messageQueue.isEmpty()) {
                 logger.debug("Sending real packet.");
@@ -281,7 +287,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeRealStream, sampleTimeFromExponential(config.getEXP_PARAMS_PAYLOAD()), TimeUnit.MILLISECONDS);
+        scheduler.schedule(this::makeRealStream, sampleTimeFromExponential(config.getEXP_PARAMS_PAYLOAD()), TimeUnit.MICROSECONDS);
     }
 
     /***
@@ -292,6 +298,7 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private void sendRealMessage(byte[] data) throws CryptoException, IOException, SphinxException {
         List<LoopixNode> path = constructFullPath(this);
+        logger.debug("Chain selected: {}", path);
         Pair<SphinxHeader, byte[]> realMessage = cryptoClient.packRealMessage(this.selfNode, path, data);
         send(new ImmutableArrayValueImpl(new Value[] {
                 realMessage.getKey().toValue(),
@@ -317,7 +324,9 @@ public class LoopixClient extends IoHandlerAdapter {
         IoBuffer buffer = IoBuffer.allocate(encodedPacket.length);
         buffer.put(encodedPacket);
         buffer.flip();
+        logger.debug("Writing {} bytes to socket", encodedPacket.length);
         session.write(buffer);
+        logger.debug("Written to socket.");
     }
 
     private List<LoopixNode> constructFullPath(LoopixClient receiver) {
@@ -353,7 +362,8 @@ public class LoopixClient extends IoHandlerAdapter {
         if (lambda == 0) {
             return 0;
         }
-        return (long) ((Math.log(1 - random.nextDouble())/(-lambda)) * 1000);
+        // sample (in microseconds) = -ln(1-u)*lambda * 1000
+        return (long) ((Math.log(1 - random.nextDouble())*(-lambda)) * 1000000);
     }
 
     @Override
@@ -400,11 +410,11 @@ public class LoopixClient extends IoHandlerAdapter {
     }
 
     /***
-     * Sends test real messages every second
+     * Sends test real messages every 10 seconds
      */
     public void testRealMessage() {
         addMessage(String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
-        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 1, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 10, TimeUnit.SECONDS);
     }
 
     public static void main(String[] args) throws IOException {
@@ -414,6 +424,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }
         LoopixClient client = LoopixClient.fromFile(args[0], args[1], args[2]);
         client.run();
-        client.testRealMessage();
+//        client.testRealMessage();
     }
 }
