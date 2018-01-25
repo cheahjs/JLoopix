@@ -50,7 +50,7 @@ public class ClientCore extends LoopixNode {
     public byte[] processPacket(Pair<SphinxHeader, byte[]> packet, BigInteger privk)
             throws SphinxException, IOException, CryptoException {
         SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privk);
-        byte routingFlag = sphinxProcessData.routing[0];
+        byte routingFlag = sphinxProcessData.routing[sphinxProcessData.routing.length-1];
         if (routingFlag == SphinxClient.DEST_FLAG) {
             Value value = packer.handleReceivedForward(sphinxProcessData.delta);
             ArrayValue outerTuple = value.asArrayValue();
