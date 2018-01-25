@@ -139,6 +139,10 @@ public class LoopixClient extends IoHandlerAdapter {
         acceptor.setHandler(this);
         DatagramSessionConfig dcfg = (DatagramSessionConfig) acceptor.getSessionConfig();
         dcfg.setReuseAddress(true);
+        dcfg.setReceiveBufferSize(64*1024);
+        // Default buffer size is 2048, which is too small for our loop messages
+        dcfg.setReadBufferSize(10*1024);
+        logger.debug("Set receive buffer size to {}", dcfg.getReceiveBufferSize());
         try {
             logger.info("Trying to listen to {}", this.port);
             acceptor.bind(new InetSocketAddress(this.port));
@@ -357,7 +361,8 @@ public class LoopixClient extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        logger.debug("Received {}: {}", message);
+        logger.debug("Received {}", message);
+        logger.debug("Receive session: readbufsize: {}, minread: {}", session.getConfig().getReadBufferSize(), session.getConfig().getMinReadBufferSize());
         // message is a HeapBuffer
         IoBuffer buffer = (IoBuffer) message;
         Unpacker unpacker = Unpacker.getUnpacker(buffer.array());
