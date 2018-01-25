@@ -19,6 +19,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.DatagramSessionConfig;
 import org.apache.mina.transport.socket.nio.NioDatagramAcceptor;
 import org.apache.mina.transport.socket.nio.NioDatagramConnector;
+import org.bouncycastle.math.ec.ECPoint;
 import org.msgpack.value.ArrayValue;
 import org.msgpack.value.ImmutableArrayValue;
 import org.msgpack.value.Value;
@@ -73,7 +74,7 @@ public class LoopixClient extends IoHandlerAdapter {
 
     private final SecureRandom random = new SecureRandom();
 
-    public LoopixClient(String name, String host, short port, String providerName, BigInteger secret, Config config) {
+    public LoopixClient(String name, String host, short port, String providerName, ECPoint pubk, BigInteger secret, Config config) {
         this.secret = secret;
         this.name = name;
         this.host = host;
@@ -88,9 +89,9 @@ public class LoopixClient extends IoHandlerAdapter {
             throw new RuntimeException(e);
         }
 
-        this.selfNode = new LoopixNode(host, port, name, params.group.Generator.multiply(secret), secret);
+        this.selfNode = new LoopixNode(host, port, name, pubk, secret);
 
-        cryptoClient = new ClientCore(params, config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, secret, null);
+        cryptoClient = new ClientCore(params, config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, secret, pubk);
 
         database = new DBManager(config.getDATABASE_NAME());
 
@@ -114,6 +115,7 @@ public class LoopixClient extends IoHandlerAdapter {
                 values.get(3).asRawValue().asString(),
                 values.get(2).asIntegerValue().asShort(),
                 values.get(5).asRawValue().asString(),
+                Unpacker.unpackEcPoint(values.get(4)),
                 secret,
                 config
         );
