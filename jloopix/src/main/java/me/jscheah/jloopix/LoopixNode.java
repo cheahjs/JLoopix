@@ -18,4 +18,9 @@ public class LoopixNode {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s:%d)", name, host, port);
+    }
 }
