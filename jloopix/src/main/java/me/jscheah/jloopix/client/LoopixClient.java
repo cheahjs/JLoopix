@@ -68,7 +68,7 @@ public class LoopixClient extends IoHandlerAdapter {
     private IoConnector connector;
     private IoSession session;
 
-    private Queue<byte[]> messageQueue;
+    private Queue<ClientMessage> messageQueue;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -273,9 +273,6 @@ public class LoopixClient extends IoHandlerAdapter {
      * Creates a stream of real packets if there are messages to send, or sends drop packets instead, back to ourselves
      */
     private void makeRealStream() {
-        if (random.nextBoolean()) {
-            messageQueue.add(String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
-        }
         try {
             if (!messageQueue.isEmpty()) {
                 logger.debug("Sending real packet.");
@@ -296,10 +293,10 @@ public class LoopixClient extends IoHandlerAdapter {
      * @throws IOException
      * @throws SphinxException
      */
-    private void sendRealMessage(byte[] data) throws CryptoException, IOException, SphinxException {
-        List<LoopixNode> path = constructFullPath(this);
+    private void sendRealMessage(ClientMessage message) throws CryptoException, IOException, SphinxException {
+        List<LoopixNode> path = constructFullPath(message.getRecipient());
         logger.debug("Chain selected: {}", path);
-        Pair<SphinxHeader, byte[]> realMessage = cryptoClient.packRealMessage(this.selfNode, path, data);
+        Pair<SphinxHeader, byte[]> realMessage = cryptoClient.packRealMessage(message.getRecipient(), path, message.getData());
         send(new ImmutableArrayValueImpl(new Value[] {
                 realMessage.getKey().toValue(),
                 new ImmutableBinaryValueImpl(realMessage.getValue())
@@ -394,6 +391,10 @@ public class LoopixClient extends IoHandlerAdapter {
             SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
             byte[] body = values.get(1).asRawValue().asByteArray();
             byte[] decryptedBody = cryptoClient.processPacket(new ImmutablePair<>(header, body), secret);
+            if (decryptedBody[0] == 'H' && decryptedBody[1] == 'T' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
+                logger.info("Received loop message");
+                return;
+            }
             // Assume we are sending/receiving text messages for now
             logger.info("Received: {}", new String(decryptedBody, Charset.forName("UTF-8")));
         } else {
@@ -402,19 +403,26 @@ public class LoopixClient extends IoHandlerAdapter {
     }
 
     /***
-     * Adds a message to be sent back to ourselves.
+     * Adds a message to be sent to a client.
+     * @param clientName Name of client
      * @param data Data to send
      */
-    public void addMessage(byte[] data) {
-        messageQueue.add(data);
+    public void addMessage(String clientName, byte[] data) {
+        User recipient = database.getUserFromName(clientName);
+        if (recipient == null) {
+            // TODO: Signal this to user via exception, for now just log and ignore
+            logger.warn("Could not find user {}", clientName);
+            return;
+        }
+        messageQueue.add(new ClientMessage(recipient, data));
     }
 
     /***
      * Sends test real messages every 10 seconds
      */
     public void testRealMessage() {
-        addMessage(String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
-        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 10, TimeUnit.SECONDS);
+        addMessage(this.name, String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
+        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 1, TimeUnit.SECONDS);
     }
 
     public static void main(String[] args) throws IOException {
@@ -424,6 +432,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }
         LoopixClient client = LoopixClient.fromFile(args[0], args[1], args[2]);
         client.run();
-//        client.testRealMessage();
+        client.testRealMessage();
     }
 }

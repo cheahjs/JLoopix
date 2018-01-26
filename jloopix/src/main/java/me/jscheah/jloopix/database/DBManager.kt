@@ -76,5 +76,27 @@ class DBManager (file: String) {
         return null
     }
 
+    private val userCache: MutableMap<String, User> = mutableMapOf()
+
+    fun getUserFromName(name: String): User? {
+        if (userCache.containsKey(name)) {
+            return userCache[name]
+        }
+        val statement = connection.prepareStatement("SELECT * FROM Users WHERE name = ?")
+        statement.setString(1, name)
+        val result = statement.executeQuery()
+        if (result.next()) {
+            val user = User(result.getString("host"),
+                    result.getShort("port"),
+                    result.getString("name"),
+                    blobToECPoint(result.getBytes("pubk")),
+                    null,
+                    result.getString("provider"))
+            userCache[name] = user
+            return user
+        }
+        return null
+    }
+
     private fun blobToECPoint(blob: ByteArray): ECPoint = Unpacker.getUnpacker(blob).unpackEcPoint()
 }
