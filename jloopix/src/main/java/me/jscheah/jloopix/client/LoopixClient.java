@@ -68,6 +68,8 @@ public class LoopixClient extends IoHandlerAdapter {
     private IoConnector connector;
     private IoSession session;
 
+    private LoopixMessageListener messageListener;
+
     private Queue<ClientMessage> messageQueue;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -397,9 +399,16 @@ public class LoopixClient extends IoHandlerAdapter {
             }
             // Assume we are sending/receiving text messages for now
             logger.info("Received: {}", new String(decryptedBody, Charset.forName("UTF-8")));
+            if (this.messageListener != null) {
+                messageListener.onMessageReceived(this, decryptedBody);
+            }
         } else {
             logger.warn("Received unknown message");
         }
+    }
+
+    public void setMessageListener(LoopixMessageListener listener) {
+        this.messageListener = listener;
     }
 
     /***
