@@ -434,6 +434,18 @@ public class LoopixClient extends IoHandlerAdapter {
         scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 1, TimeUnit.SECONDS);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<User> getBefriendedClients() {
+        return befriendedClients;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
             System.out.println("Usage: jloopix <config.json> <public.bin> <private.bin>");
