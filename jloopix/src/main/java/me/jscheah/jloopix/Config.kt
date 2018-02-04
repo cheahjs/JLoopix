@@ -6,7 +6,7 @@ data class Config(
         val EXP_PARAMS_PAYLOAD: Double,
         val EXP_PARAMS_DELAY: Double,
         val DATABASE_NAME: String,
-        val TIME_PULL: Long,
+        var TIME_PULL: Long,
         val MAX_DELAY_TIME: Long,
         val NOISE_LENGTH: Int,
         val MAX_RETRIEVE: Long,
