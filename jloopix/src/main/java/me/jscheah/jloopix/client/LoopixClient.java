@@ -23,10 +23,7 @@ import org.bouncycastle.math.ec.ECPoint;
 import org.msgpack.value.ArrayValue;
 import org.msgpack.value.ImmutableArrayValue;
 import org.msgpack.value.Value;
-import org.msgpack.value.impl.ImmutableArrayValueImpl;
-import org.msgpack.value.impl.ImmutableBinaryValueImpl;
-import org.msgpack.value.impl.ImmutableLongValueImpl;
-import org.msgpack.value.impl.ImmutableStringValueImpl;
+import org.msgpack.value.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +50,7 @@ public class LoopixClient extends IoHandlerAdapter {
     private String name;
     private String host;
     private short port;
+    private ECPoint pubk;
     private String providerName;
     private Config config;
     private DBManager database;
@@ -81,6 +79,7 @@ public class LoopixClient extends IoHandlerAdapter {
         this.name = name;
         this.host = host;
         this.port = port;
+        this.pubk = pubk;
         this.providerName = providerName;
         this.config = config;
 
@@ -184,12 +183,17 @@ public class LoopixClient extends IoHandlerAdapter {
     private void subscribeToProvider() {
         scheduler.scheduleAtFixedRate(() -> {
             logger.debug("Sending SUBSCRIBE to provider");
-            send(new ImmutableArrayValueImpl(new Value[]{
-                    new ImmutableStringValueImpl("SUBSCRIBE"),
-                    new ImmutableStringValueImpl(this.name),
-                    new ImmutableStringValueImpl(this.host),
-                    new ImmutableLongValueImpl(this.port)
-            }));
+            try {
+                send(new ImmutableArrayValueImpl(new Value[]{
+                        new ImmutableStringValueImpl("SUBSCRIBE"),
+                        new ImmutableStringValueImpl(this.name),
+                        new ImmutableStringValueImpl(this.host),
+                        new ImmutableLongValueImpl(this.port),
+                        new ImmutableExtensionValueImpl((byte) 2, Packer.ecPointToByteArray(this.pubk))
+                }));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }, 0, config.getTIME_PULL(), TimeUnit.SECONDS);
     }
 
@@ -379,22 +383,15 @@ public class LoopixClient extends IoHandlerAdapter {
         Unpacker unpacker = Unpacker.getUnpacker(buffer.array());
         ArrayValue values = unpacker.unpackValue().asArrayValue();
         // TODO: This might have to change to handle tagging of messages
-        if (values.get(0).isBinaryValue()) {
-            String type = values.get(0).asRawValue().asString();
-            logger.info("Received {}", type);
-            // Ignore dummy values
-            // TODO: Wait what, Loopix sends DUMMY messages in plaintext?
-            if (type.equals("DUMMY")) {
-                return;
-            } else {
-                logger.warn("Received unknown message");
-            }
-        } else if (values.get(0).isArrayValue()) {
+        if (values.get(0).isArrayValue()) {
             SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
             byte[] body = values.get(1).asRawValue().asByteArray();
             byte[] decryptedBody = cryptoClient.processPacket(new ImmutablePair<>(header, body), secret);
             if (decryptedBody[0] == 'H' && decryptedBody[1] == 'T' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
                 logger.info("Received loop message");
+                return;
+            } else if (decryptedBody[0] == 'H' && decryptedBody[1] == 'D' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
+                logger.info("Received dummy message");
                 return;
             }
             // Assume we are sending/receiving text messages for now
@@ -453,6 +450,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }
         LoopixClient client = LoopixClient.fromFile(args[0], args[1], args[2]);
         client.run();
-        client.testRealMessage();
+        //client.testRealMessage();
     }
 }
