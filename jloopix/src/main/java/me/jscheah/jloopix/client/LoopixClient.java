@@ -424,11 +424,11 @@ public class LoopixClient extends IoHandlerAdapter {
     }
 
     /***
-     * Sends test real messages every 10 seconds
+     * Sends test real messages looped back every 1 seconds
      */
     public void testRealMessage() {
         addMessage(this.name, String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
-        scheduler.scheduleAtFixedRate(this::testRealMessage, 0, 1, TimeUnit.SECONDS);
+        scheduler.schedule(this::testRealMessage, 1, TimeUnit.SECONDS);
     }
 
     public String getName() {
@@ -450,6 +450,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }
         LoopixClient client = LoopixClient.fromFile(args[0], args[1], args[2]);
         client.run();
-        //client.testRealMessage();
+        client.testRealMessage();
     }
 }
