@@ -12,7 +12,6 @@ import me.jscheah.sphinx.msgpack.Unpacker;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.mina.core.buffer.IoBuffer;
-import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
@@ -214,7 +213,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeDropStream, sampleTimeFromExponential(config.getEXP_PARAMS_DROP()), TimeUnit.MICROSECONDS);
+        scheduler.schedule(this::makeDropStream, sampleTimeFromExponential(config.getEXP_PARAMS_DROP()), TimeUnit.NANOSECONDS);
     }
 
     /***
@@ -244,7 +243,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeLoopStream, sampleTimeFromExponential(config.getEXP_PARAMS_LOOPS()), TimeUnit.MICROSECONDS);
+        scheduler.schedule(this::makeLoopStream, sampleTimeFromExponential(config.getEXP_PARAMS_LOOPS()), TimeUnit.NANOSECONDS);
     }
 
     /***
@@ -278,7 +277,7 @@ public class LoopixClient extends IoHandlerAdapter {
         } catch (CryptoException | IOException | SphinxException e) {
             e.printStackTrace();
         }
-        scheduler.schedule(this::makeRealStream, sampleTimeFromExponential(config.getEXP_PARAMS_PAYLOAD()), TimeUnit.MICROSECONDS);
+        scheduler.schedule(this::makeRealStream, sampleTimeFromExponential(config.getEXP_PARAMS_PAYLOAD()), TimeUnit.NANOSECONDS);
     }
 
     /***
@@ -349,12 +348,19 @@ public class LoopixClient extends IoHandlerAdapter {
         return mixChain;
     }
 
-    private long sampleTimeFromExponential(double lambda) {
-        if (lambda == 0) {
+    /***
+     * Samples nanoseconds from an exponential distribution with rate parameter, lambda = 1/scale
+     * @param scale Scale parameter
+     * @return Number of nanoseconds
+     */
+    private long sampleTimeFromExponential(double scale) {
+        if (scale == 0) {
             return 0;
         }
-        // sample (in microseconds) = -ln(1-u)*lambda * 1000
-        return (long) ((Math.log(1 - random.nextDouble())*(-lambda)) * 1000000);
+        // sample (in seconds) = -ln(u)*lambda
+        double seconds = Math.log(random.nextDouble()) * (-scale);
+        double nanoseconds = seconds * 1e9;
+        return (long) nanoseconds;
     }
 
     @Override
