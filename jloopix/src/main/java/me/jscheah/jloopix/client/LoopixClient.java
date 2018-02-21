@@ -17,7 +17,6 @@ import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.DatagramSessionConfig;
-import org.apache.mina.transport.socket.nio.NioDatagramAcceptor;
 import org.apache.mina.transport.socket.nio.NioDatagramConnector;
 import org.bouncycastle.math.ec.ECPoint;
 import org.msgpack.value.ArrayValue;
@@ -62,7 +61,6 @@ public class LoopixClient extends IoHandlerAdapter {
     private List<Provider> pubProviders;
     private List<User> befriendedClients;
 
-    private IoAcceptor acceptor;
     private IoConnector connector;
     private IoSession session;
 
@@ -137,28 +135,18 @@ public class LoopixClient extends IoHandlerAdapter {
      * Starts UDP listener and connector.
      */
     private void setupNetwork() {
-        // Setup server acceptor, since we need to be able to receive incoming packets from the provider
-        acceptor = new NioDatagramAcceptor();
-        acceptor.setHandler(this);
-        DatagramSessionConfig dcfg = (DatagramSessionConfig) acceptor.getSessionConfig();
+        // Setup client connector to provider
+        connector = new NioDatagramConnector();
+        connector.setHandler(this);
+        DatagramSessionConfig dcfg = (DatagramSessionConfig) connector.getSessionConfig();
         dcfg.setReuseAddress(true);
         dcfg.setReceiveBufferSize(64*1024);
         // Default buffer size is 2048, which is too small for our loop messages
         dcfg.setReadBufferSize(10*1024);
         logger.debug("Set receive buffer size to {}", dcfg.getReceiveBufferSize());
-        try {
-            logger.info("Trying to listen to {}", this.port);
-            acceptor.bind(new InetSocketAddress(this.port));
-            logger.info("Listening on port {}", this.port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        // Setup client connector to provider
-        connector = new NioDatagramConnector();
-        connector.setHandler(this);
-        logger.info("Connecting to {} ({}:{})", this.provider.name, this.provider.host, this.provider.port);
-        session = connector.connect(new InetSocketAddress(this.provider.host, this.provider.port))
+        logger.info("Connecting to {} ({}:{}) and listening on port {}", this.provider.name, this.provider.host, this.provider.port, this.port);
+        session = connector.connect(new InetSocketAddress(this.provider.host, this.provider.port), new InetSocketAddress(this.port))
                 .awaitUninterruptibly()
                 .getSession();
     }
