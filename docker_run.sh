@@ -2,8 +2,8 @@
 
 # Should be in sync with generate_keys.sh
 MIXNODE_COUNT=6
-PROVIDER_COUNT=1
-CLIENT_COUNT=2
+PROVIDER_COUNT=2
+CLIENT_COUNT=6
 
 # If we're running on Bash on Windows, use docker.exe instead of docker
 if grep -q Microsoft /proc/version; then
@@ -23,6 +23,7 @@ for ((i=1;i<=PROVIDER_COUNT;i++)); do
     -v "$DIR/build/example.db:/loopix/loopix/example.db" \
     -v "$DIR/build/loopix_keys/provider_$i/publicProvider.bin:/loopix/loopix/publicProvider.bin" \
     -v "$DIR/build/loopix_keys/provider_$i/secretProvider.prv:/loopix/loopix/secretProvider.prv" \
+    -v "$DIR/build/loopix_config.json:/config.json" \
     -w "/loopix/loopix" \
     -dit \
     --name="provider_$i" \
@@ -38,6 +39,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     -v "$DIR/build/example.db:/loopix/loopix/example.db" \
     -v "$DIR/build/loopix_keys/mixnode_$i/publicMixnode.bin:/loopix/loopix/publicMixnode.bin" \
     -v "$DIR/build/loopix_keys/mixnode_$i/secretMixnode.prv:/loopix/loopix/secretMixnode.prv" \
+    -v "$DIR/build/loopix_config.json:/config.json" \
     -w "/loopix/loopix" \
     -dit \
     --name="mix_$i" \
@@ -52,6 +54,7 @@ $DOCKER_PATH run \
 -v "$DIR/build/example.db:/example.db" \
 -v "$DIR/build/loopix_keys/client_1/publicClient.bin:/publicClient.bin" \
 -v "$DIR/build/loopix_keys/client_1/secretClient.prv:/secretClient.prv" \
+-v "$DIR/build/jloopix_config.json:/config.json" \
 -w "/" \
 -dit \
 --name="client_1" \
@@ -66,6 +69,7 @@ for ((i=2;i<=CLIENT_COUNT;i++)); do
     -v "$DIR/build/example.db:/loopix/loopix/example.db" \
     -v "$DIR/build/loopix_keys/client_$i/publicClient.bin:/loopix/loopix/publicClient.bin" \
     -v "$DIR/build/loopix_keys/client_$i/secretClient.prv:/loopix/loopix/secretClient.prv" \
+    -v "$DIR/build/loopix_config.json:/loopix/loopix/config.json" \
     -w "/loopix/loopix" \
     -dit \
     --name="client_$i" \

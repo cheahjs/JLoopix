@@ -2,8 +2,8 @@
 
 # Should be in sync with generate_keys.sh
 MIXNODE_COUNT=6
-PROVIDER_COUNT=1
-CLIENT_COUNT=2
+PROVIDER_COUNT=2
+CLIENT_COUNT=6
 
 # If we're running on Bash on Windows, use docker.exe instead of docker
 if grep -q Microsoft /proc/version; then
@@ -25,10 +25,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     $DOCKER_PATH rm -f "mix_$i" > /dev/null 2>&1
 done
 
-echo "Stopping Java client 1"
-$DOCKER_PATH rm -f "client_1" > /dev/null 2>&1
-
-for ((i=2;i<=CLIENT_COUNT;i++)); do
+for ((i=1;i<=CLIENT_COUNT;i++)); do
     echo "Stopping client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
 done
