@@ -8,7 +8,7 @@ env:
   - PROJECT=jloopix
 
 install:
-  - cd $PROJECT
+  - cd src/$PROJECT
   - ./gradlew assemble
 
 script:
