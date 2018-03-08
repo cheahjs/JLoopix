@@ -43,7 +43,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     twistd --nodaemon --python=run_mixnode.py
 done
 
-for ((i=1;i<=CLIENT_COUNT;i++)); do
+for ((i=1;i<=(JAVA_COUNT+CLIENT_COUNT);i++)); do
     echo "Starting java chat client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
     $DOCKER_PATH run \

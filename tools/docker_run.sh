@@ -45,21 +45,22 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     twistd --nodaemon --python=run_mixnode.py
 done
 
-echo "Starting Java client 1"
-$DOCKER_PATH rm -f "client_1" > /dev/null 2>&1
-$DOCKER_PATH run \
---net=host \
--v "$DIR/../build/example.db:/example.db" \
--v "$DIR/../build/loopix_keys/client_1/publicClient.bin:/publicClient.bin" \
--v "$DIR/../build/loopix_keys/client_1/secretClient.prv:/secretClient.prv" \
--v "$DIR/../build/jloopix_config.json:/config.json" \
--w "/" \
--dit \
---name="client_1" \
-deathmax/jloopix \
-config.json publicClient.bin secretClient.prv
+for ((i=1;i<=JAVA_COUNT;i++))
+    echo "Starting Java client $i"
+    $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
+    $DOCKER_PATH run \
+    --net=host \
+    -v "$DIR/../build/example.db:/example.db" \
+    -v "$DIR/../build/loopix_keys/client_$i/publicClient.bin:/publicClient.bin" \
+    -v "$DIR/../build/loopix_keys/client_$i/secretClient.prv:/secretClient.prv" \
+    -v "$DIR/../build/jloopix_config.json:/config.json" \
+    -w "/" \
+    -dit \
+    --name="client_$i" \
+    deathmax/jloopix \
+    config.json publicClient.bin secretClient.prv
 
-for ((i=2;i<=CLIENT_COUNT;i++)); do
+for ((i=(JAVA_COUNT+1);i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     echo "Starting client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
     $DOCKER_PATH run \

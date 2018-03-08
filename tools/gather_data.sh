@@ -43,6 +43,6 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     $DOCKER_PATH logs "mix_$i" > "results/$DATE/logs/mix_$i"
 done
 
-for ((i=1;i<=CLIENT_COUNT;i++)); do
+for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     $DOCKER_PATH logs "client_$i" > "results/$DATE/logs/client_$i"
 done

@@ -23,7 +23,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     $DOCKER_PATH rm -f "mix_$i" > /dev/null 2>&1
 done
 
-for ((i=1;i<=CLIENT_COUNT;i++)); do
+for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     echo "Stopping client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
 done
