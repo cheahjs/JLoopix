@@ -1,13 +1,12 @@
 #!/bin/bash
 
-MIXNODE_COUNT=6
-PROVIDER_COUNT=2
-CLIENT_COUNT=6
+# Import network counts
+source network_config.sh
 CWD=$(pwd)
 
 HOST=127.0.0.1
 
-rm -R build
+rm -R ../build
 
 # Generate keys
 for ((i=1;i<=PROVIDER_COUNT;i++)); do

@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Should be in sync with generate_keys.sh
-MIXNODE_COUNT=6
-PROVIDER_COUNT=2
-CLIENT_COUNT=6
+# Import network counts
+source network_config.sh
 
 # If we're running on Bash on Windows, use docker.exe instead of docker
 if grep -q Microsoft /proc/version; then
