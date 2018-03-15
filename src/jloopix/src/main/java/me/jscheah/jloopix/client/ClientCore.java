@@ -1,5 +1,9 @@
 package me.jscheah.jloopix.client;
 
+import me.jscheah.sphinx.client.SphinxClient;
+import me.jscheah.sphinx.exceptions.CryptoException;
+import me.jscheah.sphinx.exceptions.SphinxException;
+import me.jscheah.sphinx.params.SphinxParams;
 import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.jloopix.Core;
 import me.jscheah.jloopix.LoopixNode;

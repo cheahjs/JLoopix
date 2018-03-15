@@ -1,5 +1,6 @@
 package me.jscheah.sphinx;
 
+import me.jscheah.sphinx.params.GroupECC;
 import org.bouncycastle.math.ec.ECPoint;
 import org.junit.jupiter.api.Test;
 

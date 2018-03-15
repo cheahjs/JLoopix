@@ -1,5 +1,11 @@
-package me.jscheah.sphinx;
+package me.jscheah.sphinx.server;
 
+import me.jscheah.sphinx.SphinxHeader;
+import me.jscheah.sphinx.SphinxProcessData;
+import me.jscheah.sphinx.exceptions.CryptoException;
+import me.jscheah.sphinx.exceptions.SphinxException;
+import me.jscheah.sphinx.params.GroupECC;
+import me.jscheah.sphinx.params.SphinxParams;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.Arrays;
 

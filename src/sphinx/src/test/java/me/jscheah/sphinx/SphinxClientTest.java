@@ -1,5 +1,10 @@
 package me.jscheah.sphinx;
 
+import me.jscheah.sphinx.client.SphinxClient;
+import me.jscheah.sphinx.exceptions.CryptoException;
+import me.jscheah.sphinx.exceptions.SphinxException;
+import me.jscheah.sphinx.params.SphinxParams;
+import me.jscheah.sphinx.server.SphinxNode;
 import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.sphinx.msgpack.Unpacker;
 import org.bouncycastle.math.ec.ECPoint;
@@ -46,7 +51,7 @@ class SphinxClientTest {
                 throw new RuntimeException(e);
             }
         }).collect(Collectors.toList());
-        List<ECPoint> nodeKeys = Arrays.stream(path).mapToObj(a -> pkiPub.get(((byte)(int)a)).y).collect(Collectors.toList());
+        List<ECPoint> nodeKeys = Arrays.stream(path).mapToObj(a -> pkiPub.get(((byte)(int)a)).pubk).collect(Collectors.toList());
         byte[] dest = "bob".getBytes(Charset.forName("UTF-8"));
         byte[] message = "this is a test".getBytes(Charset.forName("UTF-8"));
         Pair<SphinxHeader, byte[]> forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, new ImmutableBinaryValueImpl(dest), message);
@@ -61,7 +66,7 @@ class SphinxClientTest {
         Assertions.assertArrayEquals(forward.getKey().gamma, unpackedMessage.getValue().getKey().gamma);
         Assertions.assertArrayEquals(forward.getValue(), unpackedMessage.getValue().getValue());
 
-        BigInteger x = pkiPriv.get((byte) path[0]).x;
+        BigInteger x = pkiPriv.get((byte) path[0]).secret;
         SphinxHeader header = forward.getKey();
         byte[] delta = forward.getValue();
         while (true) {
@@ -74,7 +79,7 @@ class SphinxClientTest {
 
             if (flag == SphinxClient.RELAY_FLAG) {
                 byte addr = root.get(1).asIntegerValue().asByte();
-                x = pkiPriv.get(addr).x;
+                x = pkiPriv.get(addr).secret;
             } else if (flag == SphinxClient.DEST_FLAG) {
                 Assertions.assertTrue(root.size() == 1);
                 Assertions.assertArrayEquals(Arrays.copyOf(ret.delta, 16), new byte[params.k]);
@@ -90,11 +95,11 @@ class SphinxClientTest {
             }
         }
 
-        SphinxClient.SphinxSingleUseReplyBlockReturn surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(Charset.forName("UTF-8"))));
+        SingleUseReplyBlockData surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(Charset.forName("UTF-8"))));
         message = "This is a reply".getBytes(Charset.forName("UTF-8"));
         Pair<SphinxHeader, byte[]> surbPackage = SphinxClient.packageSurb(params, surb.nymTuple, message);
 
-        x = pkiPriv.get((byte)path[0]).x;
+        x = pkiPriv.get((byte)path[0]).secret;
 
         header = surbPackage.getKey();
         delta = surbPackage.getValue();
@@ -108,7 +113,7 @@ class SphinxClientTest {
 
             if (flag == SphinxClient.RELAY_FLAG) {
                 byte addr = root.get(1).asIntegerValue().asByte();
-                x = pkiPriv.get(addr).x;
+                x = pkiPriv.get(addr).secret;
             } else if (flag == SphinxClient.SURB_FLAG) {
                 break;
             }

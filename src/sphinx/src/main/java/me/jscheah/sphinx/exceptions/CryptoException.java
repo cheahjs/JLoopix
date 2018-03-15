@@ -1,4 +1,4 @@
-package me.jscheah.sphinx;
+package me.jscheah.sphinx.exceptions;
 
 public class CryptoException extends Exception {
     public CryptoException(Throwable e) {

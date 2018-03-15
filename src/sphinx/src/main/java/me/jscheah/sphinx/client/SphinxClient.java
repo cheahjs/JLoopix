@@ -1,7 +1,12 @@
-package me.jscheah.sphinx;
+package me.jscheah.sphinx.client;
 
+import me.jscheah.sphinx.*;
+import me.jscheah.sphinx.exceptions.CryptoException;
+import me.jscheah.sphinx.exceptions.SphinxException;
 import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.msgpack.Unpacker;
+import me.jscheah.sphinx.params.GroupECC;
+import me.jscheah.sphinx.params.SphinxParams;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bouncycastle.math.ec.ECPoint;
@@ -225,34 +230,10 @@ public class SphinxClient {
         return new MutablePair<>(headerSecrets.getKey(), delta);
     }
 
-    static class SphinxSingleUseReplyBlockReturn {
-        public SphinxSingleUseReplyBlockReturn(byte[] surbId, List<byte[]> surbKeyTuple, SphinxSingleUseReplyBlock nymTuple) {
-            this.surbId = surbId;
-            this.surbKeyTuple = surbKeyTuple;
-            this.nymTuple = nymTuple;
-        }
-
-        public byte[] surbId;
-        public List<byte[]> surbKeyTuple;
-        public SphinxSingleUseReplyBlock nymTuple;
-    }
-
-    static class SphinxSingleUseReplyBlock {
-        public SphinxSingleUseReplyBlock(byte[] node0, SphinxHeader header, byte[] ktilde) {
-            this.node0 = node0;
-            this.header = header;
-            this.ktilde = ktilde;
-        }
-
-        public byte[] node0;
-        public SphinxHeader header;
-        public byte[] ktilde;
-    }
-
-    public static SphinxSingleUseReplyBlockReturn createSURB(SphinxParams params,
-                                  List<byte[]> nodeList,
-                                  List<ECPoint> keys,
-                                  Value destination) throws IOException, CryptoException {
+    public static SingleUseReplyBlockData createSURB(SphinxParams params,
+                                                     List<byte[]> nodeList,
+                                                     List<ECPoint> keys,
+                                                     Value destination) throws IOException, CryptoException {
         SecureRandom random = new SecureRandom();
         byte[] xid = new byte[params.k];
         random.nextBytes(xid);
@@ -283,17 +264,17 @@ public class SphinxClient {
                     }
                 }).collect(Collectors.toList()));
         
-        return new SphinxSingleUseReplyBlockReturn(
+        return new SingleUseReplyBlockData(
                 xid,
                 keyTuples,
-                new SphinxSingleUseReplyBlock(
+                new SingleUseReplyBlock(
                         nodeList.get(0), headerSecrets.getKey(), ktilde
                 )
         );
     }
 
     public static Pair<SphinxHeader, byte[]> packageSurb(SphinxParams params,
-                                                         SphinxSingleUseReplyBlock nymTuple,
+                                                         SingleUseReplyBlock nymTuple,
                                                          byte[] message) throws SphinxException, CryptoException {
         byte[] body = params.pi(
                 nymTuple.ktilde,

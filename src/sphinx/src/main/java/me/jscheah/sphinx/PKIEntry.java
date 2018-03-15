@@ -6,12 +6,12 @@ import java.math.BigInteger;
 
 public class PKIEntry {
     public byte id;
-    public BigInteger x;
-    public ECPoint y;
+    public BigInteger secret;
+    public ECPoint pubk;
 
-    public PKIEntry(byte id, BigInteger x, ECPoint y) {
+    public PKIEntry(byte id, BigInteger secret, ECPoint pubk) {
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.secret = secret;
+        this.pubk = pubk;
     }
 }

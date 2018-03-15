@@ -1,5 +1,7 @@
 package me.jscheah.sphinx;
 
+import me.jscheah.sphinx.exceptions.CryptoException;
+import me.jscheah.sphinx.params.SphinxParams;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,8 +38,8 @@ class SphinxParamsTest {
             SphinxParams params = new SphinxParams();
             byte[] key = "AAAAAAAAAAAAAAAA".getBytes(Charset.forName("UTF-8"));
             byte[] message = "Hello World!".getBytes(Charset.forName("UTF-8"));
-            byte[] ciphertext = params.aesCtr(key, message, new byte[16]);
-            byte[] decMessage = params.aesCtr(key, ciphertext, new byte[16]);
+            byte[] ciphertext = params.aesEncrypt(key, message, new byte[16]);
+            byte[] decMessage = params.aesEncrypt(key, ciphertext, new byte[16]);
             Assertions.assertTrue(Arrays.equals(message, decMessage));
         } catch (CryptoException e) {
             throw new Error("Exception thrown when not expected", e);
@@ -50,7 +52,7 @@ class SphinxParamsTest {
         byte[] key = new byte[16];
         byte[] plain = new byte[32];
         Assertions.assertEquals(
-                Utils.hexlify(params.xorRho(key, plain)),
+                HexUtils.hexlify(params.xorRho(key, plain)),
                 "66e94bd4ef8a2c3b884cfa59ca342b2e58e2fccefa7e3061367f1d57a4e7455a"
         );
     }
@@ -61,7 +63,7 @@ class SphinxParamsTest {
         byte[] key = new byte[16];
         byte[] plain = new byte[32];
         Assertions.assertEquals(
-                Utils.hexlify(params.mu(key, plain)),
+                HexUtils.hexlify(params.mu(key, plain)),
                 "33ad0a1c607ec03b09e6cd9893680ce2"
         );
     }
@@ -70,7 +72,7 @@ class SphinxParamsTest {
     void getAesKey() throws CryptoException {
         SphinxParams params = new SphinxParams();
         Assertions.assertEquals(
-                Utils.hexlify(params.getAesKey(params.group.Generator)),
+                HexUtils.hexlify(params.getAesKey(params.group.Generator)),
                 "4dfc0fc4bf89db354d919e212d609602"
         );
     }
@@ -80,7 +82,7 @@ class SphinxParamsTest {
         SphinxParams params = new SphinxParams();
         byte[] key = new byte[16];
         Assertions.assertEquals(
-                Utils.hexlify(params.deriveKey(key, key)),
+                HexUtils.hexlify(params.deriveKey(key, key)),
                 "66e94bd4ef8a2c3b884cfa59ca342b2e"
         );
     }
@@ -100,7 +102,7 @@ class SphinxParamsTest {
         SphinxParams params = new SphinxParams();
         byte[] key = new byte[16];
         Assertions.assertEquals(
-                Utils.hexlify(params.hrho(key)),
+                HexUtils.hexlify(params.hrho(key)),
                 "5b506c5de47d367ea864d82983ab0564"
         );
     }
@@ -110,7 +112,7 @@ class SphinxParamsTest {
         SphinxParams params = new SphinxParams();
         byte[] key = new byte[16];
         Assertions.assertEquals(
-                Utils.hexlify(params.hmu(key)),
+                HexUtils.hexlify(params.hmu(key)),
                 "8a3a184296515c9483c5c5849427cc2c"
         );
     }
@@ -120,7 +122,7 @@ class SphinxParamsTest {
         SphinxParams params = new SphinxParams();
         byte[] key = new byte[16];
         Assertions.assertEquals(
-                Utils.hexlify(params.hpi(key)),
+                HexUtils.hexlify(params.hpi(key)),
                 "8fce1cb8d2c6d886055e3cf11ed5cb94"
         );
     }
@@ -130,7 +132,7 @@ class SphinxParamsTest {
         SphinxParams params = new SphinxParams();
         byte[] key = new byte[16];
         Assertions.assertEquals(
-                Utils.hexlify(params.htau(key)),
+                HexUtils.hexlify(params.htau(key)),
                 "6a330c0b94a3e9635df6c78650a4152a"
         );
     }

@@ -1,6 +1,6 @@
 package me.jscheah.sphinx.msgpack;
 
-import me.jscheah.sphinx.GroupECC;
+import me.jscheah.sphinx.params.GroupECC;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.Arrays;
 import org.msgpack.core.MessagePack;
