@@ -30,10 +30,11 @@ public class SphinxNode {
 
         // Compute shared secret
         ECPoint sharedSecret = group.expon(header.alpha, secret);
-        byte[] aesSecret = params.getAesKey(sharedSecret);
+        byte[] aesSecret = params.getAesKeyFromSecret(sharedSecret);
 
-        assert header.beta.length == params.maxLength - 32;
+        assert header.beta.length == params.headerSize - 32;
 
+        // Compute and compare MAC
         if (!java.util.Arrays.equals(header.gamma,
                 params.mu(
                         params.hmu(aesSecret), header.beta
@@ -43,9 +44,9 @@ public class SphinxNode {
 
         byte[] betaPad = Arrays.concatenate(
                 header.beta,
-                new byte[2*params.maxLength]
+                new byte[2*params.headerSize]
         );
-        byte[] B = params.xorRho(params.hrho(aesSecret), betaPad);
+        byte[] B = params.rho(params.hrho(aesSecret), betaPad);
 
         // problematic cast from signed byte to unsigned int
         int length = (((int)B[0]) & 0xFF);
@@ -56,7 +57,7 @@ public class SphinxNode {
         BigInteger b = params.hb(aesSecret);
         ECPoint alpha = group.expon(header.alpha, b);
         byte[] gamma = Arrays.copyOf(rest, params.k);
-        byte[] beta = Arrays.copyOfRange(rest, params.k, params.k + (params.maxLength - 32));
+        byte[] beta = Arrays.copyOfRange(rest, params.k, params.k + (params.headerSize - 32));
         delta = params.pii(params.hpi(aesSecret), delta);
 
         return new SphinxProcessData(tag, routing, new SphinxHeader(alpha, beta, gamma), delta);

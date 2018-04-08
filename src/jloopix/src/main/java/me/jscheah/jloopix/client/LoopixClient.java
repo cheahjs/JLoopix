@@ -3,6 +3,7 @@ package me.jscheah.jloopix.client;
 import com.google.gson.Gson;
 import me.jscheah.jloopix.*;
 import me.jscheah.jloopix.database.DBManager;
+import me.jscheah.sphinx.SphinxPacket;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
 import me.jscheah.sphinx.SphinxHeader;
@@ -225,10 +226,10 @@ public class LoopixClient extends IoHandlerAdapter {
         User randomReceiver = this.befriendedClients.get(random.nextInt(this.befriendedClients.size()));
         List<LoopixNode> path = constructFullPath(randomReceiver);
         logger.debug("Chain selected: {}", path);
-        Pair<SphinxHeader, byte[]> loopMessage = cryptoClient.createDropMessage(randomReceiver, path);
+        SphinxPacket loopMessage = cryptoClient.createDropMessage(randomReceiver, path);
         send(new ImmutableArrayValueImpl(new Value[] {
-                loopMessage.getKey().toValue(),
-                new ImmutableBinaryValueImpl(loopMessage.getValue())
+                loopMessage.header.toValue(),
+                new ImmutableBinaryValueImpl(loopMessage.body)
         }));
     }
 
@@ -254,10 +255,10 @@ public class LoopixClient extends IoHandlerAdapter {
     private synchronized void sendLoopMessage() throws CryptoException, IOException, SphinxException {
         List<LoopixNode> path = constructFullPath(this);
         logger.debug("Chain selected: {}", path);
-        Pair<SphinxHeader, byte[]> loopMessage = cryptoClient.createLoopMessage(path);
+        SphinxPacket loopMessage = cryptoClient.createLoopMessage(path);
         send(new ImmutableArrayValueImpl(new Value[] {
-            loopMessage.getKey().toValue(),
-            new ImmutableBinaryValueImpl(loopMessage.getValue())
+            loopMessage.header.toValue(),
+            new ImmutableBinaryValueImpl(loopMessage.body)
         }));
     }
 
@@ -292,10 +293,10 @@ public class LoopixClient extends IoHandlerAdapter {
     private synchronized void sendRealMessage(ClientMessage message) throws CryptoException, IOException, SphinxException {
         List<LoopixNode> path = constructFullPath(message.getRecipient());
         logger.debug("Chain selected: {}", path);
-        Pair<SphinxHeader, byte[]> realMessage = cryptoClient.packRealMessage(message.getRecipient(), path, message.getData());
+        SphinxPacket realMessage = cryptoClient.packRealMessage(message.getRecipient(), path, message.getData());
         send(new ImmutableArrayValueImpl(new Value[] {
-                realMessage.getKey().toValue(),
-                new ImmutableBinaryValueImpl(realMessage.getValue())
+                realMessage.header.toValue(),
+                new ImmutableBinaryValueImpl(realMessage.body)
         }));
     }
 

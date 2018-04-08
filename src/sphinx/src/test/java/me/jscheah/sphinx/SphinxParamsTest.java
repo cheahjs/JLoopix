@@ -52,7 +52,7 @@ class SphinxParamsTest {
         byte[] key = new byte[16];
         byte[] plain = new byte[32];
         Assertions.assertEquals(
-                HexUtils.hexlify(params.xorRho(key, plain)),
+                HexUtils.hexlify(params.rho(key, plain)),
                 "66e94bd4ef8a2c3b884cfa59ca342b2e58e2fccefa7e3061367f1d57a4e7455a"
         );
     }
@@ -72,7 +72,7 @@ class SphinxParamsTest {
     void getAesKey() throws CryptoException {
         SphinxParams params = new SphinxParams();
         Assertions.assertEquals(
-                HexUtils.hexlify(params.getAesKey(params.group.Generator)),
+                HexUtils.hexlify(params.getAesKeyFromSecret(params.group.Generator)),
                 "4dfc0fc4bf89db354d919e212d609602"
         );
     }

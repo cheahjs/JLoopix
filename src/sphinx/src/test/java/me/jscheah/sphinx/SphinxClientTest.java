@@ -54,21 +54,21 @@ class SphinxClientTest {
         List<ECPoint> nodeKeys = Arrays.stream(path).mapToObj(a -> pkiPub.get(((byte)(int)a)).pubk).collect(Collectors.toList());
         byte[] dest = "bob".getBytes(Charset.forName("UTF-8"));
         byte[] message = "this is a test".getBytes(Charset.forName("UTF-8"));
-        Pair<SphinxHeader, byte[]> forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, new ImmutableBinaryValueImpl(dest), message);
+        SphinxPacket forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, new ImmutableBinaryValueImpl(dest), message);
 
-        byte[] binaryMessage = SphinxClient.packMessage(params, forward.getKey(), forward.getValue());
+        byte[] binaryMessage = SphinxClient.packMessage(params, forward);
         List<SphinxParams> paramList = new LinkedList<>();
         paramList.add(params);
         Pair<SphinxParams, Pair<SphinxHeader, byte[]>> unpackedMessage = SphinxClient.unpackMessage(paramList, binaryMessage);
 
-        Assertions.assertEquals(forward.getKey().alpha, unpackedMessage.getValue().getKey().alpha);
-        Assertions.assertArrayEquals(forward.getKey().beta, unpackedMessage.getValue().getKey().beta);
-        Assertions.assertArrayEquals(forward.getKey().gamma, unpackedMessage.getValue().getKey().gamma);
-        Assertions.assertArrayEquals(forward.getValue(), unpackedMessage.getValue().getValue());
+        Assertions.assertEquals(forward.header.alpha, unpackedMessage.getValue().getKey().alpha);
+        Assertions.assertArrayEquals(forward.header.beta, unpackedMessage.getValue().getKey().beta);
+        Assertions.assertArrayEquals(forward.header.gamma, unpackedMessage.getValue().getKey().gamma);
+        Assertions.assertArrayEquals(forward.body, unpackedMessage.getValue().getValue());
 
         BigInteger x = pkiPriv.get((byte) path[0]).secret;
-        SphinxHeader header = forward.getKey();
-        byte[] delta = forward.getValue();
+        SphinxHeader header = forward.header;
+        byte[] delta = forward.body;
         while (true) {
             SphinxProcessData ret = SphinxNode.sphinxProcess(params, x, header, delta);
             header = ret.header;
@@ -97,12 +97,12 @@ class SphinxClientTest {
 
         SingleUseReplyBlockData surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(Charset.forName("UTF-8"))));
         message = "This is a reply".getBytes(Charset.forName("UTF-8"));
-        Pair<SphinxHeader, byte[]> surbPackage = SphinxClient.packageSurb(params, surb.nymTuple, message);
+        SphinxPacket surbPackage = SphinxClient.packageSURB(params, surb.nymTuple, message);
 
         x = pkiPriv.get((byte)path[0]).secret;
 
-        header = surbPackage.getKey();
-        delta = surbPackage.getValue();
+        header = surbPackage.header;
+        delta = surbPackage.body;
         while (true) {
             SphinxProcessData ret = SphinxNode.sphinxProcess(params, x, header, delta);
             header = ret.header;

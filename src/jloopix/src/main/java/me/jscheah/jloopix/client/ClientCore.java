@@ -31,7 +31,7 @@ public class ClientCore extends LoopixNode {
         this.packer = packer;
     }
 
-    public Pair<SphinxHeader, byte[]> createLoopMessage(List<LoopixNode> path)
+    public SphinxPacket createLoopMessage(List<LoopixNode> path)
             throws SphinxException, IOException, CryptoException {
         byte[] message = Arrays.concatenate(
                 "HT".getBytes(Charset.forName("UTF-8")),
@@ -40,13 +40,13 @@ public class ClientCore extends LoopixNode {
         return packer.makePacket(this, path, message);
     }
 
-    public Pair<SphinxHeader, byte[]> createDropMessage(LoopixNode randomReceiver, List<LoopixNode> path)
+    public SphinxPacket createDropMessage(LoopixNode randomReceiver, List<LoopixNode> path)
             throws SphinxException, IOException, CryptoException {
         byte[] message = Core.generateRandomBytes(noiseLength);
         return packer.makeDropPacket(randomReceiver, path, message);
-    }
+}
 
-    public Pair<SphinxHeader, byte[]> packRealMessage(LoopixNode receiver, List<LoopixNode> path, byte[] message)
+    public SphinxPacket packRealMessage(LoopixNode receiver, List<LoopixNode> path, byte[] message)
             throws SphinxException, IOException, CryptoException {
         return packer.makePacket(receiver, path, message);
     }

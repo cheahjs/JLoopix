@@ -29,7 +29,7 @@ public class SphinxPacker {
         random = new SecureRandom();
     }
 
-    public double generateRandomDelay() {
+    private double generateRandomDelay() {
         if (expLambda == 0) {
             return 0;
         }
@@ -37,25 +37,25 @@ public class SphinxPacker {
         return Math.log(1 - random.nextDouble())*(-expLambda);
     }
 
-    public Pair<SphinxHeader, byte[]> makePacket(LoopixNode receiver,
-                                                 List<LoopixNode> path,
-                                                 byte[] message)
+    public SphinxPacket makePacket(LoopixNode receiver,
+                                   List<LoopixNode> path,
+                                   byte[] message)
             throws IOException, CryptoException, SphinxException {
         return makePacket(receiver, path, message, false, null);
     }
 
-    public Pair<SphinxHeader, byte[]> makeDropPacket(LoopixNode receiver,
-                                                 List<LoopixNode> path,
-                                                 byte[] message)
+    public SphinxPacket makeDropPacket(LoopixNode receiver,
+                                       List<LoopixNode> path,
+                                       byte[] message)
             throws IOException, CryptoException, SphinxException {
         return makePacket(receiver, path, message, true, null);
     }
 
-    private Pair<SphinxHeader, byte[]> makePacket(LoopixNode receiver,
-                                                 List<LoopixNode> path,
-                                                 byte[] message,
-                                                 boolean dropFlag,
-                                                 Object typeFlag)
+    private SphinxPacket makePacket(LoopixNode receiver,
+                                    List<LoopixNode> path,
+                                    byte[] message,
+                                    boolean dropFlag,
+                                    Object typeFlag)
             throws IOException, CryptoException, SphinxException {
         List<ECPoint> nodeKeys = getNodesPublicKeys(path);
         List<byte[]> routingInfo = getRouting(path, dropFlag, typeFlag);
@@ -78,10 +78,10 @@ public class SphinxPacker {
             double delay = generateRandomDelay();
             boolean drop = (i == path.size() - 1) && dropFlag;
             routing.add(SphinxClient.Nenc(new ImmutableArrayValueImpl(new Value[] {
-                new ImmutableArrayValueImpl(new Value[] {
-                        new ImmutableStringValueImpl(node.host),
-                        new ImmutableLongValueImpl(node.port)
-                }),
+                    new ImmutableArrayValueImpl(new Value[] {
+                            new ImmutableStringValueImpl(node.host),
+                            new ImmutableLongValueImpl(node.port)
+                    }),
                     drop ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE,
                     ImmutableNilValueImpl.get(),
                     new ImmutableDoubleValueImpl(delay),
@@ -92,9 +92,8 @@ public class SphinxPacker {
     }
 
     public SphinxProcessData decryptSphinxPacket(Pair<SphinxHeader, byte[]> packet, BigInteger key)
-            throws CryptoException, SphinxException, IOException {
+            throws CryptoException, SphinxException {
         SphinxProcessData data = SphinxNode.sphinxProcess(this.params, key, packet.getKey(), packet.getValue());
-//        Value routing = Unpacker.getUnpacker(data.routing).unpackValue();
         return new SphinxProcessData(data.tag, data.routing, data.header, data.delta);
     }
 

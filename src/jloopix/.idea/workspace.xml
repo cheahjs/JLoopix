@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="SCOPE_TYPE" value="3" />
-  </component>
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
       <artifact name="jloopix_main:jar" />
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java" line="454" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java" line="455" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9783d8d1-22a6-4622-9808-6a88dcc68d86" name="Default" comment="" />
@@ -113,74 +110,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SphinxClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SphinxClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/client/SphinxClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="95" column="84" lean-forward="true" selection-start-line="95" selection-start-column="84" selection-end-line="95" selection-end-column="84" />
+            <state relative-caret-position="36">
+              <caret line="220" column="68" selection-start-line="220" selection-start-column="68" selection-end-line="220" selection-end-column="68" />
               <folding>
-                <element signature="method#padBody#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#unpadBody#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#Nenc#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#Nenc#1;class#SphinxClient#0" expanded="false" />
-                <element signature="method#randomSubset#0;class#SphinxClient#0" expanded="false" />
-                <element signature="class#HeaderRecord#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#HeaderRecord#0;class#HeaderRecord#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#createHeader#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#createForwardMessage#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#createSURB#0;class#SphinxClient#0" expanded="false" />
-                <element signature="e#9663#9886#0" expanded="false" />
-                <element signature="method#packageSurb#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#receiveForward#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#receiveSurb#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#packMessage#0;class#SphinxClient#0" expanded="false" />
-                <element signature="method#unpackMessage#0;class#SphinxClient#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SphinxParams.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/SphinxParams.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="204" column="4" lean-forward="false" selection-start-line="204" selection-start-column="4" selection-end-line="204" selection-end-column="4" />
-              <folding>
-                <element signature="docComment;method#SphinxParams#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#SphinxParams#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#SphinxParams#1;class#SphinxParams#0" expanded="false" />
-                <element signature="method#SphinxParams#1;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#SphinxParams#2;class#SphinxParams#0" expanded="false" />
-                <element signature="method#SphinxParams#2;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#aesEncrypt#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#aesEncrypt#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#hash#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#lionessEnc#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#lionessEnc#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#lionessDec#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#lionessDec#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#xorRho#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#xorRho#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#mu#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#mu#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#pi#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#pi#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#pii#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#pii#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#getAesKey#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#getAesKey#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#deriveKey#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#deriveKey#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#hb#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#hb#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#hrho#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#hrho#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#hmu#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#hmu#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#hpi#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#hpi#0;class#SphinxParams#0" expanded="false" />
-                <element signature="docComment;method#htau#0;class#SphinxParams#0" expanded="false" />
-                <element signature="method#htau#0;class#SphinxParams#0" expanded="false" />
+                <element signature="method#padBody#0;class#SphinxClient#0" />
+                <element signature="method#unpadBody#0;class#SphinxClient#0" />
+                <element signature="method#randomSubset#0;class#SphinxClient#0" />
+                <element signature="class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="docComment;field#alpha#0;class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="docComment;field#s#0;class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="docComment;field#b#0;class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="docComment;field#aes#0;class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="method#HeaderRecord#0;class#HeaderRecord#0;class#SphinxClient#0" />
+                <element signature="class#SphinxHeaderData#0;class#SphinxClient#0" />
+                <element signature="method#SphinxHeaderData#0;class#SphinxHeaderData#0;class#SphinxClient#0" />
+                <element signature="docComment;method#createHeader#0;class#SphinxClient#0" />
+                <element signature="method#createForwardMessage#0;class#SphinxClient#0" />
+                <element signature="method#createSURB#0;class#SphinxClient#0" />
+                <element signature="e#10443#10666#0" />
+                <element signature="method#packageSURB#0;class#SphinxClient#0" />
+                <element signature="method#receiveForward#0;class#SphinxClient#0" />
+                <element signature="method#receiveSurb#0;class#SphinxClient#0" />
               </folding>
             </state>
           </provider>
@@ -189,9 +142,71 @@
       <file leaf-file-name="SphinxNode.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/server/SphinxNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="41" column="9" lean-forward="true" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-              <folding />
+            <state relative-caret-position="680">
+              <caret line="55" column="18" selection-start-line="55" selection-start-column="15" selection-end-line="55" selection-end-column="18" />
+              <folding>
+                <element signature="docComment;method#sphinxProcess#0;class#SphinxNode#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SphinxParams.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/SphinxParams.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="47" column="23" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
+              <folding>
+                <element signature="docComment;method#SphinxParams#0;class#SphinxParams#0" />
+                <element signature="docComment;method#SphinxParams#1;class#SphinxParams#0" />
+                <element signature="docComment;method#SphinxParams#2;class#SphinxParams#0" />
+                <element signature="docComment;method#aesEncrypt#0;class#SphinxParams#0" />
+                <element signature="method#aesEncrypt#0;class#SphinxParams#0" />
+                <element signature="docComment;method#hash#0;class#SphinxParams#0" />
+                <element signature="docComment;method#lionessEnc#0;class#SphinxParams#0" />
+                <element signature="method#lionessEnc#0;class#SphinxParams#0" />
+                <element signature="docComment;method#lionessDec#0;class#SphinxParams#0" />
+                <element signature="method#lionessDec#0;class#SphinxParams#0" />
+                <element signature="docComment;method#xorRho#0;class#SphinxParams#0" />
+                <element signature="method#rho#0;class#SphinxParams#0" />
+                <element signature="docComment;method#mu#0;class#SphinxParams#0" />
+                <element signature="method#mu#0;class#SphinxParams#0" />
+                <element signature="docComment;method#pi#0;class#SphinxParams#0" />
+                <element signature="method#pi#0;class#SphinxParams#0" />
+                <element signature="docComment;method#pii#0;class#SphinxParams#0" />
+                <element signature="docComment;method#getAesKey#0;class#SphinxParams#0" />
+                <element signature="method#getAesKeyFromSecret#0;class#SphinxParams#0" />
+                <element signature="docComment;method#deriveKey#0;class#SphinxParams#0" />
+                <element signature="method#deriveKey#0;class#SphinxParams#0" />
+                <element signature="docComment;method#hb#0;class#SphinxParams#0" />
+                <element signature="method#hb#0;class#SphinxParams#0" />
+                <element signature="docComment;method#hrho#0;class#SphinxParams#0" />
+                <element signature="method#hrho#0;class#SphinxParams#0" />
+                <element signature="docComment;method#hmu#0;class#SphinxParams#0" />
+                <element signature="method#hmu#0;class#SphinxParams#0" />
+                <element signature="docComment;method#hpi#0;class#SphinxParams#0" />
+                <element signature="method#hpi#0;class#SphinxParams#0" />
+                <element signature="docComment;method#htau#0;class#SphinxParams#0" />
+                <element signature="method#htau#0;class#SphinxParams#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoopixNode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/LoopixNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MixNode.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/MixNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -200,48 +215,75 @@
         <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/GroupECC.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="71" column="22" lean-forward="false" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
-              <folding />
+              <caret line="28" column="42" lean-forward="true" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+              <folding>
+                <element signature="e#3038#3039#0" expanded="true" />
+                <element signature="e#3084#3085#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Unpacker.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/msgpack/Unpacker.java">
+      <file leaf-file-name="ClientCore.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientCore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="32" column="28" lean-forward="true" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="28" />
-              <folding />
+            <state relative-caret-position="207">
+              <caret line="44" column="63" selection-start-line="44" selection-start-column="63" selection-end-line="69" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SphinxException.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/exceptions/SphinxException.java">
+      <file leaf-file-name="LoopixClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="597">
+              <caret line="83" column="42" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="42" />
+              <folding>
+                <element signature="e#3373#3608#0" />
+                <element signature="e#3373#4470#0" />
+                <element signature="e#4476#4735#0" />
+                <element signature="e#4741#4795#0" />
+                <element signature="e#4741#5704#0" />
+                <element signature="e#5710#5769#0" />
+                <element signature="e#5710#6181#0" />
+                <element signature="e#6187#6255#0" />
+                <element signature="e#6187#7017#0" />
+                <element signature="e#6335#6965#0" />
+                <element signature="e#7023#7084#0" />
+                <element signature="e#7168#7239#0" />
+                <element signature="e#7168#7616#0" />
+                <element signature="e#7622#7675#0" />
+                <element signature="e#7622#8062#0" />
+                <element signature="e#8068#8217#0" />
+                <element signature="e#8820#8873#0" />
+                <element signature="e#8820#9261#0" />
+                <element signature="e#9267#9415#0" />
+                <element signature="e#9879#10011#0" />
+                <element signature="e#9879#10849#0" />
+                <element signature="e#10855#11003#0" />
+                <element signature="e#11555#11657#0" />
+                <element signature="e#11555#12394#0" />
+                <element signature="e#12400#12673#0" />
+                <element signature="e#12679#12969#0" />
+                <element signature="e#12975#13065#0" />
+                <element signature="e#12975#13367#0" />
+                <element signature="e#13373#13556#0" />
+                <element signature="e#13373#13872#0" />
+                <element signature="e#15766#15896#0" />
+                <element signature="e#15766#16357#0" />
+                <element signature="e#16363#16435#0" />
+                <element signature="e#16363#16713#0" />
+                <element signature="e#16927#17281#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CryptoException.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/exceptions/CryptoException.java">
+      <file leaf-file-name="SphinxParamsTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxParamsTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Packer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/msgpack/Packer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="30" column="26" lean-forward="true" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
-              <folding />
+            <state relative-caret-position="241">
+              <caret line="122" column="34" lean-forward="true" selection-start-line="122" selection-start-column="34" selection-end-line="123" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -258,8 +300,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>null</find>
-      <find>getEXP</find>
       <find>generate</find>
       <find>sampleTimeFromExponential</find>
       <find>new SphinxPacker</find>
@@ -288,12 +328,15 @@
       <find>sha256..</find>
       <find>aes.</find>
       <find>1</find>
+      <find>createForwardMessage</find>
+      <find>forward.getVaLUE()</find>
     </findStrings>
     <replaceStrings>
       <replace />
       <replace>import org.apache.commons.lang3.tuple.Pair;</replace>
       <replace>new MutablePair</replace>
       <replace>asRawValue</replace>
+      <replace>forward.body</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -645,12 +688,14 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4552231278000" />
+        <entry key="$PROJECT_DIR$" value="7574899558561" />
+        <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="3149748292" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="3931026436" />
         <entry key="$PROJECT_DIR$/../jloopix_demo/build.gradle" value="3595644502" />
         <entry key="$PROJECT_DIR$/../jloopix_demo/gradle/wrapper/gradle-wrapper.properties" value="975608090" />
         <entry key="$PROJECT_DIR$/../jloopix_demo/settings.gradle" value="3735119137" />
+        <entry key="$PROJECT_DIR$/../sphinx/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/../sphinx/build.gradle" value="2196241908" />
       </map>
     </option>
@@ -892,9 +937,6 @@
         </entry>
       </map>
     </option>
-    <option name="externalProjectsViewState">
-      <projects_view />
-    </option>
     <option name="projectSyncType">
       <map>
         <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
@@ -905,7 +947,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxProcessData.java" />
-        <option value="$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxClientTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/database/DBManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/LoopixNode.kt" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/MixNode.java" />
@@ -917,9 +958,7 @@
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/msgpack/Unpacker.java" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/LoopixNode.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/jshell/jshell_console.snippet" />
-        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/SphinxPacker.java" />
         <option value="$PROJECT_DIR$/Dockerfile" />
-        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientCore.java" />
         <option value="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientMessage.kt" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/database/DBManager.kt" />
@@ -933,19 +972,23 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/chatdemo/ChatClient.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxParams.java" />
-        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/GroupECC.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxClient.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SingleUseReplyBlock.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SingleUseReplyBlockData.java" />
-        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/client/SphinxClient.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/exceptions/SphinxException.java" />
-        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/server/SphinxNode.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/Utils.java" />
-        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/GroupECC.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/HexUtils.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/PKIEntry.java" />
+        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/SphinxPacker.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java" />
+        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/GroupECC.java" />
+        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/server/SphinxNode.java" />
+        <option value="$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxClientTest.java" />
+        <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/client/SphinxClient.java" />
         <option value="$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/SphinxParams.java" />
+        <option value="$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientCore.java" />
       </list>
     </option>
   </component>
@@ -962,7 +1005,7 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
+    <option name="x" value="2024" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -1004,25 +1047,18 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
+            <path>
+              <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
+              <item name="jloopix" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
             <path>
               <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
               <item name="sphinx" type="462c0819:PsiDirectoryNode" />
@@ -1069,34 +1105,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="exceptions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="msgpack" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
               <item name="params" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="sphinx" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="jloopix" type="b2602c69:ProjectViewProjectNode" />
@@ -1123,44 +1132,44 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="jloopix" />
+    <property name="Repository.Attach.JavaDocs" value="true" />
+    <property name="Repository.Attach.Sources" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="Sqlite (Xerial)" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15429688" />
     <property name="project.structure.side.proportion" value="0.14896074" />
-    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="true" />
-    <property name="Repository.Attach.Sources" value="true" />
-    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="Sqlite (Xerial)" />
-    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="jloopix" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
   </component>
   <component name="RecentsManager">
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="me.jscheah.sphinx" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Dropbox\SVNs\JLoopix\jloopix_demo" />
-      <recent name="C:\Dropbox\SVNs\JLoopix\jloopix\src\resources" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="me.jscheah.jloopix" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Dropbox\SVNs\JLoopix\jloopix\src\main" />
       <recent name="C:\Dropbox\SVNs\JLoopix\jloopix\src\main\resources" />
       <recent name="C:\Dropbox\SVNs\JLoopix\jloopix\src\" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="me.jscheah.jloopix" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Dropbox\SVNs\JLoopix\jloopix_demo" />
+      <recent name="C:\Dropbox\SVNs\JLoopix\jloopix\src\resources" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1175,69 +1184,37 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JAR Application.jloopix.jar (1)">
+  <component name="RunManager" selected="JUnit.me.jscheah.sphinx in sphinx_test">
     <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
     </configuration>
-    <configuration name="LoopixClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="SphinxClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sphinx_test" />
+      <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="me.jscheah.jloopix.client.*" />
+          <option name="PATTERN" value="me.jscheah.sphinx.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="MAIN_CLASS_NAME" value="me.jscheah.jloopix.client.LoopixClient" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="jloopix_main" />
-      <envs />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-    </configuration>
-    <configuration name="All in sphinx_test (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="sphinx_test" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" />
+      <option name="PACKAGE_NAME" value="me.jscheah.sphinx" />
+      <option name="MAIN_CLASS_NAME" value="me.jscheah.sphinx.SphinxClientTest" />
       <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../sphinx" />
-      <option name="ENV_VARIABLES" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
-      <envs />
       <patterns />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" />
@@ -1247,42 +1224,48 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
-      <envs />
+      <patterns />
+    </configuration>
+    <configuration name="me.jscheah.sphinx in sphinx_test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sphinx_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="me.jscheah.sphinx.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="me.jscheah.sphinx" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
       <patterns />
     </configuration>
     <configuration name="jloopix-standalone.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="JAR_PATH" value="$PROJECT_DIR$/build/libs/jloopix-standalone.jar" />
-      <envs />
     </configuration>
     <configuration name="jloopix.jar (1)" type="JarApplication" factoryName="JAR Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="JAR_PATH" value="$PROJECT_DIR$/build/libs/jloopix.jar" />
-      <envs />
     </configuration>
     <configuration name="jloopix.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/jloopix.jar" />
       <option name="PROGRAM_PARAMETERS" value="../jloopix/src/config.json loopix_keys/client_1/publicClient.bin loopix_keys/client_1/secretClient.prv" />
       <option name="WORKING_DIRECTORY" value="C:\Dropbox\SVNs\JLoopix\build" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <envs />
-    </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SUITE_NAME" />
@@ -1295,17 +1278,21 @@
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
         <value defaultName="singleModule" />
       </option>
       <option name="USE_DEFAULT_REPORTERS" value="false" />
       <option name="PROPERTIES_FILE" />
-      <envs />
       <properties />
       <listeners />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
@@ -1313,25 +1300,22 @@
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.LoopixClient" />
-      <item index="1" class="java.lang.String" itemvalue="JAR Application.jloopix.jar" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.All in sphinx_test (2)" />
-      <item index="3" class="java.lang.String" itemvalue="JAR Application.jloopix-standalone.jar" />
-      <item index="4" class="java.lang.String" itemvalue="JAR Application.jloopix.jar (1)" />
+    <list>
+      <item itemvalue="JAR Application.jloopix.jar" />
+      <item itemvalue="JAR Application.jloopix-standalone.jar" />
+      <item itemvalue="JAR Application.jloopix.jar (1)" />
+      <item itemvalue="JUnit.SphinxClientTest" />
+      <item itemvalue="JUnit.me.jscheah.sphinx in sphinx_test" />
     </list>
     <recent_temporary>
-      <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JAR Application.jloopix.jar (1)" />
-        <item index="1" class="java.lang.String" itemvalue="JAR Application.jloopix-standalone.jar" />
-        <item index="2" class="java.lang.String" itemvalue="JAR Application.jloopix.jar" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.All in sphinx_test (2)" />
-        <item index="4" class="java.lang.String" itemvalue="Application.LoopixClient" />
+      <list>
+        <item itemvalue="JUnit.me.jscheah.sphinx in sphinx_test" />
+        <item itemvalue="JUnit.SphinxClientTest" />
+        <item itemvalue="JAR Application.jloopix.jar (1)" />
+        <item itemvalue="JAR Application.jloopix-standalone.jar" />
+        <item itemvalue="JAR Application.jloopix.jar" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -1371,44 +1355,46 @@
       <workItem from="1520860146368" duration="528000" />
       <workItem from="1520956368887" duration="19000" />
       <workItem from="1520956486643" duration="2863000" />
-      <workItem from="1521109848588" duration="360000" />
+      <workItem from="1521109848588" duration="3932000" />
+      <workItem from="1522911824558" duration="19207000" />
+      <workItem from="1523021905643" duration="24906000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_sphinx_test_(2) - 2018.01.21 at 17h 09m 50s.xml">
-      <configuration name="All in sphinx_test (2)" configurationId="JUnit" />
+    <history-entry file="SphinxClientTest - 2018.04.06 at 21h 30m 28s.xml">
+      <configuration name="SphinxClientTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="All_in_sphinx_test_(2) - 2018.01.21 at 17h 10m 24s.xml">
-      <configuration name="All in sphinx_test (2)" configurationId="JUnit" />
+    <history-entry file="SphinxClientTest - 2018.04.06 at 21h 30m 34s.xml">
+      <configuration name="SphinxClientTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SphinxClientTest_integrationTestClient - 2017.11.22 at 23h 19m 38s.xml">
-      <configuration name="SphinxClientTest.integrationTestClient" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SphinxClientTest_integrationTestClient - 2017.11.22 at 23h 20m 02s.xml">
-      <configuration name="SphinxClientTest.integrationTestClient" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SphinxClientTest_integrationTestClient - 2017.11.22 at 23h 20m 20s.xml">
-      <configuration name="SphinxClientTest.integrationTestClient" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SphinxClientTest_integrationTestClient - 2017.11.22 at 23h 21m 47s.xml">
-      <configuration name="SphinxClientTest.integrationTestClient" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SphinxClientTest_integrationTestClient - 2017.11.22 at 23h 27m 03s.xml">
-      <configuration name="SphinxClientTest.integrationTestClient" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2017.11.22 at 23h 27m 22s.xml">
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 14h 51m 52s.xml">
       <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2017.11.22 at 23h 30m 47s.xml">
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 10m 11s.xml">
       <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2017.11.23 at 11h 22m 27s.xml">
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 13m 58s.xml">
+      <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 14m 19s.xml">
+      <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 15m 54s.xml">
+      <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 16m 16s.xml">
+      <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 18m 48s.xml">
+      <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="me_jscheah_sphinx_in_sphinx_test - 2018.04.07 at 15h 19m 02s.xml">
       <configuration name="me.jscheah.sphinx in sphinx_test" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="146778000" />
+    <option name="totallyTimeSpent" value="194463000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1420,40 +1406,42 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32826087" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13802083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32873806" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32717392" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5005208" side_tool="true" weight="0.32837406" />
+      <window_info anchor="right" id="Maven Projects" order="3" weight="0.32995737" />
+      <window_info anchor="bottom" id="Database Changes" weight="0.32897604" />
+      <window_info id="Capture Tool" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.49947917" weight="0.3278867" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32995737" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="UI Designer" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39978212" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32897604" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32661718" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info id="Image Layers" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32897604" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.54684097" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32897604" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.141258" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3278867" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.32995737" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="right" id="Dynamic Properties" order="3" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="3" side_tool="true" weight="0.32995737" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1467,12 +1455,21 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="20" />
+      <option name="time" value="30" />
     </breakpoint-manager>
-    <watches-manager />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>System.out.println(packet.toJson())</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>packet.toJson()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>&quot;SELECT * FROM Providers WHERE name = $name&quot;</expression-string>
         <language-id>kotlin</language-id>
@@ -1508,130 +1505,51 @@
         <language-id>kotlin</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>((ImmutableBinaryValueImpl) ((org.msgpack.value.Value[])((ImmutableArrayValueImpl)values).array)[1]).asString()</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>org.msgpack.value.impl.ImmutableArrayValueImpl,org.msgpack.value.Value[]</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>((org.msgpack.value.Value[])((ImmutableArrayValueImpl)values).array)[1]</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>org.msgpack.value.impl.ImmutableArrayValueImpl,org.msgpack.value.Value[]</custom-info>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.mina/mina-core/2.0.16/660fb813ca1c8d8a936f894324091400a5ac128a/mina-core-2.0.16-sources.jar!/org/apache/mina/filter/logging/LoggingFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="21" column="7" lean-forward="true" selection-start-line="21" selection-start-column="7" selection-end-line="21" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.mina/mina-core/2.0.16/660fb813ca1c8d8a936f894324091400a5ac128a/mina-core-2.0.16-sources.jar!/org/apache/mina/core/session/IoSessionConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="44" column="9" lean-forward="false" selection-start-line="44" selection-start-column="9" selection-end-line="44" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/jshell/jshell_console.snippet" />
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxClientTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="77" column="44" lean-forward="false" selection-start-line="77" selection-start-column="44" selection-end-line="77" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
-    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="26" lean-forward="false" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientMessage.kt" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/database/DBManager.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="101" column="1" lean-forward="false" selection-start-line="101" selection-start-column="1" selection-end-line="101" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="753">
-          <caret line="47" column="55" lean-forward="false" selection-start-line="47" selection-start-column="43" selection-end-line="47" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixMessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../jloopix_demo/settings.gradle" />
     <entry file="file://$PROJECT_DIR$/../jloopix_demo/src/main/java/me/jscheah/jloopix/chatdemo/ChatClient.java" />
     <entry file="file://$PROJECT_DIR$/../jloopix_demo/build.gradle" />
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="53" lean-forward="false" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
+          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_60/src.zip!/java/util/Scanner.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/Config.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="11" lean-forward="false" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Dockerfile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="9" column="74" lean-forward="false" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
+          <caret line="9" column="74" selection-start-line="9" selection-start-column="74" selection-end-line="9" selection-end-column="74" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/chatdemo/ChatClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="782">
-          <caret line="54" column="41" lean-forward="false" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <caret line="54" column="41" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.mina/mina-core/2.0.16/660fb813ca1c8d8a936f894324091400a5ac128a/mina-core-2.0.16-sources.jar!/org/apache/mina/transport/socket/nio/NioDatagramConnector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="49" column="11" lean-forward="false" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
+          <caret line="49" column="11" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.mina/mina-core/2.0.16/660fb813ca1c8d8a936f894324091400a5ac128a/mina-core-2.0.16-sources.jar!/org/apache/mina/core/service/IoConnector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5">
-          <caret line="132" column="18" lean-forward="false" selection-start-line="132" selection-start-column="18" selection-end-line="132" selection-end-column="18" />
+          <caret line="132" column="18" selection-start-line="132" selection-start-column="18" selection-end-line="132" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -1639,100 +1557,24 @@
     <entry file="file://$PROJECT_DIR$/src/config.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" column="1" lean-forward="false" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/LoopixNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_60/src.zip!/java/util/concurrent/ScheduledExecutorService.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_60/src.zip!/java/util/concurrent/ScheduledThreadPoolExecutor.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_60/src.zip!/java/util/concurrent/Executors.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="118" column="5" lean-forward="false" selection-start-line="118" selection-start-column="5" selection-end-line="118" selection-end-column="5" />
-          <folding>
-            <element signature="method#LoopixClient#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#fromFile#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#fromFile#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#run#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#setupNetwork#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#setupNetwork#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#getNetworkInfo#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#getNetworkInfo#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#subscribeToProvider#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#subscribeToProvider#0;class#LoopixClient#0" expanded="false" />
-            <element signature="e#6296#6926#0" expanded="false" />
-            <element signature="docComment;method#turnOnPacketProcessing#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#retrieveMessages#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#retrieveMessages#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#makeDropStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#makeDropStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#sendDropMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#sendDropMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#makeLoopStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#makeLoopStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#sendLoopMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#sendLoopMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#makeRealStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#makeRealStream#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#sendRealMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#sendRealMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#send#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#send#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#constructFullPath#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#constructFullPath#1;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#takeRandomMixChain#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#takeRandomMixChain#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#sampleTimeFromExponential#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#sampleTimeFromExponential#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#addMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#addMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="docComment;method#testRealMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#testRealMessage#0;class#LoopixClient#0" expanded="false" />
-            <element signature="method#main#0;class#LoopixClient#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/SphinxPacker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="61" column="34" lean-forward="false" selection-start-line="61" selection-start-column="34" selection-end-line="61" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientCore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="49" column="18" lean-forward="false" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/Core.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk15on/1.58/6dea249598adbb3a58d67778022c9c603215fa57/bcprov-jdk15on-1.58-sources.jar!/org/bouncycastle/math/ec/ECPoint.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2">
-          <caret line="297" column="19" lean-forward="false" selection-start-line="297" selection-start-column="19" selection-end-line="297" selection-end-column="19" />
+          <caret line="297" column="19" selection-start-line="297" selection-start-column="19" selection-end-line="297" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/src.zip!/java/math/BigInteger.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-6179">
-          <caret line="299" column="11" lean-forward="false" selection-start-line="299" selection-start-column="11" selection-end-line="299" selection-end-column="11" />
+          <caret line="299" column="11" selection-start-line="299" selection-start-column="11" selection-end-line="299" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1740,8 +1582,7 @@
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/HexUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="15" column="1" lean-forward="false" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
-          <folding />
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1756,130 +1597,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="31" lean-forward="true" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SingleUseReplyBlockData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="7" lean-forward="false" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
-          <folding />
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxProcessData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxHeader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="13" column="13" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxParamsTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="37" column="53" lean-forward="true" selection-start-line="37" selection-start-column="53" selection-end-line="37" selection-end-column="53" />
-          <folding />
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk15on/1.58/6dea249598adbb3a58d67778022c9c603215fa57/bcprov-jdk15on-1.58-sources.jar!/org/bouncycastle/jce/provider/BouncyCastleProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1174">
-          <caret line="218" column="45" lean-forward="false" selection-start-line="218" selection-start-column="36" selection-end-line="218" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/SphinxParams.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="204" column="4" lean-forward="false" selection-start-line="204" selection-start-column="4" selection-end-line="204" selection-end-column="4" />
-          <folding>
-            <element signature="docComment;method#SphinxParams#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#SphinxParams#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#SphinxParams#1;class#SphinxParams#0" expanded="false" />
-            <element signature="method#SphinxParams#1;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#SphinxParams#2;class#SphinxParams#0" expanded="false" />
-            <element signature="method#SphinxParams#2;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#aesEncrypt#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#aesEncrypt#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#hash#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#lionessEnc#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#lionessEnc#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#lionessDec#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#lionessDec#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#xorRho#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#xorRho#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#mu#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#mu#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#pi#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#pi#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#pii#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#pii#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#getAesKey#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#getAesKey#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#deriveKey#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#deriveKey#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#hb#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#hb#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#hrho#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#hrho#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#hmu#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#hmu#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#hpi#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#hpi#0;class#SphinxParams#0" expanded="false" />
-            <element signature="docComment;method#htau#0;class#SphinxParams#0" expanded="false" />
-            <element signature="method#htau#0;class#SphinxParams#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/server/SphinxNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="41" column="9" lean-forward="true" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/GroupECC.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="71" column="22" lean-forward="false" selection-start-line="71" selection-start-column="22" selection-end-line="71" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/msgpack/Unpacker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="32" column="28" lean-forward="true" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="28" />
-          <folding />
+          <caret line="218" column="45" selection-start-line="218" selection-start-column="36" selection-end-line="218" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/exceptions/SphinxException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/exceptions/CryptoException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1887,32 +1639,296 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="30" column="26" lean-forward="true" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="26" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/Config.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="11" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/Core.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/database/DBManager.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="793">
+          <caret line="101" column="1" selection-start-line="101" selection-start-column="1" selection-end-line="101" selection-end-column="1" />
+          <folding>
+            <marker date="1516961764000" expanded="true" signature="544:566" ph="SELECT * FRO... Mixnodes" />
+            <marker date="1516961764000" expanded="true" signature="1120:1143" ph="SELECT * FRO... Providers" />
+            <marker date="1516961764000" expanded="true" signature="1640:1659" ph="SELECT * FRO... Users" />
+            <marker date="1516961764000" expanded="true" signature="2351:2389" ph="SELECT * FRO... Providers" />
+            <marker date="1516961764000" expanded="true" signature="3109:3143" ph="SELECT * FRO... Users" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk15on/1.58/6dea249598adbb3a58d67778022c9c603215fa57/bcprov-jdk15on-1.58-sources.jar!/org/bouncycastle/util/Arrays.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="1078" column="25" selection-start-line="1078" selection-start-column="25" selection-end-line="1078" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_152/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/SphinxPacker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="39" column="28" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="26" lean-forward="true" selection-start-column="26" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/SphinxHeader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="27" column="94" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/msgpack/Unpacker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/GroupECCTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxClientTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="24" column="39" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/Provider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/me.jscheah.sphinx.params.SphinxParams">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>me.jscheah.sphinx.params.SphinxParams</OriginalElement>
+          <nodes>
+            <node x="" y="">me.jscheah.sphinx.params.SphinxParams</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="61.0" y="14.5" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/LoopixNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/server/SphinxNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="55" column="18" selection-start-line="55" selection-start-column="15" selection-end-line="55" selection-end-column="18" />
+          <folding>
+            <element signature="docComment;method#sphinxProcess#0;class#SphinxNode#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="597">
+          <caret line="83" column="42" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="42" />
+          <folding>
+            <element signature="e#3373#3608#0" />
+            <element signature="e#3373#4470#0" />
+            <element signature="e#4476#4735#0" />
+            <element signature="e#4741#4795#0" />
+            <element signature="e#4741#5704#0" />
+            <element signature="e#5710#5769#0" />
+            <element signature="e#5710#6181#0" />
+            <element signature="e#6187#6255#0" />
+            <element signature="e#6187#7017#0" />
+            <element signature="e#6335#6965#0" />
+            <element signature="e#7023#7084#0" />
+            <element signature="e#7168#7239#0" />
+            <element signature="e#7168#7616#0" />
+            <element signature="e#7622#7675#0" />
+            <element signature="e#7622#8062#0" />
+            <element signature="e#8068#8217#0" />
+            <element signature="e#8820#8873#0" />
+            <element signature="e#8820#9261#0" />
+            <element signature="e#9267#9415#0" />
+            <element signature="e#9879#10011#0" />
+            <element signature="e#9879#10849#0" />
+            <element signature="e#10855#11003#0" />
+            <element signature="e#11555#11657#0" />
+            <element signature="e#11555#12394#0" />
+            <element signature="e#12400#12673#0" />
+            <element signature="e#12679#12969#0" />
+            <element signature="e#12975#13065#0" />
+            <element signature="e#12975#13367#0" />
+            <element signature="e#13373#13556#0" />
+            <element signature="e#13373#13872#0" />
+            <element signature="e#15766#15896#0" />
+            <element signature="e#15766#16357#0" />
+            <element signature="e#16363#16435#0" />
+            <element signature="e#16363#16713#0" />
+            <element signature="e#16927#17281#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/test/java/me/jscheah/sphinx/SphinxParamsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="122" column="34" lean-forward="true" selection-start-line="122" selection-start-column="34" selection-end-line="123" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/client/SphinxClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="95" column="84" lean-forward="true" selection-start-line="95" selection-start-column="84" selection-end-line="95" selection-end-column="84" />
+        <state relative-caret-position="36">
+          <caret line="220" column="68" selection-start-line="220" selection-start-column="68" selection-end-line="220" selection-end-column="68" />
           <folding>
-            <element signature="method#padBody#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#unpadBody#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#Nenc#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#Nenc#1;class#SphinxClient#0" expanded="false" />
-            <element signature="method#randomSubset#0;class#SphinxClient#0" expanded="false" />
-            <element signature="class#HeaderRecord#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#HeaderRecord#0;class#HeaderRecord#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#createHeader#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#createForwardMessage#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#createSURB#0;class#SphinxClient#0" expanded="false" />
-            <element signature="e#9663#9886#0" expanded="false" />
-            <element signature="method#packageSurb#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#receiveForward#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#receiveSurb#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#packMessage#0;class#SphinxClient#0" expanded="false" />
-            <element signature="method#unpackMessage#0;class#SphinxClient#0" expanded="false" />
+            <element signature="method#padBody#0;class#SphinxClient#0" />
+            <element signature="method#unpadBody#0;class#SphinxClient#0" />
+            <element signature="method#randomSubset#0;class#SphinxClient#0" />
+            <element signature="class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="docComment;field#alpha#0;class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="docComment;field#s#0;class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="docComment;field#b#0;class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="docComment;field#aes#0;class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="method#HeaderRecord#0;class#HeaderRecord#0;class#SphinxClient#0" />
+            <element signature="class#SphinxHeaderData#0;class#SphinxClient#0" />
+            <element signature="method#SphinxHeaderData#0;class#SphinxHeaderData#0;class#SphinxClient#0" />
+            <element signature="docComment;method#createHeader#0;class#SphinxClient#0" />
+            <element signature="method#createForwardMessage#0;class#SphinxClient#0" />
+            <element signature="method#createSURB#0;class#SphinxClient#0" />
+            <element signature="e#10443#10666#0" />
+            <element signature="method#packageSURB#0;class#SphinxClient#0" />
+            <element signature="method#receiveForward#0;class#SphinxClient#0" />
+            <element signature="method#receiveSurb#0;class#SphinxClient#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/SphinxParams.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="47" column="23" selection-start-line="47" selection-start-column="23" selection-end-line="47" selection-end-column="23" />
+          <folding>
+            <element signature="docComment;method#SphinxParams#0;class#SphinxParams#0" />
+            <element signature="docComment;method#SphinxParams#1;class#SphinxParams#0" />
+            <element signature="docComment;method#SphinxParams#2;class#SphinxParams#0" />
+            <element signature="docComment;method#aesEncrypt#0;class#SphinxParams#0" />
+            <element signature="method#aesEncrypt#0;class#SphinxParams#0" />
+            <element signature="docComment;method#hash#0;class#SphinxParams#0" />
+            <element signature="docComment;method#lionessEnc#0;class#SphinxParams#0" />
+            <element signature="method#lionessEnc#0;class#SphinxParams#0" />
+            <element signature="docComment;method#lionessDec#0;class#SphinxParams#0" />
+            <element signature="method#lionessDec#0;class#SphinxParams#0" />
+            <element signature="docComment;method#xorRho#0;class#SphinxParams#0" />
+            <element signature="method#rho#0;class#SphinxParams#0" />
+            <element signature="docComment;method#mu#0;class#SphinxParams#0" />
+            <element signature="method#mu#0;class#SphinxParams#0" />
+            <element signature="docComment;method#pi#0;class#SphinxParams#0" />
+            <element signature="method#pi#0;class#SphinxParams#0" />
+            <element signature="docComment;method#pii#0;class#SphinxParams#0" />
+            <element signature="docComment;method#getAesKey#0;class#SphinxParams#0" />
+            <element signature="method#getAesKeyFromSecret#0;class#SphinxParams#0" />
+            <element signature="docComment;method#deriveKey#0;class#SphinxParams#0" />
+            <element signature="method#deriveKey#0;class#SphinxParams#0" />
+            <element signature="docComment;method#hb#0;class#SphinxParams#0" />
+            <element signature="method#hb#0;class#SphinxParams#0" />
+            <element signature="docComment;method#hrho#0;class#SphinxParams#0" />
+            <element signature="method#hrho#0;class#SphinxParams#0" />
+            <element signature="docComment;method#hmu#0;class#SphinxParams#0" />
+            <element signature="method#hmu#0;class#SphinxParams#0" />
+            <element signature="docComment;method#hpi#0;class#SphinxParams#0" />
+            <element signature="method#hpi#0;class#SphinxParams#0" />
+            <element signature="docComment;method#htau#0;class#SphinxParams#0" />
+            <element signature="method#htau#0;class#SphinxParams#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/MixNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../sphinx/src/main/java/me/jscheah/sphinx/params/GroupECC.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="28" column="42" lean-forward="true" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+          <folding>
+            <element signature="e#3038#3039#0" expanded="true" />
+            <element signature="e#3084#3085#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientMessage.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/LoopixMessageListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/me/jscheah/jloopix/client/ClientCore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="44" column="63" selection-start-line="44" selection-start-column="63" selection-end-line="69" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1970,11 +1986,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>jloopix_main|jloopix</last-edited>
+          <last-edited>jloopix</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.14896074" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

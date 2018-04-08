@@ -15,9 +15,9 @@ import java.security.*;
 public class SphinxParams {
 
     public GroupECC group;
-    public int maxLength;   // Size of header
-    public int m;   // Size of message body
-    public int k;   // Security parameter
+    public int headerSize;
+    public int bodySize;
+    public int k;           // security parameter
     private Cipher aes;
     private MessageDigest sha256;
 
@@ -46,8 +46,8 @@ public class SphinxParams {
      */
     public SphinxParams(int headerLen, int bodyLen) throws CryptoException {
         group = new GroupECC();
-        maxLength = headerLen;
-        m = bodyLen;
+        headerSize = headerLen;
+        bodySize = bodyLen;
         k = 16;
         try {
             aes = Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
@@ -87,7 +87,7 @@ public class SphinxParams {
      * @param data data to be hash
      * @return SHA-256 hash of {@code data}
      */
-    public byte[] hash(byte[] data) {
+    private byte[] hash(byte[] data) {
         return sha256.digest(data);
     }
 
@@ -209,13 +209,14 @@ public class SphinxParams {
      * @return encrypted data
      * @throws CryptoException
      */
-    public byte[] xorRho(byte[] key, byte[] plain) throws CryptoException {
+    public byte[] rho(byte[] key, byte[] plain) throws CryptoException {
         assert key.length == this.k;
         return aesEncrypt(key, plain, new byte[16]);
     }
 
     /**
      * Generates a MAC for {@code data} keyed by {@code key}
+     * Uses HMAC-SHA256 truncated to the security parameter
      * @param key MAC key
      * @param data MAC data
      * @return MAC for the data
@@ -246,7 +247,7 @@ public class SphinxParams {
      */
     public byte[] pi(byte[] key, byte[] data) throws CryptoException {
         assert key.length == this.k;
-        assert data.length == this.m;
+        assert data.length == this.bodySize;
 
         return lionessEnc(key, data);
     }
@@ -261,7 +262,7 @@ public class SphinxParams {
      */
     public byte[] pii(byte[] key, byte[] data) throws CryptoException {
         assert key.length == this.k;
-        assert data.length == this.m;
+        assert data.length == this.bodySize;
 
         return lionessDec(key, data);
     }
@@ -271,7 +272,7 @@ public class SphinxParams {
      * @param s an ECPoint
      * @return an AES key
      */
-    public byte[] getAesKey(ECPoint s) {
+    public byte[] getAesKeyFromSecret(ECPoint s) {
         return Arrays.copyOf(
                 sha256.digest(
                         Arrays.concatenate(
