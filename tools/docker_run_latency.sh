@@ -31,6 +31,8 @@ for ((i=1;i<=PROVIDER_COUNT;i++)); do
     twistd --nodaemon --python=run_provider.py &
 done
 
+wait
+
 for ((i=1;i<=MIXNODE_COUNT;i++)); do
     echo "Starting mixnode $i"
     $DOCKER_PATH rm -f "mix_$i" > /dev/null 2>&1
