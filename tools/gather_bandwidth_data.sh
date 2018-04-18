@@ -11,9 +11,11 @@ if grep -q Microsoft /proc/version; then
     DOCKER_PATH="docker.exe"
     # Convert current directory to Windows style paths
     DIR=$(echo "$(pwd)" | sed -e 's|/mnt/\(.\)/|\1\:/|g')
+    NET="--net=host"
 else
     DOCKER_PATH="docker"
     DIR=$(pwd)
+    NET=""
 fi
 
 DATE=`date +%Y-%m-%d-%H-%M-%S`
@@ -26,7 +28,7 @@ cp -R ../build/loopix_keys/ ../results/bandwidth/$DATE/keys/
 cp ../build/jloopix_config.json ../results/bandwidth/$DATE/config.json
 
 $DOCKER_PATH run --name="gather" --rm -d \
-    -v "$DIR/../results:/data" --net=host \
+    -v "$DIR/../results:/data" $NET \
     marsmensch/tcpdump -i any \
     "udp" \
     -w "/data/bandwidth/$DATE/network.pcap"

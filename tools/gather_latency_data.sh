@@ -11,9 +11,11 @@ if grep -q Microsoft /proc/version; then
     DOCKER_PATH="docker.exe"
     # Convert current directory to Windows style paths
     DIR=$(echo "$(pwd)" | sed -e 's|/mnt/\(.\)/|\1\:/|g')
+    NET="--net=host"
 else
     DOCKER_PATH="docker"
     DIR=$(pwd)
+    NET=""
 fi
 
 DATE=`date +%Y-%m-%d-%H-%M-%S`
