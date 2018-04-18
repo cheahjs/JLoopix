@@ -18,12 +18,12 @@ fi
 
 DATE=`date +%Y-%m-%d-%H-%M-%S`
 
-echo "Gathering data for network into folder results/bandwidth/$DATE"
+echo "Gathering data for network into folder ../results/bandwidth/$DATE"
 
-mkdir results/bandwidth/$DATE
-mkdir results/bandwidth/$DATE/logs/
-cp -R build/loopix_keys/ results/bandwidth/$DATE/keys/
-cp build/jloopix_config.json results/bandwidth/$DATE/config.json
+mkdir -p ../results/bandwidth/$DATE
+mkdir -p ../results/bandwidth/$DATE/logs
+cp -R ../build/loopix_keys/ ../results/bandwidth/$DATE/keys/
+cp ../build/jloopix_config.json ../results/bandwidth/$DATE/config.json
 
 $DOCKER_PATH run --name="gather" --rm -d \
     -v "$DIR/../results:/data" --net=host \
@@ -35,13 +35,13 @@ sleep 300
 
 $DOCKER_PATH stop gather
 for ((i=1;i<=PROVIDER_COUNT;i++)); do
-    $DOCKER_PATH logs "provider_$i" > "results/bandwidth/$DATE/logs/provider_$i"
+    $DOCKER_PATH logs "provider_$i" > "../results/bandwidth/$DATE/logs/provider_$i"
 done
 
 for ((i=1;i<=MIXNODE_COUNT;i++)); do
-    $DOCKER_PATH logs "mix_$i" > "results/bandwidth/$DATE/logs/mix_$i"
+    $DOCKER_PATH logs "mix_$i" > "../results/bandwidth/$DATE/logs/mix_$i"
 done
 
 for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
-    $DOCKER_PATH logs "client_$i" > "results/bandwidth/$DATE/logs/client_$i"
+    $DOCKER_PATH logs "client_$i" > "../results/bandwidth/$DATE/logs/client_$i"
 done

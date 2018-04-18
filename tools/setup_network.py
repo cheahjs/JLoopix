@@ -5,14 +5,18 @@ import argparse
 parser = argparse.ArgumentParser(
     description="Sets up the network configuration")
 parser.add_argument('--rate-real', type=float,
-                    help='Sets the rate parameter for real messages', default=1 / 2.0)
+                    help='Sets the rate parameter for real messages. Parameter is the rate of messages per second (lambda).', 
+                    default=1 / 2.0)
 parser.add_argument('--rate-drop', type=float,
-                    help='Sets the rate parameter for drop messages', default=1 / 2.0)
+                    help='Sets the rate parameter for drop messages. Parameter is the rate of messages per second (lambda).',
+                    default=1 / 2.0)
 parser.add_argument('--rate-loop', type=float,
-                    help='Sets the rate parameter for loop messages', default=1 / 2.0)
+                    help='Sets the rate parameter for loop messages. Parameter is the rate of messages per second (lambda).',
+                    default=1 / 2.0)
 
 parser.add_argument('--delay', type=float,
-                    help='Sets the delay parameter for messages', default=0.001)
+                    help='Sets the delay parameter for messages. Parameter is the average delay per hop in seconds (1/mu). Should be >= 2/lambda.', 
+                    default=0.001)
 
 parser.add_argument('--mix', type=int,
                     help='Sets the number of mix nodes', default=6)
@@ -79,7 +83,7 @@ config = {
         "DATABASE_NAME": "example.db"
     },
     "parametersProviders": {
-        "MAX_RETRIEVE": "50",
+        "MAX_RETRIEVE": "0" if args.push else "50",
         "NOISE_LENGTH": "500",
         "EXP_PARAMS_LOOPS": scale_loop_str,
         "EXP_PARAMS_DELAY": delay_str,
@@ -90,7 +94,7 @@ config = {
 }
 
 with open('../build/loopix_config.json', 'w+') as f:
-    json.dump(config, f)
+    json.dump(config, f, indent=4)
 
 with open('../build/jloopix_config.json', 'w+') as f:
-    json.dump(jconfig, f)
+    json.dump(jconfig, f, indent=4)
