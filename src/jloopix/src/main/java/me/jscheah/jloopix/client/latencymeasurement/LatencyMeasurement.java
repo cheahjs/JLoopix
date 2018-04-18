@@ -39,8 +39,9 @@ public class LatencyMeasurement implements LoopixMessageBuilder, LoopixMessageLi
     public void onMessageReceived(LoopixClient client, byte[] message) {
         long receivedTime = System.nanoTime();
         long sentTime = bytesToLong(message);
+        long timeTaken = receivedTime - sentTime;
         try {
-            dataFile.write(String.format("%d,%d\n", receivedTime, sentTime));
+            dataFile.write(String.format("%d,%d,%d\n", receivedTime, sentTime, timeTaken));
             dataFile.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
