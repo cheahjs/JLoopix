@@ -13,17 +13,6 @@ else
     DIR=$(pwd)
 fi
 
-for ((i=1;i<=PROVIDER_COUNT;i++)); do
-    echo "Stopping provider $i"
-    $DOCKER_PATH rm -f "provider_$i" > /dev/null 2>&1
-done
-
-for ((i=1;i<=MIXNODE_COUNT;i++)); do
-    echo "Stopping mixnode $i"
-    $DOCKER_PATH rm -f "mix_$i" > /dev/null 2>&1
-done
-
-for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
-    echo "Stopping client $i"
-    $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
-done
+TOTAL_CLIENTS=$((CLIENT_COUNT+JAVA_COUNT))
+echo "Stopping loopix containers"
+eval $DOCKER_PATH rm -f provider_{1..$PROVIDER_COUNT} mix_{1..$MIXNODE_COUNT} client_{1..$TOTAL_CLIENTS} > /dev/null 2>&1

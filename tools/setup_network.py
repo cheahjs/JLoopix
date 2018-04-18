@@ -21,16 +21,18 @@ parser.add_argument('--provider', type=int,
 parser.add_argument('--client', type=int,
                     help='Sets the number of python client nodes', default=5)
 parser.add_argument('--client-java', type=int,
-                    help='Sets the number of java client nodes', default=1)
+                    help='Sets the number of java client nodes', default=1) 
 
+parser.add_argument('--push', type=bool,
+                    help='Sets provider behaviour when receiving messages', default=False)
 args = parser.parse_args()
 
 # Write network_config.sh with node counts
-with open('network_config.sh') as f:
+with open('network_config.sh', 'w') as f:
     f.writelines([
-        'MIXNODE_COUNT=%d' % args.mix,
-        'PROVIDER_COUNT=%d' % args.provider,
-        'CLIENT_COUNT=%d' % args.client,
+        'MIXNODE_COUNT=%d\n' % args.mix,
+        'PROVIDER_COUNT=%d\n' % args.provider,
+        'CLIENT_COUNT=%d\n' % args.client,
         'JAVA_COUNT=%d' % args.client_java
     ])
 
@@ -82,7 +84,8 @@ config = {
         "EXP_PARAMS_LOOPS": scale_loop_str,
         "EXP_PARAMS_DELAY": delay_str,
         "MAX_DELAY_TIME": "-432000",
-        "DATABASE_NAME": "example.db"
+        "DATABASE_NAME": "example.db",
+        "PUSH_MESSAGES": args.push
     }
 }
 

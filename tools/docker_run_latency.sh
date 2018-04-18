@@ -46,7 +46,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
 done
 
 for ((i=1;i<=JAVA_COUNT;i++)); do
-    echo "Starting Java client $i"
+    echo "Starting Java chat client $i"
     $DOCKER_PATH rm -f "client_$i" > /dev/null 2>&1
     $DOCKER_PATH run \
     --net=host \
@@ -56,9 +56,11 @@ for ((i=1;i<=JAVA_COUNT;i++)); do
     -v "$DIR/../build/jloopix_config.json:/config.json" \
     -w "/" \
     -dit \
+    --entrypoint="/bin/sh" \
     --name="client_$i" \
     deathmax/jloopix \
-    config.json publicClient.bin secretClient.prv
+    "-c" \
+    "/usr/bin/java -Dorg.slf4j.simpleLogger.defaultLogLevel=off -Done-jar.main.class=me.jscheah.jloopix.client.latencymeasurement.LatencyMeasurement -jar /jloopix.jar config.json publicClient.bin secretClient.prv"
 done
 
 for ((i=(JAVA_COUNT+1);i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do

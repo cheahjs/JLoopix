@@ -8,13 +8,13 @@ else
 fi
 
 # Build Loopix (python) image
+cd ../external
 $DOCKER_PATH build \
     -t deathmax/loopix \
-    -f external/Dockerfile \
     .
 
 # Build JLoopix image
-cd jloopix
+cd ../src/jloopix
 $DOCKER_PATH build \
     -t deathmax/jloopix \
     .

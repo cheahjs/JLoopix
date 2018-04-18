@@ -16,7 +16,7 @@ for ((i=1;i<=PROVIDER_COUNT;i++)); do
         python "$CWD/../external/loopix/loopix/setup_provider.py" $((30000 + $i)) $HOST "provider_$i")
 done
 
-for ((i=1;i<=CLIENT_COUNT;i++)); do
+for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     CLIENT_PROVIDER=$((($i % $PROVIDER_COUNT) + 1))
     printf "Creating client $i with provider $CLIENT_PROVIDER\n"
     mkdir -p "../build/loopix_keys/client_$i/"

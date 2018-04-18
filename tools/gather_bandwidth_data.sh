@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage
-# ./gather_data.sh
+# ./gather_bandwidth_data.sh
 
 # Import network counts
 source network_config.sh
@@ -18,31 +18,30 @@ fi
 
 DATE=`date +%Y-%m-%d-%H-%M-%S`
 
-echo "Gathering data for network into folder results/$DATE"
+echo "Gathering data for network into folder results/bandwidth/$DATE"
 
-mkdir results/$DATE
-mkdir results/$DATE/logs/
-cp -R build/loopix_keys/ results/$DATE/keys/
-cp build/jloopix_config.json results/$DATE/config.json
+mkdir results/bandwidth/$DATE
+mkdir results/bandwidth/$DATE/logs/
+cp -R build/loopix_keys/ results/bandwidth/$DATE/keys/
+cp build/jloopix_config.json results/bandwidth/$DATE/config.json
 
 $DOCKER_PATH run --name="gather" --rm -d \
     -v "$DIR/../results:/data" --net=host \
     marsmensch/tcpdump -i any \
     "udp" \
-    -w "/data/$DATE/network.pcap"
-    # "port $((31000 + $1))" and "udp" \
+    -w "/data/bandwidth/$DATE/network.pcap"
 
 sleep 300
 
 $DOCKER_PATH stop gather
 for ((i=1;i<=PROVIDER_COUNT;i++)); do
-    $DOCKER_PATH logs "provider_$i" > "results/$DATE/logs/provider_$i"
+    $DOCKER_PATH logs "provider_$i" > "results/bandwidth/$DATE/logs/provider_$i"
 done
 
 for ((i=1;i<=MIXNODE_COUNT;i++)); do
-    $DOCKER_PATH logs "mix_$i" > "results/$DATE/logs/mix_$i"
+    $DOCKER_PATH logs "mix_$i" > "results/bandwidth/$DATE/logs/mix_$i"
 done
 
 for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
-    $DOCKER_PATH logs "client_$i" > "results/$DATE/logs/client_$i"
+    $DOCKER_PATH logs "client_$i" > "results/bandwidth/$DATE/logs/client_$i"
 done
