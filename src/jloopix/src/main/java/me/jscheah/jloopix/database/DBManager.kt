@@ -1,8 +1,8 @@
 package me.jscheah.jloopix.database
 
-import me.jscheah.jloopix.MixNode
-import me.jscheah.jloopix.Provider
-import me.jscheah.jloopix.User
+import me.jscheah.jloopix.nodes.MixNode
+import me.jscheah.jloopix.nodes.Provider
+import me.jscheah.jloopix.nodes.User
 import me.jscheah.sphinx.msgpack.Unpacker
 import org.bouncycastle.math.ec.ECPoint
 import java.sql.Connection

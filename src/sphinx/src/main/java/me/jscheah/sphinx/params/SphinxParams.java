@@ -272,7 +272,7 @@ public class SphinxParams {
      * @param s an ECPoint
      * @return an AES key
      */
-    public byte[] getAesKeyFromSecret(ECPoint s) {
+    public byte[] deriveAesKeyFromSecret(ECPoint s) {
         return Arrays.copyOf(
                 sha256.digest(
                         Arrays.concatenate(

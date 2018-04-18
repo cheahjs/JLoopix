@@ -1,5 +1,6 @@
 package me.jscheah.jloopix;
 
+import me.jscheah.jloopix.nodes.LoopixNode;
 import me.jscheah.sphinx.client.SphinxClient;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
@@ -41,21 +42,21 @@ public class SphinxPacker {
                                    List<LoopixNode> path,
                                    byte[] message)
             throws IOException, CryptoException, SphinxException {
-        return makePacket(receiver, path, message, false, null);
+        return makePacket(receiver, path, message, false, new byte[] {0x01});
     }
 
     public SphinxPacket makeDropPacket(LoopixNode receiver,
                                        List<LoopixNode> path,
                                        byte[] message)
             throws IOException, CryptoException, SphinxException {
-        return makePacket(receiver, path, message, true, null);
+        return makePacket(receiver, path, message, true, new byte[] {0x02});
     }
 
     private SphinxPacket makePacket(LoopixNode receiver,
                                     List<LoopixNode> path,
                                     byte[] message,
                                     boolean dropFlag,
-                                    Object typeFlag)
+                                    byte[] typeFlag)
             throws IOException, CryptoException, SphinxException {
         List<ECPoint> nodeKeys = getNodesPublicKeys(path);
         List<byte[]> routingInfo = getRouting(path, dropFlag, typeFlag);
@@ -71,13 +72,13 @@ public class SphinxPacker {
         return nodes.stream().map(x -> x.publicKey).collect(Collectors.toList());
     }
 
-    private List<byte[]> getRouting(List<LoopixNode> path, boolean dropFlag, Object typeFlag) throws IOException {
+    private List<byte[]> getRouting(List<LoopixNode> path, boolean dropFlag, byte[] typeFlag) throws IOException {
         List<byte[]> routing = new LinkedList<>();
         for (int i = 0; i < path.size(); i++) {
             LoopixNode node = path.get(i);
             double delay = generateRandomDelay();
             boolean drop = (i == path.size() - 1) && dropFlag;
-            routing.add(SphinxClient.Nenc(new ImmutableArrayValueImpl(new Value[] {
+            routing.add(SphinxClient.encodeNode(new ImmutableArrayValueImpl(new Value[] {
                     new ImmutableArrayValueImpl(new Value[] {
                             new ImmutableStringValueImpl(node.host),
                             new ImmutableLongValueImpl(node.port)
@@ -93,11 +94,11 @@ public class SphinxPacker {
 
     public SphinxProcessData decryptSphinxPacket(Pair<SphinxHeader, byte[]> packet, BigInteger key)
             throws CryptoException, SphinxException {
-        SphinxProcessData data = SphinxNode.sphinxProcess(this.params, key, packet.getKey(), packet.getValue());
+        SphinxProcessData data = SphinxNode.processSphinxPacket(this.params, key, packet.getKey(), packet.getValue());
         return new SphinxProcessData(data.tag, data.routing, data.header, data.delta);
     }
 
-    public Value handleReceivedForward(byte[] packet) throws IOException {
+    public Value handleReceivedForward(byte[] packet) throws IOException, SphinxException {
         return SphinxClient.receiveForward(this.params, packet).unpackValue();
     }
 }

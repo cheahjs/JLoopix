@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 class SphinxClientTest {
     @Test
     void nenc() throws IOException {
-        byte[] encoded = SphinxClient.Nenc(8);
+        byte[] encoded = SphinxClient.encodeNode(8);
         Assertions.assertArrayEquals(
                 encoded,
                 new byte[]{(byte) 0x92, (byte) 0xc4, 0x01, (byte) 0xf0, 0x08});
@@ -46,7 +46,7 @@ class SphinxClientTest {
         int[] path = SphinxClient.randomSubset(pkiPriv.keySet().stream().mapToInt(x -> x).toArray(), pathLength);
         List<byte[]> routing = Arrays.stream(path).mapToObj(x -> {
             try {
-                return SphinxClient.Nenc(x);
+                return SphinxClient.encodeNode(x);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -70,7 +70,7 @@ class SphinxClientTest {
         SphinxHeader header = forward.header;
         byte[] delta = forward.body;
         while (true) {
-            SphinxProcessData ret = SphinxNode.sphinxProcess(params, x, header, delta);
+            SphinxProcessData ret = SphinxNode.processSphinxPacket(params, x, header, delta);
             header = ret.header;
             delta = ret.delta;
             Unpacker unpacker = Unpacker.getUnpacker(ret.routing);
@@ -104,7 +104,7 @@ class SphinxClientTest {
         header = surbPackage.header;
         delta = surbPackage.body;
         while (true) {
-            SphinxProcessData ret = SphinxNode.sphinxProcess(params, x, header, delta);
+            SphinxProcessData ret = SphinxNode.processSphinxPacket(params, x, header, delta);
             header = ret.header;
             delta = ret.delta;
             Unpacker unpacker = Unpacker.getUnpacker(ret.routing);

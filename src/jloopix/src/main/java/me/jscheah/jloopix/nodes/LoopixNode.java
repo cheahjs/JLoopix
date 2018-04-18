@@ -1,4 +1,4 @@
-package me.jscheah.jloopix;
+package me.jscheah.jloopix.nodes;
 
 import org.bouncycastle.math.ec.ECPoint;
 

@@ -72,7 +72,7 @@ class SphinxParamsTest {
     void getAesKey() throws CryptoException {
         SphinxParams params = new SphinxParams();
         Assertions.assertEquals(
-                HexUtils.hexlify(params.getAesKeyFromSecret(params.group.Generator)),
+                HexUtils.hexlify(params.deriveAesKeyFromSecret(params.group.Generator)),
                 "4dfc0fc4bf89db354d919e212d609602"
         );
     }

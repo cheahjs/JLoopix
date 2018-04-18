@@ -58,17 +58,16 @@ public class SphinxClient {
         }
     }
 
-    public static byte[] Nenc(int idnum) throws IOException {
-        return Nenc(new ImmutableLongValueImpl(idnum));
+    public static byte[] encodeNode(int idnum) throws IOException {
+        return encodeNode(new ImmutableLongValueImpl(idnum));
     }
 
-    public static byte[] Nenc(Value value) throws IOException {
+    public static byte[] encodeNode(Value value) throws IOException {
         Packer packer = Packer.getPacker();
-        packer.packArrayHeader(2)
-                .packBinaryHeader(1)
-                .addPayload(new byte[]{RELAY_FLAG})
-                .packValue(value);
-
+        packer.packValue(new ImmutableArrayValueImpl(new Value[] {
+                new ImmutableBinaryValueImpl(new byte[]{RELAY_FLAG}),
+                value
+        }));
         return packer.toByteArray();
     }
 
@@ -144,7 +143,7 @@ public class SphinxClient {
         for (ECPoint k : keys) {
             ECPoint alpha = group.expon(group.Generator, blindFactor);
             ECPoint s = group.expon(k, blindFactor);
-            byte[] aes_s = params.getAesKeyFromSecret(s);
+            byte[] aes_s = params.deriveAesKeyFromSecret(s);
 
             BigInteger b = params.hb(aes_s);
             blindFactor = blindFactor.multiply(b).mod(group.EcSpec.getCurve().getOrder());
@@ -234,22 +233,20 @@ public class SphinxClient {
                                                     byte[] message) throws CryptoException, IOException, SphinxException {
         // Pack destination routing command
         Packer packer = Packer.getPacker();
-        packer.packArrayHeader(1)
-                .packBinaryHeader(1)
-                .addPayload(new byte[]{DEST_FLAG});
+        packer.packValue(new ImmutableArrayValueImpl(new Value[] {
+                new ImmutableBinaryValueImpl(new byte[]{DEST_FLAG})
+        }));
         byte[] finalB = packer.toByteArray();
 
         // Create header and secrets
-        SphinxHeaderData header = createHeader(
-                params, path, keys, finalB
-        );
+        SphinxHeaderData header = createHeader(params, path, keys, finalB);
 
         // Pack
         packer = Packer.getPacker();
-        packer.packArrayHeader(2)
-                .packValue(destination)
-                .packBinaryHeader(message.length)
-                .addPayload(message);
+        packer.packValue(new ImmutableArrayValueImpl(new Value[] {
+                destination,
+                new ImmutableBinaryValueImpl(message)
+        }));
         byte[] packedBytes = packer.toByteArray();
         assert params.k + 1 + packedBytes.length < params.bodySize;
         byte[] paddedBody = padBody(params.bodySize,
@@ -327,11 +324,14 @@ public class SphinxClient {
         return new SphinxPacket(nymTuple.header, body);
     }
 
-    public static Unpacker receiveForward(SphinxParams params, byte[] delta) {
+    public static Unpacker receiveForward(SphinxParams params, byte[] delta) throws SphinxException {
+        // Constant time check
+        int tag = 0;
         for (int i = 0; i < params.k; i++) {
-            if (delta[i] != 0) {
-                throw new RuntimeException("Modified body");
-            }
+            tag &= delta[i];
+        }
+        if (tag != 0) {
+            throw new SphinxException("Modified body");
         }
 
         delta = unpadBody(Arrays.copyOfRange(delta, params.k, delta.length));

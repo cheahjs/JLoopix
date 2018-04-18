@@ -3,6 +3,10 @@ package me.jscheah.jloopix.client;
 import com.google.gson.Gson;
 import me.jscheah.jloopix.*;
 import me.jscheah.jloopix.database.DBManager;
+import me.jscheah.jloopix.nodes.LoopixNode;
+import me.jscheah.jloopix.nodes.MixNode;
+import me.jscheah.jloopix.nodes.Provider;
+import me.jscheah.jloopix.nodes.User;
 import me.jscheah.sphinx.SphinxPacket;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
@@ -11,7 +15,6 @@ import me.jscheah.sphinx.params.SphinxParams;
 import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.msgpack.Unpacker;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -43,43 +46,46 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class LoopixClient extends IoHandlerAdapter {
+    // Logging
     private final Logger logger = LoggerFactory.getLogger(LoopixClient.class);
-    private BigInteger secret;
-    private SphinxParams params;
+    // Node parameters
+    private BigInteger privateKey;
     private String name;
     private String host;
     private short port;
-    private ECPoint pubk;
+    private ECPoint publicKey;
     private String providerName;
+    private Provider provider;
+    private LoopixNode selfNode;
+    // Parameter config
     private Config config;
     private DBManager database;
     private ClientCore cryptoClient;
-    private Provider provider;
-    private LoopixNode selfNode;
-
-    private List<List<MixNode>> pubMixes;
-    private List<Provider> pubProviders;
-    private List<User> befriendedClients;
-
+    // Network data
+    private List<List<MixNode>> mixList;
+    private List<Provider> providerList;
+    private List<User> clientList;
+    // Network session to provider
     private IoSession session;
 
     private LoopixMessageListener messageListener;
-
     private Queue<ClientMessage> messageQueue;
+    private LoopixMessageBuilder messageBuilder;
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private final SecureRandom random = new SecureRandom();
 
-    public LoopixClient(String name, String host, short port, String providerName, ECPoint pubk, BigInteger secret, Config config) {
-        this.secret = secret;
+    public LoopixClient(String name, String host, short port, String providerName, ECPoint publicKey, BigInteger privateKey, Config config) {
+        this.privateKey = privateKey;
         this.name = name;
         this.host = host;
         this.port = port;
-        this.pubk = pubk;
+        this.publicKey = publicKey;
         this.providerName = providerName;
         this.config = config;
 
+        SphinxParams params;
         try {
             params = new SphinxParams(1024);
         } catch (CryptoException e) {
@@ -87,9 +93,9 @@ public class LoopixClient extends IoHandlerAdapter {
             throw new RuntimeException(e);
         }
 
-        this.selfNode = new LoopixNode(host, port, name, pubk, secret);
+        this.selfNode = new LoopixNode(host, port, name, publicKey, privateKey);
 
-        cryptoClient = new ClientCore(params, config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, secret, pubk);
+        cryptoClient = new ClientCore(config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, privateKey, publicKey);
 
         database = new DBManager(config.getDATABASE_NAME());
 
@@ -100,7 +106,7 @@ public class LoopixClient extends IoHandlerAdapter {
      * Creates a LoopixClient from config files.
      * @param configPath Path to config.json
      * @param publicPath Path to publicClient.bin
-     * @param privatePath Path to privateClient.bint
+     * @param privatePath Path to privateClient.bin
      * @return New client
      */
     public static LoopixClient fromFile(String configPath, String publicPath, String privatePath) throws IOException {
@@ -154,9 +160,9 @@ public class LoopixClient extends IoHandlerAdapter {
      * Fetches network topology from database.
      */
     private void getNetworkInfo() {
-        pubMixes = Core.groupLayeredTopology(database.selectAllMixNodes());
-        pubProviders = database.selectAllProviders();
-        befriendedClients = database.selectAllUsers();
+        mixList = Core.groupLayeredTopology(database.selectAllMixNodes());
+        providerList = database.selectAllProviders();
+        clientList = database.selectAllUsers();
 
         provider = database.getProviderFromName(providerName);
         if (provider == null) {
@@ -176,7 +182,7 @@ public class LoopixClient extends IoHandlerAdapter {
                         new ImmutableStringValueImpl(this.name),
                         new ImmutableStringValueImpl(this.host),
                         new ImmutableLongValueImpl(this.port),
-                        new ImmutableExtensionValueImpl((byte) 2, Packer.ecPointToByteArray(this.pubk))
+                        new ImmutableExtensionValueImpl((byte) 2, Packer.ecPointToByteArray(this.publicKey))
                 }));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -223,7 +229,7 @@ public class LoopixClient extends IoHandlerAdapter {
      * @throws SphinxException
      */
     private synchronized void sendDropMessage() throws CryptoException, IOException, SphinxException {
-        User randomReceiver = this.befriendedClients.get(random.nextInt(this.befriendedClients.size()));
+        User randomReceiver = this.clientList.get(random.nextInt(this.clientList.size()));
         List<LoopixNode> path = constructFullPath(randomReceiver);
         logger.debug("Chain selected: {}", path);
         SphinxPacket loopMessage = cryptoClient.createDropMessage(randomReceiver, path);
@@ -267,7 +273,11 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private synchronized void makeRealStream() {
         try {
-            if (!messageQueue.isEmpty()) {
+            if (messageBuilder != null && !messageBuilder.isEmpty()) {
+                logger.debug("Sending real packet from builder.");
+                sendRealMessage(messageBuilder.getMessage());
+            }
+            else if (!messageQueue.isEmpty()) {
                 logger.debug("Sending real packet.");
                 sendRealMessage(messageQueue.remove());
             } else if (config.getDATA_DIR().equals("debug")) {
@@ -293,7 +303,7 @@ public class LoopixClient extends IoHandlerAdapter {
     private synchronized void sendRealMessage(ClientMessage message) throws CryptoException, IOException, SphinxException {
         List<LoopixNode> path = constructFullPath(message.getRecipient());
         logger.debug("Chain selected: {}", path);
-        SphinxPacket realMessage = cryptoClient.packRealMessage(message.getRecipient(), path, message.getData());
+        SphinxPacket realMessage = cryptoClient.createRealMessage(message.getRecipient(), path, message.getData());
         send(new ImmutableArrayValueImpl(new Value[] {
                 realMessage.header.toValue(),
                 new ImmutableBinaryValueImpl(realMessage.body)
@@ -345,7 +355,7 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private List<LoopixNode> takeRandomMixChain() {
         List<LoopixNode> mixChain = new LinkedList<>();
-        for (List<MixNode> layer : pubMixes) {
+        for (List<MixNode> layer : mixList) {
             MixNode mixNode = layer.get(random.nextInt(layer.size()));
             mixChain.add(mixNode);
         }
@@ -367,6 +377,7 @@ public class LoopixClient extends IoHandlerAdapter {
         return (long) nanoseconds;
     }
 
+
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) {
         cause.printStackTrace();
@@ -374,7 +385,6 @@ public class LoopixClient extends IoHandlerAdapter {
 
     @Override
     public synchronized void messageReceived(IoSession session, Object message) throws Exception {
-//        logger.debug("Received {}", message);
         logger.debug("Receive session: readbufsize: {}, minread: {}", session.getConfig().getReadBufferSize(), session.getConfig().getMinReadBufferSize());
         // message is a HeapBuffer
         IoBuffer buffer = (IoBuffer) message;
@@ -383,7 +393,7 @@ public class LoopixClient extends IoHandlerAdapter {
         if (values.get(0).isArrayValue()) {
             SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
             byte[] body = values.get(1).asRawValue().asByteArray();
-            byte[] decryptedBody = cryptoClient.processPacket(new ImmutablePair<>(header, body), secret);
+            byte[] decryptedBody = cryptoClient.processPacket(new ImmutablePair<>(header, body), privateKey);
             if (decryptedBody[0] == 'H' && decryptedBody[1] == 'T' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
                 logger.info("Received loop message");
                 return;
@@ -403,6 +413,10 @@ public class LoopixClient extends IoHandlerAdapter {
 
     public void setMessageListener(LoopixMessageListener listener) {
         this.messageListener = listener;
+    }
+
+    public void setMessageBuilder(LoopixMessageBuilder builder) {
+        this.messageBuilder = builder;
     }
 
     /***
@@ -425,7 +439,7 @@ public class LoopixClient extends IoHandlerAdapter {
     /***
      * Sends test real messages looped back every 1 seconds
      */
-    public void testRealMessage() {
+    private void testRealMessage() {
         for (int i = 0; i < 50; i++)
             addMessage(this.name, String.format("Hi from time: %d", new Date().getTime()).getBytes(Charset.forName("UTF-8")));
         scheduler.schedule(this::testRealMessage, 1, TimeUnit.SECONDS);
@@ -435,12 +449,16 @@ public class LoopixClient extends IoHandlerAdapter {
         return name;
     }
 
-    public List<User> getBefriendedClients() {
-        return befriendedClients;
+    public List<User> getClientList() {
+        return clientList;
     }
 
     public Config getConfig() {
         return config;
+    }
+
+    public User getSelfUser() {
+        return new User(selfNode.host, selfNode.port, selfNode.name, selfNode.publicKey, null, providerName);
     }
 
     public static void main(String[] args) throws IOException {

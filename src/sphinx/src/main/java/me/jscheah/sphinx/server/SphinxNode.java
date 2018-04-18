@@ -20,7 +20,7 @@ public class SphinxNode {
      * @param header Message header
      * @param delta Message body
      */
-    public static SphinxProcessData sphinxProcess(SphinxParams params, BigInteger secret, SphinxHeader header, byte[] delta)
+    public static SphinxProcessData processSphinxPacket(SphinxParams params, BigInteger secret, SphinxHeader header, byte[] delta)
             throws SphinxException, CryptoException {
         GroupECC group = params.group;
 
@@ -30,7 +30,7 @@ public class SphinxNode {
 
         // Compute shared secret
         ECPoint sharedSecret = group.expon(header.alpha, secret);
-        byte[] aesSecret = params.getAesKeyFromSecret(sharedSecret);
+        byte[] aesSecret = params.deriveAesKeyFromSecret(sharedSecret);
 
         assert header.beta.length == params.headerSize - 32;
 
@@ -42,22 +42,28 @@ public class SphinxNode {
             throw new SphinxException("MAC mismatch.");
         }
 
-        byte[] betaPad = Arrays.concatenate(
+        // pad beta
+        byte[] betaPadded = Arrays.concatenate(
                 header.beta,
-                new byte[2*params.headerSize]
+                new byte[2*params.k]
         );
-        byte[] B = params.rho(params.hrho(aesSecret), betaPad);
+        byte[] B = params.rho(params.hrho(aesSecret), betaPadded);
 
         // problematic cast from signed byte to unsigned int
         int length = (((int)B[0]) & 0xFF);
         byte[] routing = Arrays.copyOfRange(B, 1, 1+length);
         byte[] rest = Arrays.copyOfRange(B, 1+length, B.length);
 
+        // Compute replay tag
         byte[] tag = params.htau(aesSecret);
+        // Compute next hop blinding factor and group element
         BigInteger b = params.hb(aesSecret);
         ECPoint alpha = group.expon(header.alpha, b);
+        // Copy MAC for next hop
         byte[] gamma = Arrays.copyOf(rest, params.k);
-        byte[] beta = Arrays.copyOfRange(rest, params.k, params.k + (params.headerSize - 32));
+        // Copy beta for next hop
+        byte[] beta = Arrays.copyOfRange(rest, params.k, params.k + (params.headerSize - params.k*2));
+        // Decrypt delta
         delta = params.pii(params.hpi(aesSecret), delta);
 
         return new SphinxProcessData(tag, routing, new SphinxHeader(alpha, beta, gamma), delta);

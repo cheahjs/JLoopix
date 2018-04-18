@@ -1,5 +1,7 @@
 package me.jscheah.jloopix;
 
+import me.jscheah.jloopix.nodes.MixNode;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;

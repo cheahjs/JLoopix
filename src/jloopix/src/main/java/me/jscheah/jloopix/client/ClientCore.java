@@ -3,10 +3,9 @@ package me.jscheah.jloopix.client;
 import me.jscheah.sphinx.client.SphinxClient;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
-import me.jscheah.sphinx.params.SphinxParams;
 import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.jloopix.Core;
-import me.jscheah.jloopix.LoopixNode;
+import me.jscheah.jloopix.nodes.LoopixNode;
 import me.jscheah.jloopix.SphinxPacker;
 import me.jscheah.sphinx.*;
 import org.bouncycastle.math.ec.ECPoint;
@@ -19,19 +18,25 @@ import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.List;
 
-public class ClientCore extends LoopixNode {
-    public SphinxParams params;
-    public int noiseLength;
-    public SphinxPacker packer;
+class ClientCore extends LoopixNode {
+    private int noiseLength;
+    private SphinxPacker packer;
 
-    public ClientCore(SphinxParams params, int noiseLength, SphinxPacker packer, String name, short port, String host, BigInteger privateKey, ECPoint publicKey) {
+    ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, BigInteger privateKey, ECPoint publicKey) {
         super(host, port, name, publicKey, privateKey);
-        this.params = params;
         this.noiseLength = noiseLength;
         this.packer = packer;
     }
 
-    public SphinxPacket createLoopMessage(List<LoopixNode> path)
+    /**
+     * Creates a LOOP message. The message has the payload 'HT' + RANDOM(noiseLength)
+     * @param path The path the message will take
+     * @return A SphinxPacket to be forwarded
+     * @throws SphinxException
+     * @throws IOException
+     * @throws CryptoException
+     */
+    SphinxPacket createLoopMessage(List<LoopixNode> path)
             throws SphinxException, IOException, CryptoException {
         byte[] message = Arrays.concatenate(
                 "HT".getBytes(Charset.forName("UTF-8")),
@@ -40,18 +45,26 @@ public class ClientCore extends LoopixNode {
         return packer.makePacket(this, path, message);
     }
 
-    public SphinxPacket createDropMessage(LoopixNode randomReceiver, List<LoopixNode> path)
+    /**
+     * Creates a LOOP message. The message has a random payload with a drop flag in the header
+     * @param path The path the message will take
+     * @return A SphinxPacket to be forwarded
+     * @throws SphinxException
+     * @throws IOException
+     * @throws CryptoException
+     */
+    SphinxPacket createDropMessage(LoopixNode randomReceiver, List<LoopixNode> path)
             throws SphinxException, IOException, CryptoException {
         byte[] message = Core.generateRandomBytes(noiseLength);
         return packer.makeDropPacket(randomReceiver, path, message);
 }
 
-    public SphinxPacket packRealMessage(LoopixNode receiver, List<LoopixNode> path, byte[] message)
+    SphinxPacket createRealMessage(LoopixNode receiver, List<LoopixNode> path, byte[] message)
             throws SphinxException, IOException, CryptoException {
         return packer.makePacket(receiver, path, message);
     }
 
-    public byte[] processPacket(Pair<SphinxHeader, byte[]> packet, BigInteger privk)
+    byte[] processPacket(Pair<SphinxHeader, byte[]> packet, BigInteger privk)
             throws SphinxException, IOException, CryptoException {
         SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privk);
         byte routingFlag = sphinxProcessData.routing[sphinxProcessData.routing.length-1];

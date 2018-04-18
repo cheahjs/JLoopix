@@ -1,6 +1,6 @@
 package me.jscheah.jloopix.client.chatdemo;
 
-import me.jscheah.jloopix.User;
+import me.jscheah.jloopix.nodes.User;
 import me.jscheah.jloopix.client.LoopixClient;
 import me.jscheah.jloopix.client.LoopixMessageListener;
 import org.bouncycastle.util.Arrays;
@@ -27,7 +27,7 @@ public class ChatClient implements LoopixMessageListener {
             String message = String.format("%1$tH:%1$tM:%1$tS <%2$s> %3$s", new Date(), client.getName(), input);
             System.out.println(message);
             byte[] data = Arrays.concatenate(MAGIC_NUMBER, message.getBytes(Charset.forName("UTF-8")));
-            for (User user : client.getBefriendedClients()) {
+            for (User user : client.getClientList()) {
                 if (user.name.equals(client.getName()))
                     continue;
                 client.addMessage(user.name, data);
