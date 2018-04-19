@@ -42,7 +42,7 @@ class ClientCore extends LoopixNode {
                 "HT".getBytes(Charset.forName("UTF-8")),
                 Core.generateRandomBytes(noiseLength)
         );
-        return packer.makePacket(this, path, message);
+        return packer.makePacket(this, path, message, new byte[0x03]);
     }
 
     /**
@@ -61,7 +61,7 @@ class ClientCore extends LoopixNode {
 
     SphinxPacket createRealMessage(LoopixNode receiver, List<LoopixNode> path, byte[] message)
             throws SphinxException, IOException, CryptoException {
-        return packer.makePacket(receiver, path, message);
+        return packer.makePacket(receiver, path, message, new byte[0x01]);
     }
 
     byte[] processPacket(Pair<SphinxHeader, byte[]> packet, BigInteger privk)

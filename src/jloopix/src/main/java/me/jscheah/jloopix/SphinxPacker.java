@@ -40,9 +40,10 @@ public class SphinxPacker {
 
     public SphinxPacket makePacket(LoopixNode receiver,
                                    List<LoopixNode> path,
-                                   byte[] message)
+                                   byte[] message,
+                                   byte[] typeFlag)
             throws IOException, CryptoException, SphinxException {
-        return makePacket(receiver, path, message, false, new byte[] {0x01});
+        return makePacket(receiver, path, message, false, typeFlag);
     }
 
     public SphinxPacket makeDropPacket(LoopixNode receiver,
