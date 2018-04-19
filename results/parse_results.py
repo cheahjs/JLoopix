@@ -16,8 +16,9 @@ from sphinxmix.SphinxParams import SphinxParams
 from sphinxmix.SphinxClient import Relay_flag, Dest_flag
 from binascii import hexlify
 import msgpack
-import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from multiprocessing import Pool
 
 def readPacked(file_name):
@@ -178,6 +179,9 @@ def get_data_for_file(folder, ports):
         packets = []
         for ts, buf in cap:
             eth = dpkt.sll.SLL(buf)
+            if eth.type != 3:
+                # tcpdump captures both type 3 and 4 packets, resulting in duplicates
+                continue
             eth.time = ts
             try:
                 eth.data.src = socket.inet_ntoa(eth.data.src)
@@ -255,41 +259,37 @@ python_data = [mean_variance(rate, list(items)) for rate, items in itertools.gro
 mix_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
     [x for x in flat_data if x[0] == 32001], lambda x: x[4])]
 
+
+matplotlib.rcParams['figure.figsize'] = (15, 7)
+
 lines = {'rate': [], 'expected': [], 'expected real': [],
-         'total': [], 'total_err': [], 'real': [], 'real_err': []}
-for data in java_data:
+         'total': [], 'total2': [], 'real': [], 'real2': []}
+for data in flat_data:
     lines['rate'].append(data[0][4])
     lines['expected'].append(data[0][4])
     lines['expected real'].append(data[0][3])
-    lines['total'].append(data[1])
-    lines['total_err'].append(data[2])
-    lines['real'].append(data[3])
-    lines['real_err'].append(data[4])
-
-matplotlib.rcParams['figure.figsize'] = (15, 7)
+    lines['total'].append(data[0][5])
+    lines['total2'].append(data[1][5])
+    lines['real'].append(data[0][6] if data[0][6] > 0 else 0)
+    lines['real2'].append(data[1][6] if data[1][6] > 0 else 0)
 
 plt.plot('rate', 'expected', data=lines, marker='', linewidth=1,
          linestyle='--', label='All traffic (Expected)')
 plt.plot('rate', 'expected real', data=lines, marker='', linewidth=1,
          linestyle='--', label='Real traffic (Expected)')
-plt.errorbar(lines['rate'], lines['total'], yerr=lines['total_err'], marker='x',
-             linewidth=1, label='All traffic', capsize=5)
-plt.errorbar(lines['rate'], lines['real'], yerr=lines['real_err'], marker='x',
-             linewidth=1, label='Real traffic', capsize=5)
-
-lines['total'], lines['total_err'], lines['real'], lines['real_err'] = [], [], [], []
-for data in python_data:
-    lines['total'].append(data[1])
-    lines['total_err'].append(data[2])
-    lines['real'].append(data[3])
-    lines['real_err'].append(data[4])
-
+plt.plot('rate', 'total', data=lines, marker='x',
+         linewidth=1, label='All traffic')
+plt.plot('rate', 'total2', data=lines, marker='o',
+         linewidth=1, label='All traffic (Python)')
+plt.plot('rate', 'real', data=lines, marker='x',
+         linewidth=1, label='Real traffic')
+plt.plot('rate', 'real2', data=lines, marker='o',
+         linewidth=1, label='Real traffic (Python)')
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Messages sent per second')
-plt.xlim(0, 9)
-plt.ylim(0, 9)
+plt.xlim(xmin=0)
+plt.ylim(ymin=0)
 plt.grid()
 plt.legend()
 plt.title('Traffic sent by client')
-plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
 plt.close()
