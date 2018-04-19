@@ -243,12 +243,17 @@ def mean_variance(rate, data):
     return (data[0], total, total_std, real, real_std)
 
 
+matplotlib.rcParams['figure.figsize'] = (15, 7)
 pool = Pool()
 
 # Plot bandwidth data
-bw_folders = glob.glob('bandwidth/*')
-bandwidth_data = pool.map(get_data_for_file_mp, zip(
-    bw_folders, itertools.repeat([31001, 31450, 32001])))
+if os.path.exists('saved_bw_data.json'):
+    with open('saved_bw_data.json', 'r') as f:
+        bandwidth_data = json.load(f)
+else:
+    bw_folders = glob.glob('bandwidth/*')
+    bandwidth_data = pool.map(get_data_for_file_mp, zip(
+        bw_folders, itertools.repeat([31001, 31450, 32001])))
 
 with open('saved_bw_data.json', 'w') as f:
     json.dump(bandwidth_data, f)
@@ -263,31 +268,33 @@ python_data = [mean_variance(rate, list(items)) for rate, items in itertools.gro
 mix_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
     [x for x in flat_data if x[0] == 32001], lambda x: x[4])]
 
-
-matplotlib.rcParams['figure.figsize'] = (15, 7)
-
 lines = {'rate': [], 'expected': [], 'expected real': [],
-         'total': [], 'total2': [], 'real': [], 'real2': []}
+         'total': [], 'total2': [], 'real': [], 'real2': [],
+         'total_err': [], 'total2_err': [], 'real_err': [], 'real2_err': []}
 for data in zip(java_data, python_data):
-    lines['rate'].append(data[0][4])
-    lines['expected'].append(data[0][4])
-    lines['expected real'].append(data[0][3])
-    lines['total'].append(data[0][5])
-    lines['total2'].append(data[1][5])
-    lines['real'].append(data[0][6] if data[0][6] > 0 else 0)
-    lines['real2'].append(data[1][6] if data[1][6] > 0 else 0)
+    lines['rate'].append(data[0][0][4])
+    lines['expected'].append(data[0][0][4])
+    lines['expected real'].append(data[0][0][3])
+    lines['total'].append(data[0][1])
+    lines['total2'].append(data[1][1])
+    lines['total_err'].append(data[0][2])
+    lines['total2_err'].append(data[1][2])
+    lines['real'].append(data[0][3])
+    lines['real2'].append(data[1][3])
+    lines['real_err'].append(data[0][4])
+    lines['real2_err'].append(data[1][5])
 
 plt.plot('rate', 'expected', data=lines, marker='', linewidth=1,
          linestyle='--', label='All traffic (Expected)')
 plt.plot('rate', 'expected real', data=lines, marker='', linewidth=1,
          linestyle='--', label='Real traffic (Expected)')
-plt.plot('rate', 'total', data=lines, marker='x',
+plt.errorbar(lines['rate'], lines['total'], yerr=lines['total_err'], marker='x',
          linewidth=1, label='All traffic')
-plt.plot('rate', 'total2', data=lines, marker='o',
+plt.errorbar(lines['rate'], lines['total2'], yerr=lines['total2_err'], marker='o',
          linewidth=1, label='All traffic (Python)')
-plt.plot('rate', 'real', data=lines, marker='x',
+plt.errorbar(lines['rate'], lines['real'], yerr=lines['real_err'], marker='x',
          linewidth=1, label='Real traffic')
-plt.plot('rate', 'real2', data=lines, marker='o',
+plt.errorbar(lines['rate'], lines['real2'], yerr=lines['real2_err'], marker='o',
          linewidth=1, label='Real traffic (Python)')
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Messages sent per second')
@@ -297,4 +304,29 @@ plt.grid()
 plt.legend()
 plt.title('Traffic sent by client')
 plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
+plt.close()
+
+# Plot latency data
+def get_latency_data_for_folder(folder):
+    latency_data = [x.split(',') for x in open(
+        os.path.join(folder, 'latency.csv'), 'r').readlines()]
+    time_taken = [long(x[-1])/1000000.0 for x in latency_data]
+    mean = np.mean(time_taken)
+    std = np.std(time_taken)
+    total_client = len(glob.glob(os.path.join(folder, 'logs', 'client_*')))
+    return (total_client, mean, std)
+
+
+lat_folders = glob.glob('latency/*')
+latency_data = [get_latency_data_for_folder(folder) for folder in lat_folders]
+
+lat_clients = [x[0] for x in latency_data]
+lat_avg = [x[1] for x in latency_data]
+lat_err = [x[2] for x in latency_data]
+
+plt.errorbar(lat_clients, lat_avg, yerr=lat_err, marker='x', linewidth=1)
+plt.xlabel('Number of clients')
+plt.ylabel('Latency Overhead (ms)')
+plt.grid()
+plt.savefig('client_latency.pdf', bbox_inches='tight')
 plt.close()
