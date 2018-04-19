@@ -11,8 +11,8 @@ RATE_TICK=0.1
 DELAY=0.001
 
 # Network parameters
-JAVA_COUNT=10
-PYTHON_COUNT=10
+JAVA_COUNT=250
+PYTHON_COUNT=250
 MIX_COUNT=6
 PROVIDER_COUNT=4
 
@@ -42,9 +42,9 @@ done
 
 PROVIDER_COUNT=4
 MIX_COUNT=6
-CLIENT_START=5
-CLIENT_END=10
-CLIENT_TICK=2
+CLIENT_START=25
+CLIENT_END=250
+CLIENT_TICK=25
 
 # Collect zero delay latency data
 for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
@@ -65,19 +65,17 @@ for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
 done
 
 # Collect total latency data
-for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
-    echo "Running with count $count"
-    # Setup network config
-    python setup_network.py \
-        --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
-        --mix $MIX_COUNT --provider $PROVIDER_COUNT --client $count --client-java $count \
-        --max-retrieve 6 --time-pull 1
-    # Generate keys since we've change the number of clients
-    ./generate_keys.sh
-    # Run docker containers
-    ./docker_run_latency.sh
-    # Gather latency data
-    ./gather_total_latency_data.sh
-    # Stop containers
-    ./docker_stop.sh
-done
+echo "Running total latency data with 500 clients"
+# Setup network config
+python setup_network.py \
+    --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
+    --mix $MIX_COUNT --provider $PROVIDER_COUNT --client 250 --client-java 250 \
+    --max-retrieve 30 --time-pull 5
+# Generate keys since we've change the number of clients
+./generate_keys.sh
+# Run docker containers
+./docker_run_latency.sh
+# Gather latency data
+./gather_total_latency_data.sh
+# Stop containers
+./docker_stop.sh

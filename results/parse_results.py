@@ -307,6 +307,19 @@ plt.legend()
 plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
 plt.close()
 
+plt.errorbar(lines['rate'], [x[1] for x in mix_data], yerr=[x[2] for x in mix_data], marker='x',
+             linewidth=1, label='All traffic', capsize=5)
+plt.errorbar(lines['rate'], [x[3] for x in mix_data], yerr=[x[4] for x in mix_data], marker='x',
+             linewidth=1, label='Real traffic', capsize=5)
+plt.xlabel('Rate of sending messages ($\lambda$) per second')
+plt.ylabel('Messages sent per second')
+plt.xlim(xmin=0)
+plt.ylim(ymin=0)
+plt.grid()
+plt.legend()
+plt.savefig('mix_bandwidth.pdf', bbox_inches='tight')
+plt.close()
+
 # Plot latency data
 def get_latency_data_for_folder(folder):
     latency_data = [x.split(',') for x in open(
@@ -331,4 +344,35 @@ plt.xlabel('Number of clients')
 plt.ylabel('Latency Overhead (ms)')
 plt.grid()
 plt.savefig('client_latency.pdf', bbox_inches='tight')
+plt.close()
+
+# Plot total latency data
+def get_total_latency_data_for_folder(folder):
+    latency_data = [map(lambda y: long(y)/1000000000.0, x.split(',')) for x in open(
+        os.path.join(folder, 'latency.csv'), 'r').readlines()]
+    base_ts = latency_data[0][1]
+    latency_data = [(x[0]-base_ts, x[1]-base_ts, x[2]) for x in latency_data]
+    return latency_data
+
+
+lat_folders = glob.glob('latency_total/*')
+all_latency_data = [get_total_latency_data_for_folder(
+    folder) for folder in lat_folders]
+latency_data = all_latency_data[0]
+
+fig, ax1 = plt.subplots()
+color = 'tab:red'
+ax1.set_xlabel('Message sent time (s)')
+ax1.set_ylabel('Message received time (s)', color=color)
+ax1.plot([x[1] for x in latency_data], [x[0] for x in latency_data], linewidth=1, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
+
+color = 'tab:blue'
+ax2 = ax1.twinx()
+ax2.set_ylabel('Time taken (s)', color=color)
+ax2.plot([x[1] for x in latency_data], [x[2] for x in latency_data], linewidth=1, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
+plt.grid()
+fig.tight_layout()
+plt.savefig('client_total_latency.pdf', bbox_inches='tight')
 plt.close()
