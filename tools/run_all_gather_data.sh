@@ -71,7 +71,7 @@ for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
     python setup_network.py \
         --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
         --mix $MIX_COUNT --provider $PROVIDER_COUNT --client $count --client-java $count \
-        --max-retrieve 3 --time-pull 1
+        --max-retrieve 6 --time-pull 1
     # Generate keys since we've change the number of clients
     ./generate_keys.sh
     # Run docker containers
