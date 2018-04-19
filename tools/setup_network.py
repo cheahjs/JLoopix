@@ -29,6 +29,11 @@ parser.add_argument('--client-java', type=int,
 
 parser.add_argument('--push', type=bool,
                     help='Sets provider behaviour when receiving messages', default=False)
+
+parser.add_argument('--time-pull', type=int,
+                    help='Sets the time between PULLs from provider', default=10)
+parser.add_argument('--max-retrieve', type=int,
+                    help='Sets the number of messages pulled', default=50)
 args = parser.parse_args()
 
 # Write network_config.sh with node counts
@@ -57,7 +62,7 @@ jconfig = {
     "PATH_LENGTH": 3,
     "EXP_PARAMS_LOOPS": scale_loop,
     "EXP_PARAMS_DELAY": delay,
-    "TIME_PULL": 10,
+    "TIME_PULL": args.time_pull,
     "EXP_PARAMS_PAYLOAD": scale_real,
     "DATABASE_NAME": "example.db",
     "DATA_DIR": "debug"
@@ -70,7 +75,7 @@ config = {
         "PATH_LENGTH": "3",
         "EXP_PARAMS_LOOPS": scale_loop_str,
         "EXP_PARAMS_DELAY": delay_str,
-        "TIME_PULL": "10.0",
+        "TIME_PULL": str(args.time_pull),
         "EXP_PARAMS_PAYLOAD": scale_real_str,
         "DATABASE_NAME": "example.db",
         "DATA_DIR": "tmp/mail"
@@ -83,7 +88,7 @@ config = {
         "DATABASE_NAME": "example.db"
     },
     "parametersProviders": {
-        "MAX_RETRIEVE": "0" if args.push else "50",
+        "MAX_RETRIEVE": "0" if args.push else str(args.max_retrieve),
         "NOISE_LENGTH": "500",
         "EXP_PARAMS_LOOPS": scale_loop_str,
         "EXP_PARAMS_DELAY": delay_str,

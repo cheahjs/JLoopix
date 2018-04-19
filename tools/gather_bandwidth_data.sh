@@ -31,7 +31,7 @@ $DOCKER_PATH run --name="gather" --rm -d \
     -w "/data/bandwidth/$DATE/network.pcap" \
     udp and portrange 30000-34000 and src net 172.0.0.0/8
 
-sleep 300
+sleep 180
 
 $DOCKER_PATH stop gather
 for ((i=1;i<=PROVIDER_COUNT;i++)); do

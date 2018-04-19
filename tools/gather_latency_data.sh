@@ -24,7 +24,7 @@ mkdir -p ../results/latency/$DATE
 mkdir -p ../results/latency/$DATE/logs/
 cp ../build/jloopix_config.json ../results/latency/$DATE/config.json
 
-sleep 300
+sleep 180
 
 # $DOCKER_PATH stop gather
 for ((i=1;i<=PROVIDER_COUNT;i++)); do
