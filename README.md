@@ -10,15 +10,16 @@ Based off the original [Python implementation](https://github.com/UCL-InfoSec/lo
 Tested on Ubuntu 16.04:
 
 ```bash
-apt install openjdk-8-jdk docker python2.7 python-pip python-dev build-essential libssl-dev libffi-dev
-pip install numpy scipy sphinxmix==0.0.6 petlib twisted matplotlib scapy
+apt install openjdk-8-jdk docker python2.7 python-pip python-dev build-essential libssl-dev libffi-dev python-tk
+pip install numpy scipy sphinxmix==0.0.6 petlib twisted matplotlib scapy multiprocessing dpkt loopix
 git clone https://github.com/cheahjs/JLoopix
 cd JLoopix
 git submodule init && git submodule update
+pip install -e external/loopix
 cd tools
 ./build_jar.sh
-./docker_build.sh
 docker network create loopix_net
+./docker_build.sh
 ./run_all_gather_data.sh
 cd ../results
 python parse_results.py
