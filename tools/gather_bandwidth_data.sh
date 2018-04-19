@@ -26,10 +26,10 @@ cp -R ../build/loopix_keys/ ../results/bandwidth/$DATE/keys/
 cp ../build/jloopix_config.json ../results/bandwidth/$DATE/config.json
 
 $DOCKER_PATH run --name="gather" --rm -d \
-    -v "$DIR/../results:/data" --net=loopix_net \
-    marsmensch/tcpdump -i any \
-    "udp" \
-    -w "/data/bandwidth/$DATE/network.pcap"
+    -v "$DIR/../results:/data" --net=host \
+    marsmensch/tcpdump -i any -B 131072 \
+    -w "/data/bandwidth/$DATE/network.pcap" \
+    udp and portrange 30000-34000 and src net 172.0.0.0/8
 
 sleep 300
 
