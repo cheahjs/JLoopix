@@ -253,7 +253,9 @@ if os.path.exists('saved_bw_data.json'):
 else:
     bw_folders = glob.glob('bandwidth/*')
     bandwidth_data = pool.map(get_data_for_file_mp, zip(
-        bw_folders, itertools.repeat([31001, 31450, 32001])))
+        bw_folders, itertools.repeat([31001, 31002, 31003, 
+        31450, 31451, 31452, 
+        32001, 32002, 32003])))
 
 with open('saved_bw_data.json', 'w') as f:
     json.dump(bandwidth_data, f)
@@ -262,11 +264,11 @@ flat_data = sorted([item for x in bandwidth_data for item in x],
                    lambda x, y: cmp(x[4], y[4]))
 
 java_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
-    [x for x in flat_data if x[0] == 31001], lambda x: x[4])]
+    [x for x in flat_data if x[0] in [31001, 31002, 31003]], lambda x: x[4])]
 python_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
-    [x for x in flat_data if x[0] == 31450], lambda x: x[4])]
+    [x for x in flat_data if x[0] in [31450, 31451, 31452]], lambda x: x[4])]
 mix_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
-    [x for x in flat_data if x[0] == 32001], lambda x: x[4])]
+    [x for x in flat_data if x[0] in [32001, 32002, 32003]], lambda x: x[4])]
 
 lines = {'rate': [], 'expected': [], 'expected real': [],
          'total': [], 'total2': [], 'real': [], 'real2': [],
@@ -282,27 +284,26 @@ for data in zip(java_data, python_data):
     lines['real'].append(data[0][3])
     lines['real2'].append(data[1][3])
     lines['real_err'].append(data[0][4])
-    lines['real2_err'].append(data[1][5])
+    lines['real2_err'].append(data[1][4])
 
 plt.plot('rate', 'expected', data=lines, marker='', linewidth=1,
          linestyle='--', label='All traffic (Expected)')
 plt.plot('rate', 'expected real', data=lines, marker='', linewidth=1,
          linestyle='--', label='Real traffic (Expected)')
 plt.errorbar(lines['rate'], lines['total'], yerr=lines['total_err'], marker='x',
-         linewidth=1, label='All traffic')
+         linewidth=1, label='All traffic', capsize=5)
 plt.errorbar(lines['rate'], lines['total2'], yerr=lines['total2_err'], marker='o',
-         linewidth=1, label='All traffic (Python)')
+         linewidth=1, label='All traffic (Python)', capsize=5)
 plt.errorbar(lines['rate'], lines['real'], yerr=lines['real_err'], marker='x',
-         linewidth=1, label='Real traffic')
+         linewidth=1, label='Real traffic', capsize=5)
 plt.errorbar(lines['rate'], lines['real2'], yerr=lines['real2_err'], marker='o',
-         linewidth=1, label='Real traffic (Python)')
+         linewidth=1, label='Real traffic (Python)', capsize=5)
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Messages sent per second')
 plt.xlim(xmin=0)
 plt.ylim(ymin=0)
 plt.grid()
 plt.legend()
-plt.title('Traffic sent by client')
 plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
 plt.close()
 
@@ -324,7 +325,8 @@ lat_clients = [x[0] for x in latency_data]
 lat_avg = [x[1] for x in latency_data]
 lat_err = [x[2] for x in latency_data]
 
-plt.errorbar(lat_clients, lat_avg, yerr=lat_err, marker='x', linewidth=1)
+plt.errorbar(lat_clients, lat_avg, yerr=lat_err,
+             marker='x', linewidth=1, capsize=5)
 plt.xlabel('Number of clients')
 plt.ylabel('Latency Overhead (ms)')
 plt.grid()
