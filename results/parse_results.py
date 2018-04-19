@@ -225,6 +225,10 @@ def get_data_for_file(folder, ports):
     return data
 
 
+def get_data_for_file_mp(a):
+    return get_data_for_file(*a)
+
+
 def mean_variance(rate, data):
     totals = [x[5] for x in data]
     reals = [x[6] for x in data]
@@ -239,8 +243,8 @@ pool = Pool()
 
 # Plot bandwidth data
 bw_folders = glob.glob('bandwidth/*')
-bandwidth_data = pool.map(lambda x: get_data_for_file(
-    *x), zip(bw_folders, itertools.repeat([31001, 31450, 32001])))
+bandwidth_data = pool.map(get_data_for_file_mp, zip(
+    bw_folders, itertools.repeat([31001, 31450, 32001])))
 flat_data = sorted([item for x in bandwidth_data for item in x],
                    lambda x, y: cmp(x[4], y[4]))
 
