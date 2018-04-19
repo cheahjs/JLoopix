@@ -249,6 +249,10 @@ pool = Pool()
 bw_folders = glob.glob('bandwidth/*')
 bandwidth_data = pool.map(get_data_for_file_mp, zip(
     bw_folders, itertools.repeat([31001, 31450, 32001])))
+
+with open('saved_bw_data.json', 'w') as f:
+    json.dump(bandwidth_data, f)
+
 flat_data = sorted([item for x in bandwidth_data for item in x],
                    lambda x, y: cmp(x[4], y[4]))
 
@@ -264,7 +268,7 @@ matplotlib.rcParams['figure.figsize'] = (15, 7)
 
 lines = {'rate': [], 'expected': [], 'expected real': [],
          'total': [], 'total2': [], 'real': [], 'real2': []}
-for data in flat_data:
+for data in zip(java_data, python_data):
     lines['rate'].append(data[0][4])
     lines['expected'].append(data[0][4])
     lines['expected real'].append(data[0][3])
@@ -292,4 +296,5 @@ plt.ylim(ymin=0)
 plt.grid()
 plt.legend()
 plt.title('Traffic sent by client')
+plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
 plt.close()
