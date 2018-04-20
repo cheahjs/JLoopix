@@ -399,7 +399,7 @@ def get_energy_for_folder(folder):
     lambda_total = loops + drop + payload
     return (lambda_total, energy)
 
-energy_data = map(get_energy_for_folder, bw_folders)
+energy_data = sorted(map(get_energy_for_folder, bw_folders), lambda x, y: cmp(x[0], y[0]))
 
 plt.errorbar([x[0] for x in energy_data], [x[1] for x in energy_data], marker='x', linewidth=1)
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
