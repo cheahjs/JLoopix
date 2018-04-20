@@ -321,9 +321,13 @@ plt.close()
 
 # Plot latency data
 def get_latency_data_for_folder(folder):
-    latency_data = [x.split(',') for x in open(
+    latency_data = [map(lambda y: long(y) / 1000000.0, x.split(',')) for x in open(
         os.path.join(folder, 'latency.csv'), 'r').readlines()]
-    time_taken = [long(x[-1])/1000000.0 for x in latency_data]
+    # take only the last 190s for steady state data
+    end_ts = latency_data[-1][1]
+    start_ts = end_ts - (190.0 * 1000)
+    latency_data = [x for x in latency_data if x[1] >= start_ts]
+    time_taken = [x[-1] for x in latency_data]
     mean = np.mean(time_taken)
     std = np.std(time_taken)
     total_client = len(glob.glob(os.path.join(folder, 'logs', 'client_*')))
@@ -347,8 +351,12 @@ plt.close()
 
 # Plot total latency data
 def get_total_latency_data_for_folder(folder):
-    latency_data = [map(lambda y: long(y)/1000000000.0, x.split(',')) for x in open(
+    latency_data = [map(lambda y: long(y) / 1000000000.0, x.split(',')) for x in open(
         os.path.join(folder, 'latency.csv'), 'r').readlines()]
+    # take only the last 190s for steady state data
+    end_ts = latency_data[-1][1]
+    start_ts = end_ts - 190.0
+    latency_data = [x for x in latency_data if x[1] >= start_ts]
     base_ts = latency_data[0][1]
     latency_data = [(x[0]-base_ts, x[1]-base_ts, x[2]) for x in latency_data]
     return latency_data
@@ -374,4 +382,30 @@ ax2.tick_params(axis='y', labelcolor=color)
 plt.grid()
 fig.tight_layout()
 plt.savefig('client_total_latency.pdf', bbox_inches='tight')
+plt.close()
+
+# Plot energy consumption
+bw_folders = glob.glob('bandwidth/*')
+
+def get_energy_for_folder(folder):
+    energy = float(open(os.path.join(folder, 'energy.txt'), 'r').readline())
+    config = json.load(open(os.path.join(folder, 'config.json')))
+    TIME = 180 # a lie, but close enough
+    DAY = 60*60*24
+    multiplier = DAY/TIME
+    energy = energy*multiplier
+    loops, drop, payload = 1 / config['EXP_PARAMS_LOOPS'], 1 / \
+        config['EXP_PARAMS_DROP'], 1 / config['EXP_PARAMS_PAYLOAD']
+    lambda_total = loops + drop + payload
+    return (lambda_total, energy)
+
+energy_data = map(get_energy_for_folder, bw_folders)
+
+plt.errorbar([x[0] for x in energy_data], [x[1] for x in energy_data], marker='x', linewidth=1)
+plt.xlabel('Rate of sending messages ($\lambda$) per second')
+plt.ylabel('Daily network energy consumption (J)')
+plt.xlim(xmin=0)
+plt.ylim(ymin=0)
+plt.grid()
+plt.savefig('energy_use.pdf', bbox_inches='tight')
 plt.close()
