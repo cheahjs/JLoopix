@@ -306,9 +306,9 @@ plt.legend()
 plt.savefig('client_bandwidth.pdf', bbox_inches='tight')
 plt.close()
 
-plt.errorbar(lines['rate'], [x[1] for x in mix_data], yerr=[x[2] for x in mix_data], marker='x',
+plt.errorbar([x[0][4] for x in mix_data], [x[1] for x in mix_data], yerr=[x[2] for x in mix_data], marker='x',
              linewidth=1, label='All traffic', capsize=5)
-plt.errorbar(lines['rate'], [x[3] for x in mix_data], yerr=[x[4] for x in mix_data], marker='x',
+plt.errorbar([x[0][4] for x in mix_data], [x[3] for x in mix_data], yerr=[x[4] for x in mix_data], marker='x',
              linewidth=1, label='Real traffic', capsize=5)
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Messages sent per second')
