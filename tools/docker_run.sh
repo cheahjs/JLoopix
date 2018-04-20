@@ -23,7 +23,7 @@ for ((i=1;i<=PROVIDER_COUNT;i++)); do
     -v "$DIR/../build/loopix_keys/provider_$i/secretProvider.prv:/loopix/loopix/secretProvider.prv" \
     -v "$DIR/../build/loopix_config.json:/loopix/loopix/config.json" \
     -w "/loopix/loopix" \
-    -dit \
+    -dit --rm \
     --name="provider_$i" \
     deathmax/loopix \
     twistd --nodaemon --python=run_provider.py &
@@ -41,7 +41,7 @@ for ((i=1;i<=MIXNODE_COUNT;i++)); do
     -v "$DIR/../build/loopix_keys/mixnode_$i/secretMixnode.prv:/loopix/loopix/secretMixnode.prv" \
     -v "$DIR/../build/loopix_config.json:/loopix/loopix/config.json" \
     -w "/loopix/loopix" \
-    -dit \
+    -dit --rm \
     --name="mix_$i" \
     deathmax/loopix \
     twistd --nodaemon --python=run_mixnode.py &
@@ -57,7 +57,7 @@ for ((i=1;i<=JAVA_COUNT;i++)); do
     -v "$DIR/../build/loopix_keys/client_$i/secretClient.prv:/secretClient.prv" \
     -v "$DIR/../build/jloopix_config.json:/config.json" \
     -w "/" \
-    -dit \
+    -dit --rm \
     --name="client_$i" \
     deathmax/jloopix \
     config.json publicClient.bin secretClient.prv &
@@ -73,7 +73,7 @@ for ((i=(JAVA_COUNT+1);i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     -v "$DIR/../build/loopix_keys/client_$i/secretClient.prv:/loopix/loopix/secretClient.prv" \
     -v "$DIR/../build/loopix_config.json:/loopix/loopix/config.json" \
     -w "/loopix/loopix" \
-    -dit \
+    -dit --rm \
     --name="client_$i" \
     deathmax/loopix \
     twistd --nodaemon --python=run_client.py &

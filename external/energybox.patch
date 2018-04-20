@@ -1,0 +1,58 @@
+diff --git src/main/java/se/liu/rtslab/energybox/Launcher.java src/main/java/se/liu/rtslab/energybox/Launcher.java
+index 1829db0..6d0e85c 100644
+--- src/main/java/se/liu/rtslab/energybox/Launcher.java
++++ src/main/java/se/liu/rtslab/energybox/Launcher.java
+@@ -158,7 +158,7 @@ public class Launcher {
+                     OSTools.showErrorDialog("JVM Path Error", e.getMessage());
+                 }
+                 try {
+-                    WinPcap.isSupported();
++                    //WinPcap.isSupported();
+                 } catch (UnsatisfiedLinkError e) {
+                     OSTools.showErrorDialog("Libpcap Error", "Libpcap-dev not installed!");
+                 }
+diff --git src/main/java/se/liu/rtslab/energybox/Packet.java src/main/java/se/liu/rtslab/energybox/Packet.java
+index 345ac11..d3e0870 100644
+--- src/main/java/se/liu/rtslab/energybox/Packet.java
++++ src/main/java/se/liu/rtslab/energybox/Packet.java
+@@ -17,6 +17,7 @@ public class Packet
+     private final SimpleStringProperty destination;
+     private final SimpleStringProperty protocol;
+     private final SimpleBooleanProperty uplink = new SimpleBooleanProperty(false);
++    public int sourcePort;
+     
+     public Packet(long time, int length, String source, String destination, String protocol)
+     {
+diff --git src/main/java/se/liu/rtslab/energybox/ProcessTraceTshark.java src/main/java/se/liu/rtslab/energybox/ProcessTraceTshark.java
+index 0206dda..9e7beee 100644
+--- src/main/java/se/liu/rtslab/energybox/ProcessTraceTshark.java
++++ src/main/java/se/liu/rtslab/energybox/ProcessTraceTshark.java
+@@ -164,6 +164,8 @@ public class ProcessTraceTshark implements ProcessTrace
+                 System.out.println("Total packets: " + totalRecords);
+                 //IP detection needs to be done here
+                 for(CSVRecord record : records){
++                    if (record.size() < 9)
++                        continue;
+                     //[Number 0, Time 1, Length 2, Ip src 3, Ip dest 4, IPv 5, Ip proto 6, HTTPreq 7,DNSquery 8]
+                     //[2489, 285.096593000, 56, 66.220.153.21, 95.194.8.196, 4, 6, , ]
+                     //System.out.println(record.toString());
+@@ -184,6 +186,10 @@ public class ProcessTraceTshark implements ProcessTrace
+                     //HTTP - Look at the HTTP request source IP
+                     //DNS - Look at the IP source of a DNS query with reponse flag to 0
+                     //ToDo: make it a method
++                    int udpSrc = Integer.parseInt(record.get(14));
++                    if (udpSrc >= 31000 && udpSrc < 32000) {
++                        sourceIP = record.get(3);
++                    }
+                     //Source
+                     if(IPlist.containsKey(record.get(3))){
+                         //increase the value
+@@ -246,7 +252,7 @@ public class ProcessTraceTshark implements ProcessTrace
+                     }
+                 }
+ 
+-                sourceIP = detectIP(HTTPrequest, DNSquery, IPlist);
++                // sourceIP = detectIP(HTTPrequest, DNSquery, IPlist);
+                 postExec.invoke(this);
+ 
+ 

@@ -10,8 +10,8 @@ Based off the original [Python implementation](https://github.com/UCL-InfoSec/lo
 Tested on Ubuntu 16.04:
 
 ```bash
-apt install openjdk-8-jdk docker python2.7 python-pip python-dev build-essential libssl-dev libffi-dev python-tk
-pip install numpy scipy sphinxmix==0.0.6 petlib twisted matplotlib scapy multiprocessing dpkt loopix
+apt install openjdk-8-jdk openjfx docker.io python2.7 python-pip python-dev build-essential libssl-dev libffi-dev python-tk
+pip install numpy scipy sphinxmix==0.0.6 petlib twisted matplotlib scapy multiprocessing dpkt
 git clone https://github.com/cheahjs/JLoopix
 cd JLoopix
 git submodule init && git submodule update
