@@ -404,6 +404,7 @@ energy_data = sorted(map(get_energy_for_folder, bw_folders), lambda x, y: cmp(x[
 plt.errorbar([x[0] for x in energy_data], [x[1] for x in energy_data], marker='x', linewidth=1)
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Daily network energy consumption (J)')
+plt.xlim(xmin=0)
 plt.grid()
 plt.savefig('energy_use.pdf', bbox_inches='tight')
 plt.close()
