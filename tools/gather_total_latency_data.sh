@@ -39,6 +39,6 @@ for ((i=1;i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     $DOCKER_PATH logs "client_$i" > "../results/latency_total/$DATE/logs/client_$i"
 done
 
-$DOCKER_PATH cp client_1:/latency.csv ../results/latency/$DATE/latency.csv
-$DOCKER_PATH cp client_2:/latency.csv ../results/latency/$DATE/latency_2.csv
-$DOCKER_PATH cp client_3:/latency.csv ../results/latency/$DATE/latency_3.csv
+$DOCKER_PATH cp client_1:/latency.csv ../results/latency_total/$DATE/latency.csv
+$DOCKER_PATH cp client_2:/latency.csv ../results/latency_total/$DATE/latency_2.csv
+$DOCKER_PATH cp client_3:/latency.csv ../results/latency_total/$DATE/latency_3.csv

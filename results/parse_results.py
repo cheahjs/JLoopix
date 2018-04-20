@@ -253,8 +253,8 @@ if os.path.exists('saved_bw_data.json'):
 else:
     bw_folders = glob.glob('bandwidth/*')
     bandwidth_data = pool.map(get_data_for_file_mp, zip(
-        bw_folders, itertools.repeat([31001, 31002, 31003, 
-        31450, 31451, 31452, 
+        bw_folders, itertools.repeat([31001, 31002, 31003,
+        31151, 31152, 31153,
         32001, 32002, 32003])))
 
 with open('saved_bw_data.json', 'w') as f:
@@ -262,11 +262,10 @@ with open('saved_bw_data.json', 'w') as f:
 
 flat_data = sorted([item for x in bandwidth_data for item in x],
                    lambda x, y: cmp(x[4], y[4]))
-
 java_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
     [x for x in flat_data if x[0] in [31001, 31002, 31003]], lambda x: x[4])]
 python_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
-    [x for x in flat_data if x[0] in [31450, 31451, 31452]], lambda x: x[4])]
+    [x for x in flat_data if x[0] in [31151, 31152, 31153]], lambda x: x[4])]
 mix_data = [mean_variance(rate, list(items)) for rate, items in itertools.groupby(
     [x for x in flat_data if x[0] in [32001, 32002, 32003]], lambda x: x[4])]
 
@@ -332,8 +331,8 @@ def get_latency_data_for_folder(folder):
 
 
 lat_folders = glob.glob('latency/*')
-latency_data = [get_latency_data_for_folder(folder) for folder in lat_folders]
-
+latency_data = sorted([get_latency_data_for_folder(folder) for folder in lat_folders], 
+    lambda x, y: cmp(x[0], y[0]))
 lat_clients = [x[0] for x in latency_data]
 lat_avg = [x[1] for x in latency_data]
 lat_err = [x[2] for x in latency_data]

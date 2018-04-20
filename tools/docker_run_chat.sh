@@ -62,7 +62,7 @@ for ((i=1;i<=JAVA_COUNT;i++)); do
     --name="client_$i" \
     deathmax/jloopix \
     "-c" \
-    "/usr/bin/java -Dorg.slf4j.simpleLogger.defaultLogLevel=off -Done-jar.main.class=me.jscheah.jloopix.client.chatdemo.ChatClient -jar /jloopix.jar config.json publicClient.bin secretClient.prv" &
+    "/usr/bin/java -Dorg.slf4j.simpleLogger.defaultLogLevel=off -Done-jar.main.class=me.jscheah.jloopix.client.chatdemo.ChatClient -jar /jloopix.jar config.json publicClient.bin secretClient.prv"
 done
 
 for ((i=(JAVA_COUNT+1);i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
@@ -78,7 +78,7 @@ for ((i=(JAVA_COUNT+1);i<=(CLIENT_COUNT+JAVA_COUNT);i++)); do
     -dit \
     --name="client_$i" \
     deathmax/loopix \
-    twistd --nodaemon --python=run_client.py &
+    twistd --nodaemon --python=run_client.py
 done
 
 wait

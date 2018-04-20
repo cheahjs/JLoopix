@@ -11,8 +11,8 @@ RATE_TICK=0.1
 DELAY=0.001
 
 # Network parameters
-JAVA_COUNT=250
-PYTHON_COUNT=250
+JAVA_COUNT=100
+PYTHON_COUNT=100
 MIX_COUNT=6
 PROVIDER_COUNT=4
 
@@ -42,9 +42,9 @@ done
 
 PROVIDER_COUNT=4
 MIX_COUNT=6
-CLIENT_START=25
-CLIENT_END=250
-CLIENT_TICK=25
+CLIENT_START=10
+CLIENT_END=100
+CLIENT_TICK=15
 
 # Collect zero delay latency data
 for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
@@ -65,11 +65,11 @@ for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
 done
 
 # Collect total latency data
-echo "Running total latency data with 500 clients"
+echo "Running total latency data with 200 clients"
 # Setup network config
 python setup_network.py \
     --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
-    --mix $MIX_COUNT --provider $PROVIDER_COUNT --client 250 --client-java 250 \
+    --mix $MIX_COUNT --provider $PROVIDER_COUNT --client 100 --client-java 100 \
     --max-retrieve 30 --time-pull 5
 # Generate keys since we've change the number of clients
 ./generate_keys.sh
