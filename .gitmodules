@@ -4,3 +4,6 @@
 [submodule "external/loopix"]
 	path = external/loopix
 	url = https://github.com/cheahjs/loopix.git
+[submodule "external/energybox"]
+	path = external/energybox
+	url = https://github.com/rtslab/EnergyBox/
