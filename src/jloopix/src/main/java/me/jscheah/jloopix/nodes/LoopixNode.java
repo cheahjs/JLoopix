@@ -9,14 +9,12 @@ public class LoopixNode {
     public short port;
     public String name;
     public ECPoint publicKey;
-    public BigInteger privateKey;
 
-    public LoopixNode(String host, short port, String name, ECPoint publicKey, BigInteger privateKey) {
+    public LoopixNode(String host, short port, String name, ECPoint publicKey) {
         this.host = host;
         this.port = port;
         this.name = name;
         this.publicKey = publicKey;
-        this.privateKey = privateKey;
     }
 
     @Override

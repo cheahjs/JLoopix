@@ -93,9 +93,9 @@ public class LoopixClient extends IoHandlerAdapter {
             throw new RuntimeException(e);
         }
 
-        this.selfNode = new LoopixNode(host, port, name, publicKey, privateKey);
+        this.selfNode = new LoopixNode(host, port, name, publicKey);
 
-        cryptoClient = new ClientCore(config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, privateKey, publicKey);
+        cryptoClient = new ClientCore(config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, publicKey);
 
         database = new DBManager(config.getDATABASE_NAME());
 
@@ -376,7 +376,6 @@ public class LoopixClient extends IoHandlerAdapter {
         double nanoseconds = seconds * 1e9;
         return (long) nanoseconds;
     }
-
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) {

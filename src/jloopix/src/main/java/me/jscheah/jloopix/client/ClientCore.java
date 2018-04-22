@@ -22,8 +22,8 @@ class ClientCore extends LoopixNode {
     private int noiseLength;
     private SphinxPacker packer;
 
-    ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, BigInteger privateKey, ECPoint publicKey) {
-        super(host, port, name, publicKey, privateKey);
+    ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, ECPoint publicKey) {
+        super(host, port, name, publicKey);
         this.noiseLength = noiseLength;
         this.packer = packer;
     }
