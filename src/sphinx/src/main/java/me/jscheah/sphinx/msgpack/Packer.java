@@ -65,7 +65,7 @@ public class Packer extends MessageBufferPacker {
 
     public static byte[] ecPointToByteArray(ECPoint point) throws IOException {
         MessageBufferPacker packer = MessagePack.newDefaultBufferPacker();
-        byte[] pointData = point.getEncoded(false);
+        byte[] pointData = point.getEncoded(true);
         ArrayValue values = new ImmutableArrayValueImpl(new Value[]{
                 new ImmutableLongValueImpl(713),
                 new ImmutableBinaryValueImpl(pointData)
