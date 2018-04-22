@@ -5,7 +5,9 @@ import me.jscheah.jloopix.client.LoopixClient;
 import me.jscheah.jloopix.client.LoopixMessageListener;
 import org.bouncycastle.util.Arrays;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Scanner;
@@ -19,13 +21,13 @@ public class ChatClient implements LoopixMessageListener {
         client.setMessageListener(this);
     }
 
-    public void run() {
+    public void run() throws IOException {
         client.run();
-        Scanner scanner = new Scanner(System.in);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            String input = scanner.nextLine();
+            String input = reader.readLine().trim();
             String message = String.format("%1$tH:%1$tM:%1$tS <%2$s> %3$s", new Date(), client.getName(), input);
-            System.out.println(message);
+            printMessage(message, true);
             byte[] data = Arrays.concatenate(MAGIC_NUMBER, message.getBytes(Charset.forName("UTF-8")));
             for (User user : client.getClientList()) {
                 if (user.name.equals(client.getName()))
@@ -43,7 +45,21 @@ public class ChatClient implements LoopixMessageListener {
         // Strip "CHAT" prefix
         message = Arrays.copyOfRange(message, 4, message.length);
         String stringMsg = new String(message, Charset.forName("UTF-8"));
-        System.out.println(stringMsg);
+        printMessage(stringMsg, false);
+    }
+
+    private void printMessage(String message, boolean input) {
+        if (input) {
+            // Move up one, and clear the input
+            System.out.print("\033[1A\033[2K");
+            System.out.println(message);
+        } else {
+            // Store cursor position, move to left, insert line
+            System.out.print("\0337\r\033[1L");
+            System.out.print(message);
+            // Restore cursor position, move down
+            System.out.print("\0338\033[1B");
+        }
     }
 
     public static void main(String[] args) throws IOException {
