@@ -4,8 +4,6 @@
 source network_config.sh
 CWD=$(pwd)
 
-HOST=127.0.0.1
-
 rm -R ../build/loopix_keys
 rm ../build/example.db
 
