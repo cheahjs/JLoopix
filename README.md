@@ -7,23 +7,62 @@ Based off the original [Python implementation](https://github.com/UCL-InfoSec/lo
 
 ## Running
 
-Tested on Ubuntu 16.04:
+Tested on:
+
+* Ubuntu 16.04
+* Ubuntu 14.04/16.04 for Windows.
+    * Docker running on Windows, scripts run from Bash.
+
+**By default, the test network will consume ~100GB of RAM! Modify `tools/run_all_gather_data.sh` to reduce the number of clients.**
+
+## Install dependencies
 
 ```bash
-apt install openjdk-8-jdk openjfx docker.io python2.7 python-pip python-dev build-essential libssl-dev libffi-dev python-tk
+apt install openjdk-8-jdk openjfx docker.io python2.7 python-pip python-dev build-essential libssl-dev libffi-dev python-tk libpcap-dev tshark
 pip install numpy scipy sphinxmix==0.0.6 petlib twisted matplotlib scapy multiprocessing dpkt
+```
+
+Known issues:
+
+* sphinxmix 0.0.7 is incompatible with sphinxmix 0.0.6. `too many values to unpack` errors are usually the result of the wrong version of sphinxmix. 
+
+## Setup
+
+```bash
 git clone https://github.com/cheahjs/JLoopix
 cd JLoopix
 git submodule init && git submodule update
 pip install -e external/loopix
-cd tools
+cd external/energybox
+patch -p0 < ../energybox.patch
+./gradlew jar
+cd ../../tools
 ./build_jar.sh
-docker network create loopix_net
 ./docker_build.sh
+docker network create loopix_net
+```
+
+## Generate graphs
+
+```bash
 ./run_all_gather_data.sh
+./energybox.sh
 cd ../results
 python parse_results.py
 ```
+
+## Run chat clients
+
+```bash
+./run_chat.sh
+docker attach client_1
+docker attach client_2
+```
+
+Known issues:
+
+* Console cursor handling isn't the best. If the cursor is at the bottom of the viewport, the last line will be continously overriden.
+
 
 <!-- ## Building
 
