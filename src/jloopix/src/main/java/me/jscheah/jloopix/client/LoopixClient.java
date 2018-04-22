@@ -368,11 +368,8 @@ public class LoopixClient extends IoHandlerAdapter {
      * @return Number of nanoseconds
      */
     private long sampleTimeFromExponential(double scale) {
-        if (scale == 0) {
-            return 0;
-        }
-        // sample (in seconds) = -ln(u)*lambda
-        double seconds = Math.log(random.nextDouble()) * (-scale);
+        // sample in seconds
+        double seconds = Core.randomExponential(scale);
         double nanoseconds = seconds * 1e9;
         return (long) nanoseconds;
     }

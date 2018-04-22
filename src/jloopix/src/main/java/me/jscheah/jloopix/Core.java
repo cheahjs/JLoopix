@@ -11,10 +11,16 @@ import static java.util.stream.Collectors.groupingBy;
 
 public class Core {
     private static SecureRandom random = new SecureRandom();
+
     public static byte[] generateRandomBytes(int length) {
         byte[] out = new byte[length];
         random.nextBytes(out);
         return out;
+    }
+
+    public static double randomExponential(double scale) {
+        // sample = -ln(u)*scale
+        return Math.log(random.nextDouble())*(-scale);
     }
 
     /***

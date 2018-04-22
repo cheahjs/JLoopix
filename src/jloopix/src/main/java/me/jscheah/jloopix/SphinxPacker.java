@@ -14,28 +14,18 @@ import org.msgpack.value.impl.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SphinxPacker {
     private SphinxParams params;
-    private double expLambda;
-    private SecureRandom random;
+    private double expBeta;
 
-    public SphinxPacker(SphinxParams params, double expLambda) {
+
+    public SphinxPacker(SphinxParams params, double expBeta) {
         this.params = params;
-        this.expLambda = expLambda;
-        random = new SecureRandom();
-    }
-
-    private double generateRandomDelay() {
-        if (expLambda == 0) {
-            return 0;
-        }
-        // sample = -ln(1-u)*lambda
-        return Math.log(1 - random.nextDouble())*(-expLambda);
+        this.expBeta = expBeta;
     }
 
     public SphinxPacket makePacket(LoopixNode receiver,
@@ -77,7 +67,7 @@ public class SphinxPacker {
         List<byte[]> routing = new LinkedList<>();
         for (int i = 0; i < path.size(); i++) {
             LoopixNode node = path.get(i);
-            double delay = generateRandomDelay();
+            double delay = Core.randomExponential(expBeta);
             boolean drop = (i == path.size() - 1) && dropFlag;
             routing.add(SphinxClient.encodeNode(new ImmutableArrayValueImpl(new Value[] {
                     new ImmutableArrayValueImpl(new Value[] {
