@@ -85,7 +85,7 @@ public class SphinxPacker {
                             new ImmutableLongValueImpl(node.port)
                     }),
                     drop ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE,
-                    ImmutableNilValueImpl.get(),
+                    new ImmutableBinaryValueImpl(typeFlag),
                     new ImmutableDoubleValueImpl(delay),
                     new ImmutableStringValueImpl(node.name)
             })));
