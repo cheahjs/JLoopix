@@ -9,8 +9,8 @@ import org.msgpack.core.buffer.ArrayBufferOutput;
 import org.msgpack.value.ArrayValue;
 import org.msgpack.value.Value;
 import org.msgpack.value.impl.ImmutableArrayValueImpl;
-import org.msgpack.value.impl.ImmutableBinaryValueImpl;
 import org.msgpack.value.impl.ImmutableLongValueImpl;
+import org.msgpack.value.impl.ImmutableStringValueImpl;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -68,7 +68,7 @@ public class Packer extends MessageBufferPacker {
         byte[] pointData = point.getEncoded(true);
         ArrayValue values = new ImmutableArrayValueImpl(new Value[]{
                 new ImmutableLongValueImpl(713),
-                new ImmutableBinaryValueImpl(pointData)
+                new ImmutableStringValueImpl(pointData)
         });
         packer.packValue(values);
         return packer.toByteArray();
