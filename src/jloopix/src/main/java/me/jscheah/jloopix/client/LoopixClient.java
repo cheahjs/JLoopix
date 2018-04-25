@@ -232,11 +232,8 @@ public class LoopixClient extends IoHandlerAdapter {
         User randomReceiver = this.clientList.get(random.nextInt(this.clientList.size()));
         List<LoopixNode> path = constructFullPath(randomReceiver);
         logger.debug("Chain selected: {}", path);
-        SphinxPacket loopMessage = cryptoClient.createDropMessage(randomReceiver, path);
-        send(new ImmutableArrayValueImpl(new Value[] {
-                loopMessage.header.toValue(),
-                new ImmutableBinaryValueImpl(loopMessage.body)
-        }));
+        SphinxPacket dropMessage = cryptoClient.createDropMessage(randomReceiver, path);
+        send(dropMessage.toValue());
     }
 
     /***
@@ -262,10 +259,7 @@ public class LoopixClient extends IoHandlerAdapter {
         List<LoopixNode> path = constructFullPath(this);
         logger.debug("Chain selected: {}", path);
         SphinxPacket loopMessage = cryptoClient.createLoopMessage(path);
-        send(new ImmutableArrayValueImpl(new Value[] {
-            loopMessage.header.toValue(),
-            new ImmutableBinaryValueImpl(loopMessage.body)
-        }));
+        send(loopMessage.toValue());
     }
 
     /***
@@ -304,10 +298,7 @@ public class LoopixClient extends IoHandlerAdapter {
         List<LoopixNode> path = constructFullPath(message.getRecipient());
         logger.debug("Chain selected: {}", path);
         SphinxPacket realMessage = cryptoClient.createRealMessage(message.getRecipient(), path, message.getData());
-        send(new ImmutableArrayValueImpl(new Value[] {
-                realMessage.header.toValue(),
-                new ImmutableBinaryValueImpl(realMessage.body)
-        }));
+        send(realMessage.toValue());
     }
 
     /***

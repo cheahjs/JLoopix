@@ -4,6 +4,7 @@ import me.jscheah.jloopix.nodes.LoopixNode;
 import me.jscheah.sphinx.client.SphinxClient;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
+import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.params.SphinxParams;
 import me.jscheah.sphinx.server.SphinxNode;
 import org.apache.commons.lang3.tuple.Pair;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 public class SphinxPacker {
     private SphinxParams params;
     private double expBeta;
-
 
     public SphinxPacker(SphinxParams params, double expBeta) {
         this.params = params;
@@ -75,7 +75,8 @@ public class SphinxPacker {
                             new ImmutableLongValueImpl(node.port)
                     }),
                     drop ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE,
-                    new ImmutableBinaryValueImpl(typeFlag),
+//                    new ImmutableBinaryValueImpl(typeFlag),
+                    ImmutableNilValueImpl.get(),
                     new ImmutableDoubleValueImpl(delay),
                     new ImmutableStringValueImpl(node.name)
             })));
@@ -91,5 +92,15 @@ public class SphinxPacker {
 
     public Value handleReceivedForward(byte[] packet) throws IOException, SphinxException {
         return SphinxClient.receiveForward(this.params, packet).unpackValue();
+    }
+
+    public static byte[] packValue(Value val) {
+        Packer packer = Packer.getPacker();
+        try {
+            packer.packValue(val);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to pack value");
+        }
+        return packer.toByteArray();
     }
 }

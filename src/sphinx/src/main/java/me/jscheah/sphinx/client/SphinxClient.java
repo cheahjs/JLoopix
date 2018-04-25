@@ -136,7 +136,7 @@ public class SphinxClient {
                 .collect(Collectors.toCollection(LinkedList::new));
 
         GroupECC group = params.group;
-        BigInteger blindFactor = params.group.generateSecret();
+        BigInteger blindFactor = group.generateSecret();
 
         // Derive key material for each hop
         List<HeaderRecord> asbTuples = new LinkedList<>();
@@ -187,9 +187,8 @@ public class SphinxClient {
         }
 
         // Add routing information
-        SecureRandom random = new SecureRandom();
         byte[] padding = new byte[randomPadLen];
-        random.nextBytes(padding);
+        params.randomBytes(padding);
         byte[] beta = Arrays.concatenate(
                 finalRouting,
                 padding
@@ -269,9 +268,8 @@ public class SphinxClient {
                                                      List<byte[]> path,
                                                      List<ECPoint> keys,
                                                      Value destination) throws IOException, CryptoException {
-        SecureRandom random = new SecureRandom();
         byte[] xid = new byte[params.k];
-        random.nextBytes(xid);
+        params.randomBytes(xid);
         Packer packer = Packer.getPacker();
         packer.packArrayHeader(3)
                 .packBinaryHeader(1)
@@ -286,7 +284,7 @@ public class SphinxClient {
         );
 
         byte[] ktilde = new byte[params.k];
-        random.nextBytes(ktilde);
+        params.randomBytes(ktilde);
 
         List<byte[]> keyTuples = new LinkedList<>();
         keyTuples.add(ktilde);

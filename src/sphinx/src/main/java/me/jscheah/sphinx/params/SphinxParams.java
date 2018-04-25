@@ -11,15 +11,16 @@ import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.*;
+import java.util.Random;
 
 public class SphinxParams {
-
     public GroupECC group;
     public int headerSize;
     public int bodySize;
     public int k;           // security parameter
     private Cipher aes;
     private MessageDigest sha256;
+    private Random random;
 
     /**
      * Creates a new SphinxParams class with a header length of 192 and a body length of 1024
@@ -45,7 +46,12 @@ public class SphinxParams {
      * @throws CryptoException
      */
     public SphinxParams(int headerLen, int bodyLen) throws CryptoException {
-        group = new GroupECC();
+        this(new GroupECC(), headerLen, bodyLen);
+    }
+
+    public SphinxParams(GroupECC group, int headerLen, int bodyLen) throws CryptoException {
+        random = new SecureRandom();
+        this.group = group;
         headerSize = headerLen;
         bodySize = bodyLen;
         k = 16;
@@ -344,5 +350,9 @@ public class SphinxParams {
      */
     public byte[] htau(byte[] key) throws CryptoException {
         return deriveKey(key, "htauhtauhtauhtau".getBytes(Charset.forName("UTF-8")));
+    }
+
+    public void randomBytes(byte[] bytes) {
+        random.nextBytes(bytes);
     }
 }
