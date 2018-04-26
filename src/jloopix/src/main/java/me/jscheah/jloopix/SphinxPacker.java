@@ -15,6 +15,7 @@ import org.msgpack.value.impl.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +53,9 @@ public class SphinxPacker {
         List<ECPoint> nodeKeys = getNodesPublicKeys(path);
         List<byte[]> routingInfo = getRouting(path, dropFlag, typeFlag);
         Value destination = new ImmutableArrayValueImpl(new Value[] {
-                new ImmutableStringValueImpl(receiver.host),
+                new ImmutableBinaryValueImpl(receiver.host.getBytes(Charset.forName("UTF-8"))),
                 new ImmutableLongValueImpl(receiver.port),
-                new ImmutableStringValueImpl(receiver.name)
+                new ImmutableBinaryValueImpl(receiver.name.getBytes(Charset.forName("UTF-8")))
         });
         return SphinxClient.createForwardMessage(params, routingInfo, nodeKeys, destination, message);
     }
@@ -71,14 +72,14 @@ public class SphinxPacker {
             boolean drop = (i == path.size() - 1) && dropFlag;
             routing.add(SphinxClient.encodeNode(new ImmutableArrayValueImpl(new Value[] {
                     new ImmutableArrayValueImpl(new Value[] {
-                            new ImmutableStringValueImpl(node.host),
+                            new ImmutableBinaryValueImpl(node.host.getBytes(Charset.forName("UTF-8"))),
                             new ImmutableLongValueImpl(node.port)
                     }),
                     drop ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE,
 //                    new ImmutableBinaryValueImpl(typeFlag),
                     ImmutableNilValueImpl.get(),
                     new ImmutableDoubleValueImpl(delay),
-                    new ImmutableStringValueImpl(node.name)
+                    new ImmutableBinaryValueImpl(node.name.getBytes(Charset.forName("UTF-8")))
             })));
         }
         return routing;
