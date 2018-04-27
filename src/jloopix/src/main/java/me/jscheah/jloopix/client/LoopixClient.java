@@ -236,7 +236,7 @@ public class LoopixClient extends IoHandlerAdapter {
         send(getPullValue());
     }
 
-    private static final byte[] PULL = "SUBSCRIBE".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PULL = "PULL".getBytes(StandardCharsets.UTF_8);
     private Value cachedPull;
     private Value getPullValue() {
         if (cachedPull == null)
