@@ -45,4 +45,18 @@ class GroupECCTest {
 
         assertEquals(G.printableString(G.Generator), "04b70e0cbd6bb4bf7f321390b94a03c1d356c21122343280d6115c1d21bd376388b5f723fb4c22dfe6cd4375a05a07476444d5819985007e34");
     }
+
+    @Test
+    void testMakeExp() {
+        GroupECC G = new GroupECC();
+        byte[] possiblyNegative = new byte[] {(byte) 0x10, (byte) 0xFF, (byte) 0xFF};
+        assertEquals(G.makeExp(possiblyNegative), new BigInteger("1114111"));
+    }
+
+    @Test
+    void testMakeExpPossiblyNegative() {
+        GroupECC G = new GroupECC();
+        byte[] possiblyNegative = new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
+        assertEquals(G.makeExp(possiblyNegative), new BigInteger("16777215"));
+    }
 }
