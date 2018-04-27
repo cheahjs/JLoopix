@@ -1,5 +1,6 @@
-package me.jscheah.sphinx;
+package me.jscheah.sphinx.client;
 
+import me.jscheah.sphinx.*;
 import me.jscheah.sphinx.client.SphinxClient;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;

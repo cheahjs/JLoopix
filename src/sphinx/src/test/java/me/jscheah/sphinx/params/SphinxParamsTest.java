@@ -1,5 +1,6 @@
-package me.jscheah.sphinx;
+package me.jscheah.sphinx.params;
 
+import me.jscheah.sphinx.HexUtils;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.params.SphinxParams;
 import org.junit.jupiter.api.Assertions;
