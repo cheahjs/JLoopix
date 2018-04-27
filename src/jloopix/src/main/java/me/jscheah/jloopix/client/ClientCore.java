@@ -3,7 +3,6 @@ package me.jscheah.jloopix.client;
 import me.jscheah.sphinx.client.SphinxClient;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
-import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.jloopix.Core;
 import me.jscheah.jloopix.nodes.LoopixNode;
 import me.jscheah.jloopix.SphinxPacker;
@@ -15,11 +14,10 @@ import org.msgpack.value.Value;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-class ClientCore extends LoopixNode {
-    private int noiseLength;
+class ClientCore extends LoopixNode { private int noiseLength;
     private SphinxPacker packer;
 
     ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, ECPoint publicKey) {
@@ -39,7 +37,7 @@ class ClientCore extends LoopixNode {
     SphinxPacket createLoopMessage(List<LoopixNode> path)
             throws SphinxException, IOException, CryptoException {
         byte[] message = Arrays.concatenate(
-                "HT".getBytes(Charset.forName("UTF-8")),
+                Core.MAGIC_LOOP,
                 Core.generateRandomBytes(noiseLength)
         );
         return packer.makePacket(this, path, message, new byte[0x03]);
@@ -64,7 +62,7 @@ class ClientCore extends LoopixNode {
         return packer.makePacket(receiver, path, message, new byte[0x01]);
     }
 
-    byte[] processPacket(Pair<SphinxHeader, byte[]> packet, BigInteger privk)
+    byte[] processPacket(SphinxPacket packet, BigInteger privk)
             throws SphinxException, IOException, CryptoException {
         SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privk);
         byte routingFlag = sphinxProcessData.routing[sphinxProcessData.routing.length-1];

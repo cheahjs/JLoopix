@@ -16,6 +16,7 @@ import org.msgpack.value.impl.ImmutableBinaryValueImpl;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ class SphinxClientTest {
     }
 
     @Test
-    void integrationTestClient() throws CryptoException, IOException, SphinxException {
+    void fullClientTest() throws CryptoException, IOException, SphinxException {
         int pathLength = 5;
         SphinxParams params = new SphinxParams();
 
@@ -52,8 +53,8 @@ class SphinxClientTest {
             }
         }).collect(Collectors.toList());
         List<ECPoint> nodeKeys = Arrays.stream(path).mapToObj(a -> pkiPub.get(((byte)(int)a)).pubk).collect(Collectors.toList());
-        byte[] dest = "bob".getBytes(Charset.forName("UTF-8"));
-        byte[] message = "this is a test".getBytes(Charset.forName("UTF-8"));
+        byte[] dest = "bob".getBytes(StandardCharsets.UTF_8);
+        byte[] message = "this is a test".getBytes(StandardCharsets.UTF_8);
         SphinxPacket forward = SphinxClient.createForwardMessage(params, routing, nodeKeys, new ImmutableBinaryValueImpl(dest), message);
 
         byte[] binaryMessage = SphinxClient.packMessage(params, forward);
@@ -81,7 +82,7 @@ class SphinxClientTest {
                 byte addr = root.get(1).asIntegerValue().asByte();
                 x = pkiPriv.get(addr).secret;
             } else if (flag == SphinxClient.DEST_FLAG) {
-                Assertions.assertTrue(root.size() == 1);
+                Assertions.assertEquals(1, root.size());
                 Assertions.assertArrayEquals(Arrays.copyOf(ret.delta, 16), new byte[params.k]);
                 Unpacker forwardUnpacker = SphinxClient.receiveForward(params, ret.delta);
                 ImmutableArrayValue forwardRoot = forwardUnpacker.unpackValue().asArrayValue();
@@ -95,8 +96,8 @@ class SphinxClientTest {
             }
         }
 
-        SingleUseReplyBlockData surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(Charset.forName("UTF-8"))));
-        message = "This is a reply".getBytes(Charset.forName("UTF-8"));
+        SingleUseReplyBlockData surb = SphinxClient.createSURB(params, routing, nodeKeys, new ImmutableBinaryValueImpl("myself".getBytes(StandardCharsets.UTF_8)));
+        message = "This is a reply".getBytes(StandardCharsets.UTF_8);
         SphinxPacket surbPackage = SphinxClient.packageSURB(params, surb.nymTuple, message);
 
         x = pkiPriv.get((byte)path[0]).secret;

@@ -21,6 +21,7 @@ import org.msgpack.value.Value;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ class ClientCoreTest {
             path.add(new LoopixNode("mix_2", (short) 1, "mix_2", publicKey));
             path.add(new LoopixNode("mix_3", (short) 1, "mix_3", publicKey));
             path.add(new LoopixNode("provider_2", (short) 1, "provider_2", publicKey));
-            SphinxPacket realMessage = core.createRealMessage(new LoopixNode("client_2", (short) 1, "client_2", publicKey), path, "TEST".getBytes(Charset.forName("UTF-8")));
+            SphinxPacket realMessage = core.createRealMessage(new LoopixNode("client_2", (short) 1, "client_2", publicKey), path, "TEST".getBytes(StandardCharsets.UTF_8));
             byte[] packed = packValue(realMessage.toValue());
             // check packet length
             assertEquals(packed.length, 2079);

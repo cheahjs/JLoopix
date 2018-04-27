@@ -2,6 +2,7 @@ package me.jscheah.jloopix;
 
 import me.jscheah.jloopix.nodes.MixNode;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.TreeMap;
 import static java.util.stream.Collectors.groupingBy;
 
 public class Core {
+    public static final byte[] MAGIC_LOOP = "HT".getBytes(StandardCharsets.UTF_8);
     private static SecureRandom random = new SecureRandom();
 
     public static byte[] generateRandomBytes(int length) {

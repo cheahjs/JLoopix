@@ -1,16 +1,15 @@
 package me.jscheah.jloopix.client.chatdemo;
 
-import me.jscheah.jloopix.nodes.User;
 import me.jscheah.jloopix.client.LoopixClient;
 import me.jscheah.jloopix.client.LoopixMessageListener;
+import me.jscheah.jloopix.nodes.User;
 import org.bouncycastle.util.Arrays;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Scanner;
 
 public class ChatClient implements LoopixMessageListener {
     private final static byte[] MAGIC_NUMBER = "CHAT".getBytes();
@@ -21,6 +20,7 @@ public class ChatClient implements LoopixMessageListener {
         client.setMessageListener(this);
     }
 
+    @SuppressWarnings("InfiniteLoopStatement")
     public void run() throws IOException {
         client.run();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -28,7 +28,7 @@ public class ChatClient implements LoopixMessageListener {
             String input = reader.readLine().trim();
             String message = String.format("%1$tH:%1$tM:%1$tS <%2$s> %3$s", new Date(), client.getName(), input);
             printMessage(message, true);
-            byte[] data = Arrays.concatenate(MAGIC_NUMBER, message.getBytes(Charset.forName("UTF-8")));
+            byte[] data = Arrays.concatenate(MAGIC_NUMBER, message.getBytes(StandardCharsets.UTF_8));
             for (User user : client.getClientList()) {
                 if (user.name.equals(client.getName()))
                     continue;
@@ -44,7 +44,7 @@ public class ChatClient implements LoopixMessageListener {
         }
         // Strip "CHAT" prefix
         message = Arrays.copyOfRange(message, 4, message.length);
-        String stringMsg = new String(message, Charset.forName("UTF-8"));
+        String stringMsg = new String(message, StandardCharsets.UTF_8);
         printMessage(stringMsg, false);
     }
 

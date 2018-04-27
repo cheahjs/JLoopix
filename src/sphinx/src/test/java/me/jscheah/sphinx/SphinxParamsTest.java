@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 class SphinxParamsTest {
@@ -22,8 +23,8 @@ class SphinxParamsTest {
     void testLionessEncThenDecEqual() {
         try {
             SphinxParams params = new SphinxParams();
-            byte[] key = "AAAAAAAAAAAAAAAA".getBytes(Charset.forName("UTF-8"));
-            byte[] message = "ARGARGARGARGARGARGARGARGARGARGARGARGARGARGARGARG".getBytes(Charset.forName("UTF-8"));
+            byte[] key = "AAAAAAAAAAAAAAAA".getBytes(StandardCharsets.UTF_8);
+            byte[] message = "ARGARGARGARGARGARGARGARGARGARGARGARGARGARGARGARG".getBytes(StandardCharsets.UTF_8);
             byte[] ciphertext = params.lionessEnc(key, message);
             byte[] decMessage = params.lionessDec(key, ciphertext);
             Assertions.assertTrue(Arrays.equals(message, decMessage));
@@ -36,8 +37,8 @@ class SphinxParamsTest {
     void testAesEncThenDecEqual() {
         try {
             SphinxParams params = new SphinxParams();
-            byte[] key = "AAAAAAAAAAAAAAAA".getBytes(Charset.forName("UTF-8"));
-            byte[] message = "Hello World!".getBytes(Charset.forName("UTF-8"));
+            byte[] key = "AAAAAAAAAAAAAAAA".getBytes(StandardCharsets.UTF_8);
+            byte[] message = "Hello World!".getBytes(StandardCharsets.UTF_8);
             byte[] ciphertext = params.aesEncrypt(key, message, new byte[16]);
             byte[] decMessage = params.aesEncrypt(key, ciphertext, new byte[16]);
             Assertions.assertTrue(Arrays.equals(message, decMessage));

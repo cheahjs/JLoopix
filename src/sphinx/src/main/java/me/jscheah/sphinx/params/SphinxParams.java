@@ -9,21 +9,32 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Random;
 
 public class SphinxParams {
+    private static final byte[] KEY_1_APPEND = "1".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] KEY_3_APPEND = "3".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] AES_KEY_PREPEND = "aes_key:".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] HB_IV = "hbhbhbhbhbhbhbhb".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] HRHO_IV = "hrhohrhohrhohrho".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] HMU_IV = "hmu:hmu:hmu:hmu:".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] HPI_IV = "hpi:hpi:hpi:hpi:".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] HTAU_IV = "htauhtauhtauhtau".getBytes(StandardCharsets.UTF_8);
+
     public GroupECC group;
     public int headerSize;
     public int bodySize;
     public int k;           // security parameter
-    private Cipher aes;
-    private MessageDigest sha256;
     private Random random;
+    private ThreadLocal<Cipher> aes = ThreadLocal.withInitial(this::getAesInstance);
+    private ThreadLocal<MessageDigest> sha256 = ThreadLocal.withInitial(this::getShaInstance);
+    private ThreadLocal<Mac> mac = ThreadLocal.withInitial(this::getMacInstance);
 
     /**
      * Creates a new SphinxParams class with a header length of 192 and a body length of 1024
+     *
      * @throws CryptoException
      */
     public SphinxParams() throws CryptoException {
@@ -32,6 +43,7 @@ public class SphinxParams {
 
     /**
      * Creates a new SphinxParams class with a header length of {@code headerLen} and a body length of 1024
+     *
      * @param headerLen length of header
      * @throws CryptoException
      */
@@ -41,8 +53,9 @@ public class SphinxParams {
 
     /**
      * Creates a new SphinxParams class with a header length of {@code headerLen} and a body length of {@code bodyLen}
+     *
      * @param headerLen length of header
-     * @param bodyLen length of body
+     * @param bodyLen   length of body
      * @throws CryptoException
      */
     public SphinxParams(int headerLen, int bodyLen) throws CryptoException {
@@ -56,33 +69,32 @@ public class SphinxParams {
         bodySize = bodyLen;
         k = 16;
         try {
-            aes = Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
+            // Try to instantiate AES-128-CTR, SHA-256, HMAC-SHA256. If it doesn't throw an exception here, it should
+            // be safe to assume future invocations won't throw exceptions.
+            Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
+            MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new CryptoException(e);
-        }
-        try {
-            sha256 = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
             throw new CryptoException(e);
         }
     }
 
     /**
      * Performs AES-128-CTR encryption on {@code message} using {@code key} and {@code iv}
-     * @param key AES key
+     *
+     * @param key     AES key
      * @param message message to encrypt
-     * @param iv AES IV
+     * @param iv      AES IV
      * @return encrypted message
      * @throws CryptoException
      */
     public byte[] aesEncrypt(byte[] key, byte[] message, byte[] iv) throws CryptoException {
         try {
-            aes.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            aes.get().init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
             throw new CryptoException(e);
         }
         try {
-            return aes.doFinal(message);
+            return aes.get().doFinal(message);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new CryptoException(e);
         }
@@ -90,23 +102,25 @@ public class SphinxParams {
 
     /**
      * Performs a SHA-256 hash of {@code data}
+     *
      * @param data data to be hash
      * @return SHA-256 hash of {@code data}
      */
     private byte[] hash(byte[] data) {
-        return sha256.digest(data);
+        return sha256.get().digest(data);
     }
 
     /**
      * Encrypt {@code message} with {@code key} with LIONESS
-     * @param key encryption key
+     *
+     * @param key     encryption key
      * @param message message to encrypt
      * @return encrypted message
      * @throws CryptoException
      */
     public byte[] lionessEnc(byte[] key, byte[] message) throws CryptoException {
         assert key.length == this.k;
-        assert message.length >= this.k*2;
+        assert message.length >= this.k * 2;
 
         // Round 1
         byte[] k1 = Arrays.copyOf(
@@ -114,7 +128,7 @@ public class SphinxParams {
                         Arrays.concatenate(
                                 Arrays.copyOfRange(message, this.k, message.length),
                                 key,
-                                "1".getBytes(Charset.forName("UTF-8"))
+                                KEY_1_APPEND
                         )
                 ), this.k);
         byte[] c = aesEncrypt(key, Arrays.copyOf(message, this.k), k1);
@@ -136,7 +150,7 @@ public class SphinxParams {
                         Arrays.concatenate(
                                 Arrays.copyOfRange(r2, this.k, r2.length),
                                 key,
-                                "3".getBytes(Charset.forName("UTF-8"))
+                                KEY_3_APPEND
                         )
                 ), this.k);
         c = aesEncrypt(key, Arrays.copyOf(r2, this.k), k3);
@@ -157,14 +171,15 @@ public class SphinxParams {
 
     /**
      * Decrypt {@code message} with {@code key} with LIONESS
-     * @param key encryption key
+     *
+     * @param key     encryption key
      * @param message message to decrypt
      * @return decrypted message
      * @throws CryptoException
      */
     public byte[] lionessDec(byte[] key, byte[] message) throws CryptoException {
         assert key.length == this.k;
-        assert message.length >= this.k*2;
+        assert message.length >= this.k * 2;
 
         byte[] r4 = message;
         byte[] r4_short = Arrays.copyOf(r4, this.k);
@@ -180,7 +195,7 @@ public class SphinxParams {
                         Arrays.concatenate(
                                 r3_long,
                                 key,
-                                "3".getBytes(Charset.forName("UTF-8"))
+                                KEY_3_APPEND
                         )
                 ), this.k);
         byte[] r2_short = aesEncrypt(key, r3_short, k2);
@@ -196,21 +211,19 @@ public class SphinxParams {
                         Arrays.concatenate(
                                 r1_long,
                                 key,
-                                "1".getBytes(Charset.forName("UTF-8"))
+                                KEY_1_APPEND
                         )
                 ), this.k);
         byte[] c = aesEncrypt(key, r1_short, k0);
-        byte[] r0 = Arrays.concatenate(
-                c,
-                r1_long
-        );
+        byte[] r0 = Arrays.concatenate(c, r1_long);
 
         return r0;
     }
 
     /**
      * A pseudo-random generator using AES
-     * @param key AES key
+     *
+     * @param key   AES key
      * @param plain data to feed into AES
      * @return encrypted data
      * @throws CryptoException
@@ -223,30 +236,26 @@ public class SphinxParams {
     /**
      * Generates a MAC for {@code data} keyed by {@code key}
      * Uses HMAC-SHA256 truncated to the security parameter
-     * @param key MAC key
+     *
+     * @param key  MAC key
      * @param data MAC data
      * @return MAC for the data
      * @throws CryptoException
      */
     public byte[] mu(byte[] key, byte[] data) throws CryptoException {
-        Mac mac;
         try {
-            mac = Mac.getInstance("HmacSHA256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new CryptoException(e);
-        }
-        try {
-            mac.init(new SecretKeySpec(key, "HmacSHA256"));
+            mac.get().init(new SecretKeySpec(key, "HmacSHA256"));
         } catch (InvalidKeyException e) {
             throw new CryptoException(e);
         }
-        return Arrays.copyOf(mac.doFinal(data), this.k);
+        return Arrays.copyOf(mac.get().doFinal(data), this.k);
     }
 
     /**
      * Encrypts {@code data} with {@code key} using a family of pseudo-random permutations (PRPs), which is implemented
      * using the LIONESS cipher
-     * @param key LIONESS key
+     *
+     * @param key  LIONESS key
      * @param data data to encrypt
      * @return encrypted ciphertext
      * @throws CryptoException
@@ -261,7 +270,8 @@ public class SphinxParams {
     /**
      * Decrypts {@code data} with {@code key} using a family of pseudo-random permutations (PRPs), which is implemented
      * using the LIONESS cipher
-     * @param key LIONESS key
+     *
+     * @param key  LIONESS key
      * @param data data to decrypt
      * @return decrypted plaintext
      * @throws CryptoException
@@ -275,32 +285,35 @@ public class SphinxParams {
 
     /**
      * Computes an AES key for a given ECPoint {@code s} by hashing the binary representation of {@code s}
+     *
      * @param s an ECPoint
      * @return an AES key
      */
     public byte[] deriveAesKeyFromSecret(ECPoint s) {
         return Arrays.copyOf(
-                sha256.digest(
+                sha256.get().digest(
                         Arrays.concatenate(
-                                "aes_key:".getBytes(Charset.forName("UTF-8")),
+                                AES_KEY_PREPEND,
                                 group.printable(s)
                         )
                 ), this.k);
     }
 
     /**
-     * Derives a key by encrypting an empty block with {@code key} and IV {@code flavor}
-     * @param key AES key
-     * @param flavor AES IV
+     * Derives a key by encrypting an empty block with {@code key} and IV {@code iv}
+     *
+     * @param key    AES key
+     * @param iv AES IV
      * @return result of the encryption
      * @throws CryptoException
      */
-    public byte[] deriveKey(byte[] key, byte[] flavor) throws CryptoException {
-        return aesEncrypt(key, new byte[this.k], flavor);
+    public byte[] deriveKey(byte[] key, byte[] iv) throws CryptoException {
+        return aesEncrypt(key, new byte[this.k], iv);
     }
 
     /**
      * Computes a blinding factor based on the key
+     *
      * @param key key to generate blinding factor
      * @return a blinding factor
      * @throws CryptoException
@@ -308,51 +321,79 @@ public class SphinxParams {
     public BigInteger hb(byte[] key)
             throws CryptoException {
         return group.makeExp(
-          deriveKey(key, "hbhbhbhbhbhbhbhb".getBytes(Charset.forName("UTF-8")))
+                deriveKey(key, HB_IV)
         );
     }
 
     /**
      * Keyed hash function used to key the rho function
+     *
      * @param key key to be hashed
      * @return a key for the rho function
      * @throws CryptoException
      */
     public byte[] hrho(byte[] key) throws CryptoException {
-        return deriveKey(key, "hrhohrhohrhohrho".getBytes(Charset.forName("UTF-8")));
+        return deriveKey(key, HRHO_IV);
     }
 
     /**
      * Keyed hash function used to key the mu function
+     *
      * @param key key to be hashed
      * @return a key for the mu function
      * @throws CryptoException
      */
     public byte[] hmu(byte[] key) throws CryptoException {
-        return deriveKey(key, "hmu:hmu:hmu:hmu:".getBytes(Charset.forName("UTF-8")));
+        return deriveKey(key, HMU_IV);
     }
 
     /**
      * Keyed hash function used to key the pi function
+     *
      * @param key key to be hashed
      * @return a key for the pi function
      * @throws CryptoException
      */
     public byte[] hpi(byte[] key) throws CryptoException {
-        return deriveKey(key, "hpi:hpi:hpi:hpi:".getBytes(Charset.forName("UTF-8")));
+        return deriveKey(key, HPI_IV);
     }
 
     /**
      * Keyed hash function used to key the tau function
+     *
      * @param key key to be hashed
      * @return a key for the tau function
      * @throws CryptoException
      */
     public byte[] htau(byte[] key) throws CryptoException {
-        return deriveKey(key, "htauhtauhtauhtau".getBytes(Charset.forName("UTF-8")));
+        return deriveKey(key, HTAU_IV);
     }
 
     public void randomBytes(byte[] bytes) {
         random.nextBytes(bytes);
+    }
+
+    private Cipher getAesInstance() {
+        try {
+            return Cipher.getInstance("AES/SIC/NoPadding", new BouncyCastleProvider());
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private MessageDigest getShaInstance() {
+        try {
+            return MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Mac getMacInstance() {
+        try {
+            return Mac.getInstance("HmacSHA256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

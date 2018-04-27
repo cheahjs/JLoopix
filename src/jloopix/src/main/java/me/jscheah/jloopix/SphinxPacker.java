@@ -11,11 +11,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import me.jscheah.sphinx.*;
 import org.bouncycastle.math.ec.ECPoint;
 import org.msgpack.value.Value;
+import org.msgpack.value.ValueFactory;
 import org.msgpack.value.impl.*;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,11 +54,7 @@ public class SphinxPacker {
             throws IOException, CryptoException, SphinxException {
         List<ECPoint> nodeKeys = getNodesPublicKeys(path);
         List<byte[]> routingInfo = getRouting(path, dropFlag, typeFlag);
-        Value destination = new ImmutableArrayValueImpl(new Value[] {
-                new ImmutableBinaryValueImpl(receiver.host.getBytes(Charset.forName("UTF-8"))),
-                new ImmutableLongValueImpl(receiver.port),
-                new ImmutableBinaryValueImpl(receiver.name.getBytes(Charset.forName("UTF-8")))
-        });
+        Value destination = receiver.toValue();
         return SphinxClient.createForwardMessage(params, routingInfo, nodeKeys, destination, message);
     }
 
@@ -70,38 +68,31 @@ public class SphinxPacker {
             LoopixNode node = path.get(i);
             double delay = Core.randomExponential(expBeta);
             boolean drop = (i == path.size() - 1) && dropFlag;
-            routing.add(SphinxClient.encodeNode(new ImmutableArrayValueImpl(new Value[] {
-                    new ImmutableArrayValueImpl(new Value[] {
-                            new ImmutableBinaryValueImpl(node.host.getBytes(Charset.forName("UTF-8"))),
-                            new ImmutableLongValueImpl(node.port)
-                    }),
-                    drop ? ImmutableBooleanValueImpl.TRUE : ImmutableBooleanValueImpl.FALSE,
-//                    new ImmutableBinaryValueImpl(typeFlag),
-                    ImmutableNilValueImpl.get(),
-                    new ImmutableDoubleValueImpl(delay),
-                    new ImmutableBinaryValueImpl(node.name.getBytes(Charset.forName("UTF-8")))
-            })));
+            routing.add(SphinxClient.encodeNode(getNodeData(node, drop, delay)));
         }
         return routing;
     }
 
-    public SphinxProcessData decryptSphinxPacket(Pair<SphinxHeader, byte[]> packet, BigInteger key)
+    private Value getNodeData(LoopixNode node, boolean dropFlag, double delay) {
+        return ValueFactory.newArray(
+                ValueFactory.newArray(
+                        ValueFactory.newBinary(node.host.getBytes(StandardCharsets.UTF_8)),
+                        ValueFactory.newInteger(node.port)
+                ),
+                ValueFactory.newBoolean(dropFlag),
+                ValueFactory.newNil(),
+                ValueFactory.newFloat(delay),
+                ValueFactory.newBinary(node.name.getBytes(StandardCharsets.UTF_8))
+        );
+    }
+
+    public SphinxProcessData decryptSphinxPacket(SphinxPacket packet, BigInteger key)
             throws CryptoException, SphinxException {
-        SphinxProcessData data = SphinxNode.processSphinxPacket(this.params, key, packet.getKey(), packet.getValue());
+        SphinxProcessData data = SphinxNode.processSphinxPacket(this.params, key, packet.header, packet.body);
         return new SphinxProcessData(data.tag, data.routing, data.header, data.delta);
     }
 
     public Value handleReceivedForward(byte[] packet) throws IOException, SphinxException {
         return SphinxClient.receiveForward(this.params, packet).unpackValue();
-    }
-
-    public static byte[] packValue(Value val) {
-        Packer packer = Packer.getPacker();
-        try {
-            packer.packValue(val);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to pack value");
-        }
-        return packer.toByteArray();
     }
 }
