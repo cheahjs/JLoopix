@@ -119,22 +119,4 @@ class ClientCoreTest {
             throw new Error("Exception thrown when not expected", e);
         }
     }
-
-    @Test
-    void testProcessRealPacket() {
-        try {
-            SphinxPacket realMessage = createRealPacket();
-            byte[] packed = packValue(realMessage.toValue());
-            SphinxPacket decodedPacket = core.decodePacket(packed);
-            byte[] decodedMessage = core.processPacket(decodedPacket);
-            assertArrayEquals(decodedMessage, "TEST".getBytes(StandardCharsets.UTF_8));
-        } catch (UnknownPacketException | CryptoException | IOException | SphinxException e) {
-            throw new Error("Exception thrown when not expected", e);
-        }
-    }
-
-    @Test
-    void testSelfDestinationCheck() {
-
-    }
 }
