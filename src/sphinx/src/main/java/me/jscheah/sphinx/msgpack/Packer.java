@@ -8,6 +8,7 @@ import org.msgpack.core.MessagePacker;
 import org.msgpack.core.buffer.ArrayBufferOutput;
 import org.msgpack.value.ArrayValue;
 import org.msgpack.value.Value;
+import org.msgpack.value.ValueFactory;
 import org.msgpack.value.impl.ImmutableArrayValueImpl;
 import org.msgpack.value.impl.ImmutableLongValueImpl;
 import org.msgpack.value.impl.ImmutableStringValueImpl;
@@ -47,8 +48,7 @@ public class Packer extends MessageBufferPacker {
         packer.packInt(713);
 
         byte[] data = packer.toByteArray();
-        this.packExtensionTypeHeader((byte) 1, data.length);
-        this.addPayload(data);
+        this.packValue(ValueFactory.newExtension((byte) 1, data));
         return this;
     }
 
@@ -58,8 +58,7 @@ public class Packer extends MessageBufferPacker {
      */
     public MessagePacker packEcPoint(ECPoint point) throws IOException {
         byte[] data = ecPointToByteArray(point);
-        this.packExtensionTypeHeader((byte) 2, data.length);
-        this.addPayload(data);
+        this.packValue(ValueFactory.newExtension((byte) 2, data));
         return this;
     }
 

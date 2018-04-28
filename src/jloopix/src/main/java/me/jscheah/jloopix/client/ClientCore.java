@@ -7,6 +7,7 @@ import me.jscheah.jloopix.Core;
 import me.jscheah.jloopix.nodes.LoopixNode;
 import me.jscheah.jloopix.SphinxPacker;
 import me.jscheah.sphinx.*;
+import me.jscheah.sphinx.msgpack.Unpacker;
 import org.bouncycastle.math.ec.ECPoint;
 import org.bouncycastle.util.Arrays;
 import org.msgpack.value.ArrayValue;
@@ -14,16 +15,20 @@ import org.msgpack.value.Value;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.List;
 
 class ClientCore extends LoopixNode { private int noiseLength;
-    private SphinxPacker packer;
+    private final SphinxPacker packer;
+    private final BigInteger privateKey;
+    private final HashSet<String> replayTagSet;
 
-    ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, ECPoint publicKey) {
+    ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, ECPoint publicKey, BigInteger privateKey) {
         super(host, port, name, publicKey);
         this.noiseLength = noiseLength;
         this.packer = packer;
+        this.privateKey = privateKey;
+        this.replayTagSet = new HashSet<>();
     }
 
     /**
@@ -62,9 +67,32 @@ class ClientCore extends LoopixNode { private int noiseLength;
         return packer.makePacket(receiver, path, message, new byte[0x01]);
     }
 
-    byte[] processPacket(SphinxPacket packet, BigInteger privk)
+    SphinxPacket decodePacket(byte[] data) throws UnknownPacketException {
+        Unpacker unpacker = Unpacker.getUnpacker(data);
+        try {
+            ArrayValue values = unpacker.unpackValue().asArrayValue();
+            if (!values.get(0).isArrayValue()) {
+                throw new UnknownPacketException();
+            }
+            SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
+            byte[] body = values.get(1).asRawValue().asByteArray();
+            return new SphinxPacket(header, body);
+        } catch (IOException e) {
+            throw new UnknownPacketException(e);
+        }
+    }
+
+    byte[] processPacket(SphinxPacket packet)
             throws SphinxException, IOException, CryptoException {
-        SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privk);
+        SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privateKey);
+
+        // Check if replay tag has been seen before
+        String replayTag = HexUtils.hexlify(sphinxProcessData.tag);
+        if (replayTagSet.contains(replayTag)) {
+            throw new SphinxException("Replay tag has been seen before");
+        }
+        replayTagSet.add(replayTag);
+
         byte routingFlag = sphinxProcessData.routing[sphinxProcessData.routing.length-1];
         if (routingFlag == SphinxClient.DEST_FLAG) {
             Value value = packer.handleReceivedForward(sphinxProcessData.delta);

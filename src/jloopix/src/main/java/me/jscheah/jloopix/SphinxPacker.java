@@ -88,8 +88,7 @@ public class SphinxPacker {
 
     public SphinxProcessData decryptSphinxPacket(SphinxPacket packet, BigInteger key)
             throws CryptoException, SphinxException {
-        SphinxProcessData data = SphinxNode.processSphinxPacket(this.params, key, packet.header, packet.body);
-        return new SphinxProcessData(data.tag, data.routing, data.header, data.delta);
+        return SphinxNode.processSphinxPacket(this.params, key, packet.header, packet.body);
     }
 
     public Value handleReceivedForward(byte[] packet) throws IOException, SphinxException {

@@ -10,7 +10,6 @@ import me.jscheah.jloopix.nodes.User;
 import me.jscheah.sphinx.SphinxPacket;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
-import me.jscheah.sphinx.SphinxHeader;
 import me.jscheah.sphinx.params.SphinxParams;
 import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.msgpack.Unpacker;
@@ -21,11 +20,9 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.DatagramSessionConfig;
 import org.apache.mina.transport.socket.nio.NioDatagramConnector;
 import org.bouncycastle.math.ec.ECPoint;
-import org.msgpack.value.ArrayValue;
 import org.msgpack.value.ImmutableArrayValue;
 import org.msgpack.value.Value;
 import org.msgpack.value.ValueFactory;
-import org.msgpack.value.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,18 +34,19 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class LoopixClient extends IoHandlerAdapter {
     // Logging
     private final Logger logger = LoggerFactory.getLogger(LoopixClient.class);
+    // Cached static values
+    private static final byte[] SUBSCRIBE = "SUBSCRIBE".getBytes(StandardCharsets.UTF_8);
+    private Value cachedSubscribe;
+    private static final byte[] PULL = "PULL".getBytes(StandardCharsets.UTF_8);
+    private Value cachedPull;
     // Node parameters
     private BigInteger privateKey;
     private String name;
@@ -73,7 +71,7 @@ public class LoopixClient extends IoHandlerAdapter {
     private Queue<ClientMessage> messageQueue;
     private LoopixMessageBuilder messageBuilder;
 
-    private final SecureRandom random = new SecureRandom();
+    private final Random random = new SecureRandom();
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -96,7 +94,9 @@ public class LoopixClient extends IoHandlerAdapter {
 
         this.selfNode = new LoopixNode(host, port, name, publicKey);
 
-        cryptoClient = new ClientCore(config.getNOISE_LENGTH(), new SphinxPacker(params, config.getEXP_PARAMS_DELAY()), name, port, host, publicKey);
+        cryptoClient = new ClientCore(config.getNOISE_LENGTH(),
+                new SphinxPacker(params, config.getEXP_PARAMS_DELAY()),
+                name, port, host, publicKey, privateKey);
 
         database = new DBManager(config.getDATABASE_NAME());
 
@@ -167,9 +167,9 @@ public class LoopixClient extends IoHandlerAdapter {
         connector.setHandler(this);
         DatagramSessionConfig dcfg = (DatagramSessionConfig) connector.getSessionConfig();
         dcfg.setReuseAddress(true);
-        dcfg.setReceiveBufferSize(64*1024);
+        dcfg.setReceiveBufferSize(64 * 1024);
         // Default buffer size is 2048, which is too small for our loop messages
-        dcfg.setReadBufferSize(10*1024);
+        dcfg.setReadBufferSize(10 * 1024);
         logger.debug("Set receive buffer size to {}", dcfg.getReceiveBufferSize());
 
         logger.info("Connecting to {} ({}:{}) and listening on port {}", this.provider.name, this.provider.host, this.provider.port, this.port);
@@ -206,8 +206,6 @@ public class LoopixClient extends IoHandlerAdapter {
         }, 0, config.getTIME_PULL(), TimeUnit.SECONDS);
     }
 
-    private static final byte[] SUBSCRIBE = "SUBSCRIBE".getBytes(StandardCharsets.UTF_8);
-    private Value cachedSubscribe;
     private Value getSubscribeValue() throws IOException {
         if (cachedSubscribe == null)
             cachedSubscribe = ValueFactory.newArray(
@@ -236,8 +234,6 @@ public class LoopixClient extends IoHandlerAdapter {
         send(getPullValue());
     }
 
-    private static final byte[] PULL = "PULL".getBytes(StandardCharsets.UTF_8);
-    private Value cachedPull;
     private Value getPullValue() {
         if (cachedPull == null)
             cachedPull = ValueFactory.newArray(
@@ -309,8 +305,7 @@ public class LoopixClient extends IoHandlerAdapter {
             if (messageBuilder != null && !messageBuilder.isEmpty()) {
                 logger.debug("Sending real packet from builder.");
                 sendRealMessage(messageBuilder.getMessage());
-            }
-            else if (!messageQueue.isEmpty()) {
+            } else if (!messageQueue.isEmpty()) {
                 logger.debug("Sending real packet.");
                 sendRealMessage(messageQueue.remove());
             } else if (config.getDATA_DIR().equals("debug")) {
@@ -345,7 +340,7 @@ public class LoopixClient extends IoHandlerAdapter {
      */
     private void send(Value value) {
         try {
-            send(packValue(value));
+            send(Core.packValue(value));
         } catch (IOException e) {
             logger.error("Failed to pack value", e);
         }
@@ -365,10 +360,6 @@ public class LoopixClient extends IoHandlerAdapter {
         logger.debug("Writing {} bytes to socket", encodedPacket.length);
         session.write(buffer);
         logger.debug("Written to socket.");
-    }
-
-    private byte[] packValue(Value value) throws IOException {
-        return ((Packer) Packer.getPacker().packValue(value)).toByteArray();
     }
 
     private List<LoopixNode> constructFullPath(LoopixClient receiver) {
@@ -418,30 +409,44 @@ public class LoopixClient extends IoHandlerAdapter {
     }
 
     @Override
-    public void messageReceived(IoSession session, Object message) throws Exception {
+    public void messageReceived(IoSession session, Object message) {
         logger.debug("Receive session: readbufsize: {}, minread: {}", session.getConfig().getReadBufferSize(), session.getConfig().getMinReadBufferSize());
         // message is a HeapBuffer
         IoBuffer buffer = (IoBuffer) message;
-        Unpacker unpacker = Unpacker.getUnpacker(buffer.array());
-        ArrayValue values = unpacker.unpackValue().asArrayValue();
-        if (values.get(0).isArrayValue()) {
-            SphinxHeader header = SphinxHeader.fromValue(values.get(0).asArrayValue());
-            byte[] body = values.get(1).asRawValue().asByteArray();
-            byte[] decryptedBody = cryptoClient.processPacket(new SphinxPacket(header, body), privateKey);
-            if (decryptedBody[0] == 'H' && decryptedBody[1] == 'T' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
-                logger.info("Received loop message");
-                return;
-            } else if (decryptedBody[0] == 'H' && decryptedBody[1] == 'D' && decryptedBody.length == 2+config.getNOISE_LENGTH()) {
-                logger.info("Received dummy message");
-                return;
-            }
-            // Assume we are sending/receiving text messages for now
-            logger.info("Received: {}", new String(decryptedBody, StandardCharsets.UTF_8));
-            if (this.messageListener != null) {
-                messageListener.onMessageReceived(this, decryptedBody);
-            }
-        } else {
+        handleMessageReceived(buffer.array());
+    }
+
+    private void handleMessageReceived(byte[] data) {
+        // Decode byte[] into SphinxPacket
+        SphinxPacket decodedPacket;
+        try {
+            decodedPacket = cryptoClient.decodePacket(data);
+        } catch (UnknownPacketException e) {
             logger.warn("Received unknown message");
+            return;
+        }
+        // Decrypt body
+        byte[] decryptedBody;
+        try {
+            decryptedBody = cryptoClient.processPacket(decodedPacket);
+        } catch (IOException | CryptoException | SphinxException e) {
+            logger.error("Error processing packet", e);
+            return;
+        }
+        // Check if message is loop/dummy
+        if (Core.checkIsLoopMessage(decryptedBody, config.getNOISE_LENGTH())) {
+            logger.info("Received loop message");
+            return;
+        }
+        if (Core.checkIsDummyMessage(decryptedBody, config.getNOISE_LENGTH())) {
+            logger.info("Received dummy message");
+            return;
+        }
+        // Assume we are sending/receiving text messages for now
+        logger.info("Received: {}", new String(decryptedBody, StandardCharsets.UTF_8));
+        // Call listener
+        if (this.messageListener != null) {
+            messageListener.onMessageReceived(this, decryptedBody);
         }
     }
 

@@ -6,25 +6,22 @@ import me.jscheah.sphinx.HexUtils;
 import me.jscheah.sphinx.SphinxPacket;
 import me.jscheah.sphinx.exceptions.CryptoException;
 import me.jscheah.sphinx.exceptions.SphinxException;
-import me.jscheah.sphinx.msgpack.Packer;
 import me.jscheah.sphinx.params.GroupECC;
 import me.jscheah.sphinx.params.SphinxParams;
 import org.bouncycastle.math.ec.ECPoint;
-import org.bouncycastle.util.encoders.Hex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.msgpack.value.Value;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
+import static me.jscheah.jloopix.Core.packValue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -47,7 +44,7 @@ class ClientCoreTest {
             packer = new SphinxPacker(params, 0);
             privateKey = new BigInteger("1");
             publicKey = group.Generator;
-            core = new ClientCore(0, packer, "client_1", (short) 1, "client_1", publicKey);
+            core = new ClientCore(0, packer, "client_1", (short) 1, "client_1", publicKey, privateKey);
         } catch (Exception e) {
             throw new Error("Exception thrown when not expected", e);
         }
@@ -56,14 +53,7 @@ class ClientCoreTest {
     @Test
     void testRealPacket() {
         try {
-            // Create path
-            List<LoopixNode> path = new LinkedList<>();
-            path.add(new LoopixNode("provider_1", (short) 1, "provider_1", publicKey));
-            path.add(new LoopixNode("mix_1", (short) 1, "mix_1", publicKey));
-            path.add(new LoopixNode("mix_2", (short) 1, "mix_2", publicKey));
-            path.add(new LoopixNode("mix_3", (short) 1, "mix_3", publicKey));
-            path.add(new LoopixNode("provider_2", (short) 1, "provider_2", publicKey));
-            SphinxPacket realMessage = core.createRealMessage(new LoopixNode("client_2", (short) 1, "client_2", publicKey), path, "TEST".getBytes(StandardCharsets.UTF_8));
+            SphinxPacket realMessage = createRealPacket();
             byte[] packed = packValue(realMessage.toValue());
             // check packet length
             assertEquals(packed.length, 2079);
@@ -73,6 +63,17 @@ class ClientCoreTest {
         } catch (CryptoException | IOException | SphinxException e) {
             throw new Error("Exception thrown when not expected", e);
         }
+    }
+
+    private SphinxPacket createRealPacket() throws CryptoException, IOException, SphinxException {
+        // Create path
+        List<LoopixNode> path = new LinkedList<>();
+        path.add(new LoopixNode("provider_1", (short) 1, "provider_1", publicKey));
+        path.add(new LoopixNode("mix_1", (short) 1, "mix_1", publicKey));
+        path.add(new LoopixNode("mix_2", (short) 1, "mix_2", publicKey));
+        path.add(new LoopixNode("mix_3", (short) 1, "mix_3", publicKey));
+        path.add(new LoopixNode("provider_2", (short) 1, "provider_2", publicKey));
+        return core.createRealMessage(new LoopixNode("client_2", (short) 1, "client_2", publicKey), path, "TEST".getBytes(StandardCharsets.UTF_8));
     }
 
     @Test
@@ -119,9 +120,21 @@ class ClientCoreTest {
         }
     }
 
-    byte[] packValue(Value val) throws IOException {
-        Packer packer = Packer.getPacker();
-        packer.packValue(val);
-        return packer.toByteArray();
+    @Test
+    void testProcessRealPacket() {
+        try {
+            SphinxPacket realMessage = createRealPacket();
+            byte[] packed = packValue(realMessage.toValue());
+            SphinxPacket decodedPacket = core.decodePacket(packed);
+            byte[] decodedMessage = core.processPacket(decodedPacket);
+            assertArrayEquals(decodedMessage, "TEST".getBytes(StandardCharsets.UTF_8));
+        } catch (UnknownPacketException | CryptoException | IOException | SphinxException e) {
+            throw new Error("Exception thrown when not expected", e);
+        }
+    }
+
+    @Test
+    void testSelfDestinationCheck() {
+
     }
 }

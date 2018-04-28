@@ -1,7 +1,10 @@
 package me.jscheah.jloopix;
 
 import me.jscheah.jloopix.nodes.MixNode;
+import me.jscheah.sphinx.msgpack.Packer;
+import org.msgpack.value.Value;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -32,5 +35,17 @@ public class Core {
      */
     public static List<List<MixNode>> groupLayeredTopology(List<MixNode> mixes) {
         return new ArrayList<>(new TreeMap<>(mixes.stream().collect(groupingBy(x -> x.groupID))).values());
+    }
+
+    public static byte[] packValue(Value value) throws IOException {
+        return ((Packer) Packer.getPacker().packValue(value)).toByteArray();
+    }
+
+    public static boolean checkIsLoopMessage(byte[] data, int noiseLength) {
+        return data[0] == 'H' && data[1] == 'T' && data.length == 2 + noiseLength;
+    }
+
+    public static boolean checkIsDummyMessage(byte[] data, int noiseLength) {
+        return data[0] == 'H' && data[1] == 'D' && data.length == 2 + noiseLength;
     }
 }
