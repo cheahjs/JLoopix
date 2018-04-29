@@ -131,17 +131,17 @@ public class SphinxParams {
                                 KEY_1_APPEND
                         )
                 ), this.k);
-        byte[] c = aesEncrypt(key, Arrays.copyOf(message, this.k), k1);
+        byte[] left_0 = aesEncrypt(key, Arrays.copyOf(message, this.k), k1);
         byte[] r1 = Arrays.concatenate(
-                c,
+                left_0,
                 Arrays.copyOfRange(message, this.k, message.length)
         );
 
         // Round 2
-        c = aesEncrypt(key, Arrays.copyOfRange(r1, this.k, r1.length), Arrays.copyOf(r1, this.k));
+        byte[] right_1 = aesEncrypt(key, Arrays.copyOfRange(r1, this.k, r1.length), Arrays.copyOf(r1, this.k));
         byte[] r2 = Arrays.concatenate(
                 Arrays.copyOf(r1, this.k),
-                c
+                right_1
         );
 
         // Round 3
@@ -153,17 +153,17 @@ public class SphinxParams {
                                 KEY_3_APPEND
                         )
                 ), this.k);
-        c = aesEncrypt(key, Arrays.copyOf(r2, this.k), k3);
+        byte[] left_2 = aesEncrypt(key, Arrays.copyOf(r2, this.k), k3);
         byte[] r3 = Arrays.concatenate(
-                c,
+                left_2,
                 Arrays.copyOfRange(r2, this.k, r2.length)
         );
 
         // Round 4
-        c = aesEncrypt(key, Arrays.copyOfRange(r3, this.k, r3.length), Arrays.copyOf(r3, this.k));
+        byte[] right_3 = aesEncrypt(key, Arrays.copyOfRange(r3, this.k, r3.length), Arrays.copyOf(r3, this.k));
         byte[] r4 = Arrays.concatenate(
                 Arrays.copyOf(r3, this.k),
-                c
+                right_3
         );
 
         return r4;
