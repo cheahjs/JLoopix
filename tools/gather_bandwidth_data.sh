@@ -29,7 +29,7 @@ $DOCKER_PATH run --name="gather" --rm -d \
     -v "$DIR/../results:/data" --net=host \
     marsmensch/tcpdump -i any -B 131072 \
     -w "/data/bandwidth/$DATE/network.pcap" \
-    udp and portrange 31000-32000 and src net 172.0.0.0/8
+    udp and portrange 30000-34000 and src net 172.0.0.0/8
 
 sleep $1
 
