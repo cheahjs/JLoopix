@@ -8,8 +8,8 @@ import org.bouncycastle.math.ec.ECPoint
 import java.sql.Connection
 import java.sql.DriverManager
 
-class DBManager (file: String) {
-    private val connection: Connection = DriverManager.getConnection("jdbc:sqlite:$file")
+class DBManager (val connection: Connection) {
+    constructor(file: String): this(DriverManager.getConnection("jdbc:sqlite:$file"))
 
     fun selectAllMixNodes(): List<MixNode> {
         val statement = connection.createStatement()

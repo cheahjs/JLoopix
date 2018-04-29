@@ -18,10 +18,13 @@ import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 
-class ClientCore extends LoopixNode { private int noiseLength;
+class ClientCore extends LoopixNode {
+    private static final int REPLAY_TAG_SIZE = 25000;
+    private final int noiseLength;
     private final SphinxPacker packer;
     private final BigInteger privateKey;
-    private final HashSet<String> replayTagSet;
+    private HashSet<String> oldReplayTagSet;
+    private HashSet<String> replayTagSet;
 
     ClientCore(int noiseLength, SphinxPacker packer, String name, short port, String host, ECPoint publicKey, BigInteger privateKey) {
         super(host, port, name, publicKey);
@@ -29,6 +32,7 @@ class ClientCore extends LoopixNode { private int noiseLength;
         this.packer = packer;
         this.privateKey = privateKey;
         this.replayTagSet = new HashSet<>();
+        this.oldReplayTagSet = new HashSet<>();
     }
 
     /**
@@ -87,11 +91,14 @@ class ClientCore extends LoopixNode { private int noiseLength;
         SphinxProcessData sphinxProcessData = packer.decryptSphinxPacket(packet, privateKey);
 
         // Check if replay tag has been seen before
-        String replayTag = HexUtils.hexlify(sphinxProcessData.tag);
-        if (replayTagSet.contains(replayTag)) {
-            throw new SphinxException("Replay tag has been seen before");
+        synchronized (this) {
+            String replayTag = HexUtils.hexlify(sphinxProcessData.tag);
+            if (replayTagSet.contains(replayTag) || oldReplayTagSet.contains(replayTag)) {
+                throw new SphinxException("Replay tag has been seen before");
+            }
+            adjustReplaySetIfNeeded();
+            replayTagSet.add(replayTag);
         }
-        replayTagSet.add(replayTag);
 
         byte routingFlag = sphinxProcessData.routing[sphinxProcessData.routing.length-1];
         if (routingFlag == SphinxClient.DEST_FLAG) {
@@ -106,6 +113,14 @@ class ClientCore extends LoopixNode { private int noiseLength;
             }
         }
         throw new RuntimeException("Processed non-destination packet");
+    }
+
+    private void adjustReplaySetIfNeeded() {
+        if (replayTagSet.size() > REPLAY_TAG_SIZE) {
+            // swap new into old
+            oldReplayTagSet = replayTagSet;
+        }
+        replayTagSet = new HashSet<>();
     }
 
     private boolean isDestinationSelf(ArrayValue dest) {
