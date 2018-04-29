@@ -31,7 +31,7 @@ for rate in $(seq $RATE_START $RATE_TICK $RATE_END); do
     # Run docker containers
     ./docker_run.sh
     # Gather bandwidth data
-    ./gather_bandwidth_data.sh
+    ./gather_bandwidth_data.sh 180s
     # Stop containers
     ./docker_stop.sh
 done
@@ -59,7 +59,7 @@ for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
     # Run docker containers
     ./docker_run_latency.sh
     # Gather latency data
-    ./gather_latency_data.sh
+    ./gather_latency_data.sh 180s
     # Stop containers
     ./docker_stop.sh
 done
@@ -76,6 +76,6 @@ python setup_network.py \
 # Run docker containers
 ./docker_run_latency.sh
 # Gather latency data
-./gather_total_latency_data.sh
+./gather_total_latency_data.sh 180s
 # Stop containers
 ./docker_stop.sh

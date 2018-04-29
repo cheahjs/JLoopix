@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Usage
-# ./gather_total_latency_data.sh
+# ./gather_total_latency_data.sh <sleep_time>
 
 # Import network counts
 source network_config.sh
@@ -24,7 +24,7 @@ mkdir -p ../results/latency_total/$DATE
 mkdir -p ../results/latency_total/$DATE/logs/
 cp ../build/jloopix_config.json ../results/latency_total/$DATE/config.json
 
-sleep 180
+sleep $1
 
 # $DOCKER_PATH stop gather
 for ((i=1;i<=PROVIDER_COUNT;i++)); do
