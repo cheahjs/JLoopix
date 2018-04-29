@@ -40,7 +40,7 @@ index 0206dda..9e7beee 100644
                      //HTTP - Look at the HTTP request source IP
                      //DNS - Look at the IP source of a DNS query with reponse flag to 0
                      //ToDo: make it a method
-+                    int udpSrc = Integer.parseInt(record.get(14));
++                    int udpSrc = Integer.parseInt(record.get(13));
 +                    if (udpSrc >= 31000 && udpSrc < 32000) {
 +                        sourceIP = record.get(3);
 +                    }
