@@ -13,8 +13,8 @@ DELAY=0.001
 # Network parameters
 JAVA_COUNT=100
 PYTHON_COUNT=100
-MIX_COUNT=6
-PROVIDER_COUNT=4
+MIX_COUNT=18
+PROVIDER_COUNT=8
 
 # Initial setup for creating keys
 python setup_network.py \
@@ -40,8 +40,8 @@ done
 # Latency data collection #
 ###########################
 
-PROVIDER_COUNT=4
-MIX_COUNT=6
+PROVIDER_COUNT=8
+MIX_COUNT=18
 CLIENT_START=10
 CLIENT_END=100
 CLIENT_TICK=15
@@ -51,7 +51,7 @@ for count in $(seq $CLIENT_START $CLIENT_TICK $CLIENT_END); do
     echo "Running with count $count"
     # Setup network config
     python setup_network.py \
-        --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
+        --rate-real 1 --rate-drop 1 --rate-loop 1 --delay 0 \
         --mix $MIX_COUNT --provider $PROVIDER_COUNT --client $count --client-java $count \
         --push true
     # Generate keys since we've change the number of clients
@@ -68,7 +68,7 @@ done
 echo "Running total latency data with 200 clients"
 # Setup network config
 python setup_network.py \
-    --rate-real 2.67 --rate-drop 2.66 --rate-loop 2.67 --delay 0 \
+    --rate-real 2.67 --rate-drop 0.5 --rate-loop 0.5 --delay 0 \
     --mix $MIX_COUNT --provider $PROVIDER_COUNT --client 100 --client-java 100 \
     --max-retrieve 30 --time-pull 5
 # Generate keys since we've change the number of clients
