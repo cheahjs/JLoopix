@@ -321,8 +321,9 @@ plt.close()
 
 # Plot latency data
 def get_latency_data_for_folder(folder):
+    java = (glob.glob(os.path.join(folder, 'latency_?.csv')) + ['latency.csv'])[0]
     latency_data = [map(lambda y: long(y) / 1000000.0, x.split(',')) for x in open(
-        os.path.join(folder, 'latency.csv'), 'r').readlines()]
+        java, 'r').readlines()]
     # take only the last 190s for steady state data
     end_ts = latency_data[-1][1]
     start_ts = end_ts - (190.0 * 1000)
@@ -330,18 +331,35 @@ def get_latency_data_for_folder(folder):
     time_taken = [x[-1] for x in latency_data]
     mean = np.mean(time_taken)
     std = np.std(time_taken)
+    java_data = (mean, std)
+
+    python = glob.glob(os.path.join(folder, 'latency_python_*.csv'))[0]
+    latency_data=[map(lambda y: float(y) * 1000, x.split(',')) for x in open(
+        python, 'r').readlines()]
+    # take only the last 190s for steady state data
+    end_ts = latency_data[-1][1]
+    start_ts = end_ts - (190.0 * 1000)
+    latency_data = [x for x in latency_data if x[1] >= start_ts]
+    time_taken = [x[-1] for x in latency_data]
+    mean = np.mean(time_taken)
+    std = np.std(time_taken)
+
     total_client = len(glob.glob(os.path.join(folder, 'logs', 'client_*')))
-    return (total_client, mean, std)
+    return (total_client, java_data, (mean, std))
 
 
 lat_folders = glob.glob('latency/*')
 latency_data = sorted([get_latency_data_for_folder(folder) for folder in lat_folders], 
     lambda x, y: cmp(x[0], y[0]))
 lat_clients = [x[0] for x in latency_data]
-lat_avg = [x[1] for x in latency_data]
-lat_err = [x[2] for x in latency_data]
+lat_avg = [x[0][1] for x in latency_data]
+lat_err = [x[0][2] for x in latency_data]
+lat_python_avg = [x[1][1] for x in latency_data]
+lat_python_err = [x[1][2] for x in latency_data]
 print latency_data
 plt.errorbar(lat_clients, lat_avg, yerr=lat_err,
+             marker='x', linewidth=1, capsize=5)
+plt.errorbar(lat_clients, lat_python_avg, yerr=lat_python_err,
              marker='x', linewidth=1, capsize=5)
 plt.xlabel('Number of clients')
 plt.ylabel('Latency Overhead (ms)')
@@ -359,14 +377,22 @@ def get_total_latency_data_for_folder(folder):
     latency_data = [x for x in latency_data if x[1] >= start_ts]
     base_ts = latency_data[0][1]
     latency_data = [(x[0]-base_ts, x[1]-base_ts, x[2]) for x in latency_data]
-    return latency_data
+    latency_data = sorted(latency_data, lambda x, y: cmp(x[1], y[1]))
+    ret = []
+    prev = 0
+    for i in latency_data:
+        if i[0] < prev:
+             continue
+        prev = i[0]
+        ret.append(i)
+    return ret
 
 
 lat_folders = glob.glob('latency_total/*')
 all_latency_data = [get_total_latency_data_for_folder(
     folder) for folder in lat_folders]
 latency_data = all_latency_data[0]
-print latency_data
+#print latency_data
 fig, ax1 = plt.subplots()
 color = 'tab:red'
 ax1.set_xlabel('Message sent time (s)')
