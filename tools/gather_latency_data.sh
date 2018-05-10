@@ -44,5 +44,5 @@ $DOCKER_PATH cp client_2:/latency.csv ../results/latency/$DATE/latency_2.csv
 $DOCKER_PATH cp client_3:/latency.csv ../results/latency/$DATE/latency_3.csv
 
 for ((i=(JAVA_COUNT+1);i<=(JAVA_COUNT+3);i++)); do
-    $DOCKER_PATH cp client_$i:/latency.csv ../results/latency/$DATE/latency_python_$i.csv
+    $DOCKER_PATH cp client_$i:/loopix/loopix/latency.csv ../results/latency/$DATE/latency_python_$i.csv
 done
