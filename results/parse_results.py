@@ -359,7 +359,7 @@ lat_python_err = [x[2][1] for x in latency_data]
 print latency_data
 plt.errorbar(lat_clients, lat_avg, yerr=lat_err, label='Java client',
              marker='x', linewidth=1, capsize=5)
-plt.errorbar(lat_clients, lat_python_avg, yerr=lat_python_err, label='Python client'
+plt.errorbar(lat_clients, lat_python_avg, yerr=lat_python_err, label='Python client',
              marker='x', linewidth=1, capsize=5)
 plt.xlabel('Number of clients')
 plt.ylabel('Latency Overhead (ms)')
