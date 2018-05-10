@@ -352,18 +352,19 @@ lat_folders = glob.glob('latency/*')
 latency_data = sorted([get_latency_data_for_folder(folder) for folder in lat_folders], 
     lambda x, y: cmp(x[0], y[0]))
 lat_clients = [x[0] for x in latency_data]
-lat_avg = [x[0][1] for x in latency_data]
-lat_err = [x[0][2] for x in latency_data]
-lat_python_avg = [x[1][1] for x in latency_data]
-lat_python_err = [x[1][2] for x in latency_data]
+lat_avg = [x[1][0] for x in latency_data]
+lat_err = [x[1][1] for x in latency_data]
+lat_python_avg = [x[2][0] for x in latency_data]
+lat_python_err = [x[2][1] for x in latency_data]
 print latency_data
-plt.errorbar(lat_clients, lat_avg, yerr=lat_err,
+plt.errorbar(lat_clients, lat_avg, yerr=lat_err, label='Java client',
              marker='x', linewidth=1, capsize=5)
-plt.errorbar(lat_clients, lat_python_avg, yerr=lat_python_err,
+plt.errorbar(lat_clients, lat_python_avg, yerr=lat_python_err, label='Python client'
              marker='x', linewidth=1, capsize=5)
 plt.xlabel('Number of clients')
 plt.ylabel('Latency Overhead (ms)')
 plt.grid()
+plt.legend()
 plt.savefig('client_latency.pdf', bbox_inches='tight')
 plt.close()
 
