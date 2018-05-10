@@ -235,7 +235,7 @@ def get_data_for_file_mp(a):
 
 def mean_variance(rate, data):
     totals = [x[5] for x in data]
-    reals = [x[6] for x in data]
+    reals = [0 if x[6] is None else x[6] for x in data]
     total = np.mean(totals)
     total_std = np.std(totals)
     real = np.mean(reals)
@@ -243,7 +243,7 @@ def mean_variance(rate, data):
     return (data[0], total, total_std, real, real_std)
 
 
-matplotlib.rcParams['figure.figsize'] = (15, 7)
+matplotlib.rcParams['figure.figsize'] = (10, 5)
 pool = Pool()
 
 # Plot bandwidth data
@@ -340,7 +340,7 @@ latency_data = sorted([get_latency_data_for_folder(folder) for folder in lat_fol
 lat_clients = [x[0] for x in latency_data]
 lat_avg = [x[1] for x in latency_data]
 lat_err = [x[2] for x in latency_data]
-
+print latency_data
 plt.errorbar(lat_clients, lat_avg, yerr=lat_err,
              marker='x', linewidth=1, capsize=5)
 plt.xlabel('Number of clients')
@@ -366,20 +366,24 @@ lat_folders = glob.glob('latency_total/*')
 all_latency_data = [get_total_latency_data_for_folder(
     folder) for folder in lat_folders]
 latency_data = all_latency_data[0]
-
+print latency_data
 fig, ax1 = plt.subplots()
 color = 'tab:red'
 ax1.set_xlabel('Message sent time (s)')
 ax1.set_ylabel('Message received time (s)', color=color)
 ax1.plot([x[1] for x in latency_data], [x[0] for x in latency_data], linewidth=1, color=color)
 ax1.tick_params(axis='y', labelcolor=color)
+ax1.set_ylim(0)
+ax1.set_xlim(0)
 
 color = 'tab:blue'
 ax2 = ax1.twinx()
 ax2.set_ylabel('Time taken (s)', color=color)
 ax2.plot([x[1] for x in latency_data], [x[2] for x in latency_data], linewidth=1, color=color)
 ax2.tick_params(axis='y', labelcolor=color)
+ax2.set_ylim(0)
 plt.grid()
+ax1.grid(axis='x')
 fig.tight_layout()
 plt.savefig('client_total_latency.pdf', bbox_inches='tight')
 plt.close()
@@ -388,20 +392,25 @@ plt.close()
 bw_folders = glob.glob('bandwidth/*')
 
 def get_energy_for_folder(folder):
-    energy = float(open(os.path.join(folder, 'energy.txt'), 'r').readline())
+    energy_files = glob.glob(os.path.join(folder, 'energy_*.txt'))
+    energies = [float(open(file, 'r').readline()) for file in energy_files]
+    energy = np.mean(energies)
+    energy_std = np.std(energies)
     config = json.load(open(os.path.join(folder, 'config.json')))
     TIME = 180 # a lie, but close enough
     DAY = 60*60*24
     multiplier = DAY/TIME
     energy = energy*multiplier
+    energy_std = energy_std*multiplier
     loops, drop, payload = 1 / config['EXP_PARAMS_LOOPS'], 1 / \
         config['EXP_PARAMS_DROP'], 1 / config['EXP_PARAMS_PAYLOAD']
     lambda_total = loops + drop + payload
-    return (lambda_total, energy)
+    return (lambda_total, energy, energy_std)
 
 energy_data = sorted(map(get_energy_for_folder, bw_folders), lambda x, y: cmp(x[0], y[0]))
-
-plt.errorbar([x[0] for x in energy_data], [x[1] for x in energy_data], marker='x', linewidth=1)
+print energy_data
+plt.errorbar([x[0] for x in energy_data], [x[1] for x in energy_data], yerr=[x[2] for x in energy_data],
+             marker='x', linewidth=1, capsize=5)
 plt.xlabel('Rate of sending messages ($\lambda$) per second')
 plt.ylabel('Daily network energy consumption (J)')
 plt.xlim(xmin=0)
